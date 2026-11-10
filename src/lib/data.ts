@@ -37,3 +37,5 @@ export type Company = {
 export type Source = { id: string; name: string; area: string; kind: string; url: string; status: string; checked_at: string | null; detail: string; last_attempt_at?: string | null; last_error?: string | null; consecutive_failures?: number; pending_count?: number; last_trigger?: string | null };
 
 export type Scheduler = {enabled: boolean; cadence_minutes: number; configured_at: string};
+
+export type Discovery = {url:string; title:string; source_name:string; area:string; published_at:string|null; discovered_at:string; last_seen_at:string};

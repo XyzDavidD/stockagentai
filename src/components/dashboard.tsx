@@ -816,6 +816,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
                   {scheduler?.enabled ? "Programare activă" : "Programare oprită"}
                 </span>
               </div>
+              <a className="research-discovery-link" href="/descoperiri">Vezi documentele descoperite <ExternalLink size={16} /></a>
               <section className="table-panel">
                 <div className="section-heading">
                   <h2>Registrul surselor</h2>

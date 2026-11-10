@@ -2381,3 +2381,28 @@ body {
     transition: none;
   }
 }
+
+/* Discovery desk: the same quiet editorial palette, with explicit evidence labels. */
+.discovery-page{max-width:1120px;margin:auto;padding:28px 36px 60px;color:#26332d}
+.discovery-nav,.discovery-back,.discovery-heading,.discovery-mode,.discovery-toolbar,.discovery-toolbar label,.discovery-card-top,.discovery-card footer,.discovery-card footer a{display:flex;align-items:center;gap:12px}
+.discovery-nav{justify-content:space-between;border-bottom:1px solid #dce3dc;padding-bottom:24px;color:#526057}
+.discovery-back{font-weight:600}.discovery-nav strong{color:#285d45}
+.discovery-heading{justify-content:space-between;align-items:flex-start;margin:48px 0 28px;gap:24px}
+.discovery-eyebrow{font-size:10px;letter-spacing:2px;font-weight:700;color:#285d45;margin-bottom:14px}
+.discovery-heading h1{font-family:Georgia,serif;font-weight:400;font-size:44px;letter-spacing:-1.5px;margin:0 0 14px;line-height:1.1}
+.discovery-heading p:not(.discovery-eyebrow){color:#526057;font-size:15px;line-height:1.6}
+.discovery-mode{white-space:nowrap;border:1px solid #ccd9cb;border-radius:6px;padding:12px;color:#285d45;background:#edf3ec;font-size:12px}
+.discovery-notice{border-left:3px solid #557651;background:#edf2eb;padding:20px 24px;margin:0 0 28px;border-radius:0 8px 8px 0;line-height:1.7}
+.discovery-notice strong{font-size:14px}.discovery-notice p{color:#46564a;margin-top:5px}
+.discovery-toolbar{flex-wrap:wrap;gap:10px}.discovery-toolbar label,.discovery-toolbar>select{background:white;border:1px solid #cdd7cf;border-radius:6px;padding:0 12px;min-height:44px}
+.discovery-toolbar .discovery-search{flex:1;min-width:220px}.discovery-toolbar input,.discovery-toolbar select{background:transparent;border:0;color:#36453b;min-height:44px;max-width:100%}.discovery-toolbar input{width:100%;min-width:0}.discovery-toolbar input::placeholder{color:#657168}
+.discovery-count{padding:18px 0;color:#536158;font-size:12px}.discovery-list{display:grid;gap:16px}
+.discovery-card{background:#fff;border:1px solid #dbe3da;border-radius:10px;padding:24px 28px;overflow-wrap:anywhere}
+.discovery-card-top{justify-content:space-between;font-size:11px;color:#526057;flex-wrap:wrap}.discovery-dot{padding:0 8px;color:#849286}.discovery-unverified{background:#f7f0df;color:#70551d;border-radius:4px;padding:5px 8px;font-weight:600}
+.discovery-card h2{font-size:21px;line-height:1.45;font-weight:600;max-width:850px;margin:17px 0}
+.discovery-analysis{background:#f6f8f4;border-radius:6px;padding:15px 18px;color:#48594b;line-height:1.65}.discovery-tag{font-size:12px;font-weight:700;color:#31543c}.discovery-analysis p{margin-top:5px}.discovery-analysis small{display:block;margin-top:6px}
+.discovery-dates{display:flex;gap:40px;margin:20px 0;flex-wrap:wrap}.discovery-dates dt{font-size:11px;color:#5b6a5f;margin-bottom:6px}.discovery-dates dd{margin:0;font-size:12px;font-weight:600}.discovery-old{color:#79521a;font-size:12px;margin-bottom:16px}
+.discovery-card footer{border-top:1px solid #e5ebe2;padding-top:16px;justify-content:space-between;flex-wrap:wrap}.discovery-card footer small{color:#59675c;font-size:11px}.discovery-card footer a{color:#285d45;font-weight:600;font-size:12px}
+.discovery-button{background:#285d45;color:#fff;border-radius:6px;padding:11px 16px;margin-top:14px}.discovery-empty{text-align:center;padding:52px 20px;border:1px dashed #cbd7c9;border-radius:10px}.discovery-empty svg{margin:auto auto 14px}.discovery-empty h2{font-size:18px}.discovery-empty p{margin-top:10px;color:#536158}.discovery-footnote{margin-top:30px;color:#59675c;line-height:1.7;font-size:12px}
+.research-discovery-link{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;background:#285d45;color:white;border-radius:6px;margin-bottom:20px}
+@media(max-width:700px){.discovery-page{padding:22px 18px 40px}.discovery-heading{flex-direction:column;margin:30px 0 22px}.discovery-heading h1{font-size:35px}.discovery-nav{font-size:11px;gap:16px}.discovery-card{padding:20px}.discovery-toolbar>*{width:100%}.discovery-toolbar label select{width:100%}.discovery-dates{gap:20px}.discovery-card h2{font-size:18px}.discovery-notice{padding:16px 18px}}

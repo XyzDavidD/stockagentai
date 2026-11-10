@@ -80,3 +80,11 @@ Workerul acceptă cheia server modernă `sb_secret_...` în secretul GitHub numi
 Migrarea `202611100003_agent_status.sql` separă starea configurării programului de dovada unei execuții: `agent_status.enabled` arată dacă programul este activat, iar `research_sources.last_attempt_at`/`checked_at` arată ultimele încercări/succese. Marcajul `last_trigger=schedule` este înregistrat numai când GitHub chiar pornește execuția programată. O rulare manuală de verificare nu este prezentată ca rulare cron.
 
 Notificările citite sunt legate de versiunea semnalului (companie + data sursei + rezumat). O schimbare documentată reapare ca necitită. Trimiterea prin Resend și extragerea cu un model AI nu sunt încă activate.
+
+## Descoperiri publice fără AI — milestone 3, prima etapă
+
+Decizia proprietarului: fără API AI plătit și fără conturi de utilizator momentan. `/descoperiri` afișează până la 100 de documente din surse publice, fără a le prezenta drept IPO-uri confirmate. Migrarea `202611100004_public_discovery.sql` expune numai metadatele publice prin RPC `list_discoveries`; tabelele interne, hash-urile și istoricul rulărilor rămân private. Nu oferă scrieri anonime. Documentele respinse nu sunt afișate.
+
+`src/lib/signals.mjs` clasifică prudent titlurile prin reguli românești, englezești și germane. Indiciile de amânare au prioritate; negațiile și contradicțiile rămân incerte. Nu extrage nume de companii sau date IPO și nu citește articolul integral. Rezultatul se calculează la afișare, fără apeluri către modele. Căutarea și filtrele sunt locale; dosarele publicate nu se modifică automat.
+
+Pagina diferențiază data publicării, prima detectare și ultima observare în feed. O nouă observare nu reconfirmă stadiul companiei. Analiza financiară, citirea integrală și reconcilierea dosarelor nu sunt implementate. Următorii pași trebuie să păstreze constrângerea de zero servicii plătite; planurile gratuite ale infrastructurii au limite și nu promit capacitate nelimitată.

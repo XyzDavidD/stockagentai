@@ -16,3 +16,11 @@ export async function getResearch(): Promise<{companies: Company[]; sources: Sou
     return {companies: [], sources: [], scheduler: null, error: "Datele Supabase nu sunt disponibile momentan. Reîncarcă pagina pentru a încerca din nou."};
   }
 }
+
+export async function getDiscoveries(): Promise<{items: import('./data').Discovery[]; error:string|null}> {
+  try {
+    return {items: await read('rpc/list_discoveries'),error:null};
+  } catch {
+    return {items:[],error:'Documentele nu sunt disponibile momentan. Reîncarcă pagina pentru a încerca din nou.'};
+  }
+}
