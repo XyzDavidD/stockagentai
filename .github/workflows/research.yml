@@ -1,0 +1,39 @@
+name: Colectare surse IPO
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Verifică sursele fără scriere în Supabase
+        type: boolean
+        default: true
+  schedule:
+    - cron: '17 * * * *'
+permissions:
+  contents: read
+concurrency:
+  group: research-ingestion
+  cancel-in-progress: false
+jobs:
+  collect:
+    if: github.event_name == 'workflow_dispatch' || vars.RESEARCH_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm test
+      - name: Verificare fără scriere
+        if: github.event_name == 'workflow_dispatch' && inputs.dry_run
+        run: node scripts/worker.mjs --dry-run
+      - name: Colectare și persistare
+        if: github.event_name == 'schedule' || !inputs.dry_run
+        env:
+          SUPABASE_URL: https://kvssszorqmzmikmxcwll.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/worker.mjs

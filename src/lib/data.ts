@@ -3,7 +3,8 @@ export type Stage =
   | "Intenție anunțată"
   | "Semnal preliminar"
   | "Ofertă programată"
-  | "Listată";
+  | "Listată"
+  | "Roadshow lansat";
 export type Company = {
   id: string;
   name: string;
@@ -21,6 +22,7 @@ export type Company = {
   official: boolean;
   sourceUrl: string;
   sourceName: string;
+  documents?: {url: string; title: string; publishedAt: string; checkedAt: string}[];
   summary: string;
   signal: string;
   date: string | null;
@@ -30,4 +32,4 @@ export type Company = {
   risk: string;
 };
 
-export type Source = { id: string; name: string; area: string; kind: string; url: string; status: string; checked_at: string | null; detail: string };
+export type Source = { id: string; name: string; area: string; kind: string; url: string; status: string; checked_at: string | null; detail: string; last_attempt_at?: string | null; last_error?: string | null; consecutive_failures?: number; pending_count?: number; last_trigger?: string | null };

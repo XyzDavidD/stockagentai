@@ -84,6 +84,9 @@ export default function Dashboard({ companies: allCompanies, sources, error }: {
   const companies = allCompanies.filter(c => c.stage !== "Listată");
   const formatDate = (value: string) => new Intl.DateTimeFormat("ro-RO", {dateStyle: "medium", timeZone: "Europe/Bucharest"}).format(new Date(value));
   const stale = (c: Company) => Date.now() - new Date(c.publishedAt).getTime() > 90 * 86400000;
+  const pendingTotal = sources.reduce((sum, source) => sum + (source.pending_count || 0), 0);
+  const scheduledSeen = sources.some(source => source.last_trigger === "schedule");
+  const timestamp = (value: string) => new Intl.DateTimeFormat("ro-RO", {dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Bucharest"}).format(new Date(value));
   const currentYear = new Date().getFullYear();
   const [view, setView] = useState<View>("overview");
   const [query, setQuery] = useState("");
@@ -233,6 +236,7 @@ export default function Dashboard({ companies: allCompanies, sources, error }: {
             {[
               "Toate stadiile",
               "Documente depuse",
+              "Roadshow lansat",
               "Intenție anunțată",
               "Semnal preliminar",
               "Ofertă programată",
@@ -435,7 +439,7 @@ export default function Dashboard({ companies: allCompanies, sources, error }: {
             </div>
             <strong>Un pas înaintea pieței.</strong>
             <p>
-              Dosare reale, revizuite manual. Automatizarea continuă este în pregătire.
+              Colectori conectați. Semnalele sunt revizuite înainte de publicare.
             </p>
             <button onClick={() => navigate("research")}>
               Descoperă infrastructura <ArrowUpRight size={15} />
@@ -564,9 +568,9 @@ export default function Dashboard({ companies: allCompanies, sources, error }: {
                     icon: Building2,
                   },
                   {
-                    label: "Documentație depusă",
+                    label: "Roadshow lansat",
                     value: companies.filter(
-                      (c) => c.stage === "Documente depuse",
+                      (c) => c.stage === "Roadshow lansat",
                     ).length,
                     sub: "Dovezi de nivel ridicat",
                     icon: FileText,
@@ -595,7 +599,7 @@ export default function Dashboard({ companies: allCompanies, sources, error }: {
                             ? "watchlist"
                             : "companies",
                       );
-                      if (i === 1) setStage("Documente depuse");
+                      if (i === 1) setStage("Roadshow lansat");
                     }}
                   >
                     <div>
@@ -804,12 +808,12 @@ export default function Dashboard({ companies: allCompanies, sources, error }: {
                 <div>
                   <h2>Supabase · registrul de cercetare</h2>
                   <p>
-                    Dosarele publicate sunt revizuite manual. Colectorii pregătesc candidați pentru verificare; rularea periodică nu este activată. SEC a limitat accesul automat.
+                    {pendingTotal} documente așteaptă verificarea. {scheduledSeen ? "Au fost înregistrate rulări programate; verifică mai jos prospețimea fiecărei surse." : "Rularea orară este pregătită; nicio execuție programată nu a fost încă înregistrată."} SEC rămâne suspendat după refuzul accesului.
                   </p>
                 </div>
                 <span className="badge gray">
                   <span />
-                  Revizuire manuală
+                  {scheduledSeen ? "Colectare programată" : "Activare în așteptare"}
                 </span>
               </div>
               <section className="table-panel">
@@ -825,11 +829,12 @@ export default function Dashboard({ companies: allCompanies, sources, error }: {
                     <div>
                       <strong>{s.name}</strong>
                       <small>
-                        {s.area} · {s.kind}<br />{s.detail}
+                        {s.area} · {s.kind}<br />{s.detail}{!!s.consecutive_failures && <><br />{s.consecutive_failures} eșecuri consecutive</>}
                       </small>
                     </div>
                     <span className="source-frequency">
-                      {s.checked_at ? formatDate(s.checked_at) : "Fără colectare reușită"}
+                      {s.checked_at ? <>Ultimul succes<br />{timestamp(s.checked_at)}</> : "Fără colectare reușită"}
+                      {s.last_attempt_at && <small>Ultima încercare: {timestamp(s.last_attempt_at)}<br />{s.last_trigger === "schedule" ? "Programată" : "La cerere"}{s.last_trigger === "schedule" && Date.now() - new Date(s.last_attempt_at).getTime() > 2 * 3600000 ? " · Întârziere peste 2h" : ""}</small>}
                     </span>
                     <span className="badge gray">
                       <span />
@@ -976,7 +981,7 @@ export default function Dashboard({ companies: allCompanies, sources, error }: {
                 <div>
                   <strong>Date reale · Supabase</strong>
                   <p>
-                    Date publice revizuite manual. Lista nu acoperă toate IPO-urile. Actualizarea continuă nu este activată.
+                    Date publice revizuite manual. Lista nu acoperă toate IPO-urile. Starea colectării apare în Centrul de cercetare.
                   </p>
                 </div>
                 <span className="badge green">
@@ -1105,13 +1110,14 @@ export default function Dashboard({ companies: allCompanies, sources, error }: {
                   </p>
                 </section>
                 <section className="detail-section">
-                  <h3>Sursa documentară</h3>
-                  <div className="evidence"><FileText size={18} /><div>
-                    <a href={selected.sourceUrl} target="_blank" rel="noreferrer">{selected.sourceName} <ExternalLink size={14} /></a>
-                    <p>Publicat: {formatDate(selected.publishedAt)}</p>
-                    <p>Consultat manual: {formatDate(selected.checkedAt)}</p>
-                    <small>{selected.signal}</small>
-                  </div></div>
+                  <h3>Surse și istoric</h3>
+                  {(selected.documents || [{url:selected.sourceUrl,title:selected.sourceName,publishedAt:selected.publishedAt,checkedAt:selected.checkedAt}]).map(document => (
+                    <div className="evidence" key={document.url}><FileText size={18} /><div>
+                      <a href={document.url} target="_blank" rel="noreferrer">{document.title} <ExternalLink size={14} /></a>
+                      <p>Publicat: {formatDate(document.publishedAt)}</p>
+                      <p>Consultat manual: {formatDate(document.checkedAt)}</p>
+                    </div></div>
+                  ))}
                 </section>
               </>
             )}
