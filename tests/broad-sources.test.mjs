@@ -26,3 +26,8 @@ test('source categories distinguish official statements, media, aggregators and 
 test('all expanded sources have distinct ids and fixed HTTPS destinations',()=>{
  assert.equal(new Set(broadSources.map(s=>s.id)).size,broadSources.length);assert.ok(broadSources.every(s=>s.url.startsWith('https://')));
 });
+import {reportedEventDate} from '../src/lib/provenance.mjs';
+test('index dates only parsed from controlled source labels, separate from news publication',()=>{
+ const item={source_name:'Stock Analysis · depuneri IPO',title:'Example · IPO: depunere raportată · Nov 9, 2026'};
+ assert.equal(reportedEventDate(item),'2026-11-09T00:00:00.000Z');assert.equal(reportedEventDate({...item,source_name:'Other news'}),null);
+});
