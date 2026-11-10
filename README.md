@@ -115,3 +115,15 @@ Rezultatele sunt recalculate la încărcare; nu sunt un istoric persistent al sc
 2. Supabase și colectarea orară: finalizat pentru setul inițial de surse; acoperire parțială, SEC suspendat.
 3. Cercetare fără AI: colectare, citirea articolelor, fragmente, grupare și comparație implementate. Mai rămân deciziile persistente de verificare/publicare și istoricul schimbărilor; accesul public este numai pentru citire.
 4. Alerte: de implementat, cu deduplicarea schimbărilor și preferințe; Resend rămâne neconectat. Nu activa servicii plătite.
+
+## Acoperire extinsă și proveniență
+
+18 canale automate de descoperire (nu 18 publicații independente): cele 6 inițiale, Stock Analysis depuneri/calendar, TechCrunch, EU-Startups, Sifted, Profit.ro și 6 căutări Google News pentru SUA, Regatul Unit, Germania, Austria, Franța și România (fereastră 90 zile, rezultate limitate de furnizor). Căutările regionale nu garantează că fiecare rezultat privește o companie din țara respectivă. Sursele cu zero rezultate nu indică absența IPO-urilor.
+
+Stock Analysis este agregator neoficial; o depunere din listă nu dovedește că oferta mai este activă. Data depunerii sau data estimată din calendar nu sunt salvate ca dată a publicării. Rezultatele pot include SPAC-uri, oferte istorice și știri repetate. UI oferă etichete de proveniență, indicii speculative, filtru de posibile SPAC-uri, filtrarea sursei și afișare progresivă câte 25. Maximum 1000 de documente sunt citite pentru interfață; aceasta nu înseamnă 1000 companii distincte. Persistența acceptă maximum 500 candidați per sursă, cu aceeași deduplicare după URL. Căutările Google pot suprapune aceeași știre și păstrează numele editorului în titlul RSS.
+
+Articolele integrale rămân limitate la colectorii cu extractori verificați. Noile agregatoare și fluxuri de presă sunt surse de descoperire și linkuri pentru verificare, nu sunt trimise în coada de citire incompatibilă. Niciun paywall sau blocaj nu este ocolit. Timpul maxim al workerului a fost ajustat la 15 minute pentru setul mai mare, fără concurență între rulări.
+
+SEC a fost reevaluat la 10 noiembrie 2026: feedul EDGAR și `data.sec.gov/submissions` au răspuns HTTP 403. Rămâne suspendat; agregatoarele nu sunt prezentate ca acces direct SEC. Documentația oficială: https://www.sec.gov/search-filings/edgar-application-programming-interfaces .
+
+`/startupuri` este separat de semnalele IPO: sincronizează zilnic selecția „Top companies” din https://yc-oss.github.io/api/companies/top.json (proiect comunitar neoficial, 91 profiluri la implementare). Nu este întregul director YC, nu este un scor de potențial și nu dovedește intenția de listare. Păstrează statusurile Active/Public/Acquired și linkurile către profilurile oficiale YC. Nu se importă date personale sau descrieri integrale. Nu sunt folosite servicii plătite.

@@ -544,6 +544,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
               {formatDate(new Date().toISOString())}<span>Surse datate individual</span>
             </div>
           </div>
+          {view === "overview" && <section className="broad-radar-banner"><div><strong>Explorează radarul extins</strong><p>Mai multe surse, depuneri raportate și intenții de listare. Oficialele și neoficialele sunt etichetate separat.</p></div><a href="/descoperiri">Descoperiri IPO ↗</a><a href="/startupuri">Registru YC ↗</a></section>}
           {error && <div role="alert" className="notice">{error}</div>}
           {notice && (
             <div role="status" className="notice">
@@ -562,7 +563,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
               <div className="metrics">
                 {[
                   {
-                    label: "Companii pe radar",
+                    label: "Dosare verificate pe radar",
                     value: companies.length,
                     sub: "SUA · România · Germania · Austria",
                     icon: Building2,

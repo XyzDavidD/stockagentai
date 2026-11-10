@@ -19,8 +19,12 @@ export async function getResearch(): Promise<{companies: Company[]; sources: Sou
 
 export async function getDiscoveries(): Promise<{items: import('./data').Discovery[]; error:string|null}> {
   try {
-    return {items: await read('rpc/list_discoveries_enriched'),error:null};
+    return {items: await read('rpc/list_discoveries_broad'),error:null};
   } catch {
     return {items:[],error:'Documentele nu sunt disponibile momentan. Reîncarcă pagina pentru a încerca din nou.'};
   }
+}
+
+export async function getStartupDirectory():Promise<{rows:{profile:import('./data').StartupProfile;checked_at:string}[];error:string|null}>{
+ try{return {rows:await read('rpc/list_startup_directory'),error:null};}catch{return {rows:[],error:'Registrul YC nu este disponibil momentan.'};}
 }

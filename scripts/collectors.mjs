@@ -1,7 +1,11 @@
+import {safeUrl,candidateReason} from './source-utils.mjs';
+export {safeUrl,candidateReason} from './source-utils.mjs';
+import { broadSources } from './broad-sources.mjs';
 import { load } from 'cheerio';
 import { XMLParser, XMLValidator } from 'fast-xml-parser';
 import { createHash } from 'node:crypto';
 export const feeds = [
+  ...broadSources,
   {id:'bvb', url:'https://www.bvb.ro/tradingandstatistics/trading/publicoffers', parse:parseBvb},
   {id:'sec', paused:true, url:'https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=S-1&count=40&output=atom', parse:parseSec},
   {id:'bvb-news', url:'https://www.bvb.ro/AboutUs/MediaCenter/PressReleases', parse:parseBvbNews},
@@ -11,9 +15,6 @@ export const feeds = [
   {id:'prnewswire', url:'https://www.prnewswire.com/rss/financial-services-latest-news/financial-services-latest-news-list.rss', parse:parsePrNewswire},
 ];
 const normalized = text => text.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim();
-export function safeUrl(value, base) {
-  try { const u = new URL(value,base); return u.protocol === 'https:' && u.hostname === new URL(base).hostname && !u.username && !u.password ? (u.hash='',u.href) : null; } catch {return null;}
-}
 export function parseBvb(html) {
   const $ = load(html);
   if (!normalized($('body').text()).includes('Oferte publice in derulare') && !normalized($('body').text()).includes('Oferte Publice in derulare')) throw new Error('UNEXPECTED_BVB_PAGE');
@@ -26,8 +27,8 @@ export function parseBvb(html) {
     // Current public offers also include sovereign/corporate bonds and buybacks.
     if(/ministerul finantelor|fidelis|obligatiuni|rascumparare|cumparare/i.test(text)) return;
     if(!/oferta publica de vanzare/i.test(text)) return;
-    const url = safeUrl(cells.first().find('a').attr('href') || '', feeds[0].url);
-    if (!url || url === feeds[0].url) return;
+    const url = safeUrl(cells.first().find('a').attr('href') || '', 'https://www.bvb.ro/tradingandstatistics/trading/publicoffers');
+    if (!url || url === 'https://www.bvb.ro/tradingandstatistics/trading/publicoffers') return;
     candidates.push({url,title:normalized(cells.eq(1).text()),text});
   });
   // These are candidates only, never automatic IPO claims.
@@ -62,14 +63,6 @@ export function resultSql(result) {
   return lines.join('\n');
 }
 
-export function candidateReason(title) {
-  const text = normalized(title).toLowerCase();
-  if (/obligatiuni|titluri de stat|fidelis|anleihe|zertifikat|\betps?\b|\betfs?\b|\bbonds?\b|\bnotes\b|secondary offering|follow-on/.test(text)) return null;
-  if (/\bipos?\b|borsengang|boersengang|borsendebut|boersendebuet|handelsstart|erstnotiz|neuemission|intends to list|intention to float|initial public offering|ofert[ae] public[ae] initial|s-1|f-1|roadshow|intentia.*list|debut|devine companie publica|incepe.*tranzaction|se listeaza/.test(text)) {
-    return /clos(es|ed|ing)|handelsstart|erstnotiz|debut|devine companie publica|incepe.*tranzaction/.test(text) ? 'Posibil eveniment încheiat — verifică stadiul' : 'Posibil semnal IPO — necesită verificare';
-  }
-  return null;
-}
 function uniqueCandidates(items) {
   const seen=new Map(); for(const item of items) if(!seen.has(item.url)) seen.set(item.url,item);
   return [...seen.values()].slice(0,100);

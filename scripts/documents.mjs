@@ -49,7 +49,7 @@ export function documentStore({url,key,fetcher=fetch}){
   if(!response.ok)throw new Error(`DOCUMENT_STORE_HTTP_${response.status}`);
   return response.json();
  };
- return {queue:()=>rpc('documents_due',{}),save:payload=>rpc('record_document',{payload})};
+ return {call:rpc,queue:()=>rpc('documents_due',{}),save:payload=>rpc('record_document',{payload})};
 }
 export async function enrichDocuments({store,fetcher=fetch,wait=ms=>new Promise(r=>setTimeout(r,ms))}){
  const queue=await store.queue(),results=[];

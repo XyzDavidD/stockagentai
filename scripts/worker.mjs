@@ -1,3 +1,4 @@
+import {syncStartupDirectory} from './startup-directory.mjs';
 import { documentStore, enrichDocuments } from './documents.mjs';
 import { runCollection, createPersistence } from './runner.mjs';
 import { writeFile, appendFile } from 'node:fs/promises';
@@ -16,6 +17,8 @@ if(dryRun){
 }
 if(process.env.GITHUB_STEP_SUMMARY)await appendFile(process.env.GITHUB_STEP_SUMMARY,`## Colectare ${dryRun?'de verificare':'Supabase'}\n\n${lines.map(l=>'- '+l).join('\n')}\n\nSEC este suspendat după HTTP 403. Candidații nu sunt publicați automat.\n`);
 if(!dryRun){
+ const directory=await syncStartupDirectory(documentStore({url:process.env.SUPABASE_URL,key:process.env.SUPABASE_SERVICE_ROLE_KEY}));
+ console.log(`YC: ${directory.count} profiluri de context · ${directory.skipped?'deja sincronizate azi':'sincronizate'}`);
  const docs=await enrichDocuments({store:documentStore({url:process.env.SUPABASE_URL,key:process.env.SUPABASE_SERVICE_ROLE_KEY})});
  const summary=`Articole: ${docs.filter(d=>!d.error).length} citite, ${docs.filter(d=>d.error).length} indisponibile, ${docs.length} încercate (maximum 4/rulare).`;
  console.log(summary);

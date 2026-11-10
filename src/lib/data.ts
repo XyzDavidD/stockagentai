@@ -38,6 +38,8 @@ export type Source = { id: string; name: string; area: string; kind: string; url
 
 export type Scheduler = {enabled: boolean; cadence_minutes: number; configured_at: string};
 
-export type Discovery = {document_evidence?:DocumentEvidence|null;document_attempted_at?:string|null;document_error?:string|null;document_stale?:boolean;url:string; title:string; source_name:string; area:string; published_at:string|null; discovered_at:string; last_seen_at:string};
+export type Discovery = {source_kind?:string;article_supported?:boolean;document_evidence?:DocumentEvidence|null;document_attempted_at?:string|null;document_error?:string|null;document_stale?:boolean;url:string; title:string; source_name:string; area:string; published_at:string|null; discovered_at:string; last_seen_at:string};
 
 export type DocumentEvidence = {version:string;excerpt:string;excerpt_truncated:boolean;publication_date:string|null;indications:string[];paragraph_count:number};
+
+export type StartupProfile={id:string;name:string;url:string;batch:string;status:string;stage:string;industry:string;location:string;description:string};

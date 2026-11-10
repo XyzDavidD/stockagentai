@@ -17,7 +17,7 @@ jobs:
   collect:
     if: github.event_name == 'workflow_dispatch' || vars.RESEARCH_ENABLED == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
