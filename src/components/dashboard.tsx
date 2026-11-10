@@ -817,6 +817,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
                 </span>
               </div>
               <a className="research-discovery-link" href="/descoperiri">Vezi documentele descoperite <ExternalLink size={16} /></a>
+              <a className="research-discovery-link" href="/dosare">Dosare și semnale <ExternalLink size={16} /></a>
               <section className="table-panel">
                 <div className="section-heading">
                   <h2>Registrul surselor</h2>
@@ -1112,6 +1113,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
                 </section>
                 <section className="detail-section">
                   <h3>Surse și istoric</h3>
+                  <a className="research-discovery-link" href={`/dosare#${encodeURIComponent(selected.id)}`}>Compară semnalele colectate <ExternalLink size={14}/></a>
                   {(selected.documents || [{url:selected.sourceUrl,title:selected.sourceName,publishedAt:selected.publishedAt,checkedAt:selected.checkedAt}]).map(document => (
                     <div className="evidence" key={document.url}><FileText size={18} /><div>
                       <a href={document.url} target="_blank" rel="noreferrer">{document.title} <ExternalLink size={14} /></a>

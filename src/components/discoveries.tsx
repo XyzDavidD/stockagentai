@@ -10,7 +10,7 @@ export default function Discoveries({items,error}:{items:Discovery[];error:strin
  const rows=useMemo(()=>items.map(item=>({...item,analysis:analyzeSignal(item.title)})),[items]);
  const filtered=rows.filter(item=>(area==='all'||item.area===area)&&(stage==='all'||item.analysis.id===stage)&&`${item.title} ${item.source_name}`.toLocaleLowerCase('ro').includes(query.toLocaleLowerCase('ro')));
  return <main className="discovery-page">
-  <header className="discovery-nav"><Link href="/" className="discovery-back"><ArrowLeft size={17}/> Dashboard</Link><span>stockagent<strong>ai</strong> / Cercetare deschisă</span></header>
+  <header className="discovery-nav"><Link href="/" className="discovery-back"><ArrowLeft size={17}/> Dashboard</Link><Link href="/dosare">Dosare și semnale <ArrowUpRight size={14}/></Link></header>
   <div className="discovery-heading"><div><p className="discovery-eyebrow">DIN SURSE, ÎNAINTE DE CONCLUZII</p><h1>Ce a găsit colectorul.</h1><p>Documente publice, indicii explicabile și întrebări încă deschise.</p></div><span className="discovery-mode"><ScanText size={18}/> Fără AI · fără API plătit</span></div>
   <section className="discovery-notice" aria-label="Cum interpretăm documentele"><strong>Descoperit nu înseamnă confirmat.</strong><p>Regulile verifică titlul și, unde accesul permite, paragrafele articolului. Fragmentele rămân în limba sursei; nu sunt rezumate AI sau estimări de randament. Documentele nu devin automat dosare de companii. Data publicării nu este data listării.</p></section>
   {error?<div role="alert" className="discovery-notice"><p>{error}</p><button className="discovery-button" onClick={()=>window.location.reload()}>Reîncearcă</button></div>:<>

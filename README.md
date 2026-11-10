@@ -100,3 +100,18 @@ Migrarea `202611100005_document_evidence.sql` adaugă o coadă de citire și per
 Eșecurile de articol sunt afișate și marchează execuția ca nereușită; o colectare de feed reușită nu este dovadă că articolele au fost citite. Modul `--dry-run` verifică numai feedurile, fără modificări în baza de date. Nu au fost adăugate servicii AI, abonamente sau chei noi.
 
 Verificare în producție: prima rulare programată observată și reușită, [42904410241](https://github.com/XyzDavidD/stockagentai/actions/runs/42904410241), a rulat versiunea cu citirea articolelor la 10 noiembrie 2026. Au fost salvate primele patru documente; programarea nu mai este doar configurată, ci verificată printr-o execuție cron reală.
+
+## Dosare și semnale — grupare și comparație fără AI
+
+`/dosare` grupează ultimele maximum 100 de descoperiri cu dosarele publicate, prin `src/lib/reconciliation.mjs`. Un URL deja citat în dosar stabilește asocierea; numele complet în titlu reprezintă numai o propunere. Numele scurte, potrivirile parțiale și sursele comune mai multor companii nu sunt folosite pentru a forța o identitate. Se deduplică fragmentele URL și parametrii `utm_`, păstrând parametrii cu semnificație.
+
+Cronologia compară data publicării din feed/metadate cu data sursei curente a dosarului. Date contradictorii, necunoscute ori viitoare cer verificare. Articolele mai vechi nu regresează stadiul; cele din aceeași zi nu presupun o ordine intrazilnică. Un indiciu diferit într-un document mai recent este o propunere de verificare, nu o actualizare automată. URL-ul cunoscut nu dovedește că întregul conținut curent a fost revizuit.
+
+Rezultatele sunt recalculate la încărcare; nu sunt un istoric persistent al schimbărilor și nu trimit alerte. Documentele fără asociere sunt vizibile separat. Pagina are căutare și filtrul „Doar de verificat”, iar dosarele fără descoperiri păstrează sursele manuale accesibile. Nu adaugă servicii, chei sau abonamente.
+
+### Milestone-uri — situația curentă
+
+1. Platforma și publicarea: finalizat.
+2. Supabase și colectarea orară: finalizat pentru setul inițial de surse; acoperire parțială, SEC suspendat.
+3. Cercetare fără AI: colectare, citirea articolelor, fragmente, grupare și comparație implementate. Mai rămân deciziile persistente de verificare/publicare și istoricul schimbărilor; accesul public este numai pentru citire.
+4. Alerte: de implementat, cu deduplicarea schimbărilor și preferințe; Resend rămâne neconectat. Nu activa servicii plătite.
