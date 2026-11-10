@@ -1,3 +1,4 @@
+import { documentStore, enrichDocuments } from './documents.mjs';
 import { runCollection, createPersistence } from './runner.mjs';
 import { writeFile, appendFile } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
@@ -14,4 +15,12 @@ if(dryRun){
   await writeFile('/tmp/stockagentai-discovery.sql','begin;\n'+results.map(r=>'select public.record_ingestion('+sqlLiteral(JSON.stringify(toPayload(r,runKey,trigger)))+'::jsonb);').join('\n')+'\ncommit;',{mode:0o600});
 }
 if(process.env.GITHUB_STEP_SUMMARY)await appendFile(process.env.GITHUB_STEP_SUMMARY,`## Colectare ${dryRun?'de verificare':'Supabase'}\n\n${lines.map(l=>'- '+l).join('\n')}\n\nSEC este suspendat după HTTP 403. Candidații nu sunt publicați automat.\n`);
+if(!dryRun){
+ const docs=await enrichDocuments({store:documentStore({url:process.env.SUPABASE_URL,key:process.env.SUPABASE_SERVICE_ROLE_KEY})});
+ const summary=`Articole: ${docs.filter(d=>!d.error).length} citite, ${docs.filter(d=>d.error).length} indisponibile, ${docs.length} încercate (maximum 4/rulare).`;
+ console.log(summary);
+ if(process.env.GITHUB_STEP_SUMMARY)await appendFile(process.env.GITHUB_STEP_SUMMARY,'\n'+summary+'\n');
+ // A document error is visible in the UI and makes the run non-successful.
+ if(docs.some(d=>d.error))process.exitCode=1;
+}
 if(results.some(r=>r.error))process.exitCode=1;

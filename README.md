@@ -88,3 +88,13 @@ Decizia proprietarului: fără API AI plătit și fără conturi de utilizator m
 `src/lib/signals.mjs` clasifică prudent titlurile prin reguli românești, englezești și germane. Indiciile de amânare au prioritate; negațiile și contradicțiile rămân incerte. Nu extrage nume de companii sau date IPO și nu citește articolul integral. Rezultatul se calculează la afișare, fără apeluri către modele. Căutarea și filtrele sunt locale; dosarele publicate nu se modifică automat.
 
 Pagina diferențiază data publicării, prima detectare și ultima observare în feed. O nouă observare nu reconfirmă stadiul companiei. Analiza financiară, citirea integrală și reconcilierea dosarelor nu sunt implementate. Următorii pași trebuie să păstreze constrângerea de zero servicii plătite; planurile gratuite ale infrastructurii au limite și nu promit capacitate nelimitată.
+
+## Citirea articolelor fără AI
+
+Workerul citește cel mult 4 documente pe execuție, după colectarea feedurilor. `scripts/documents.mjs` acceptă numai HTTPS, domenii și căi de articole explicit permise, fără porturi speciale, credențiale sau query strings. Redirecturile sunt refuzate. Sunt păstrate limitele de 20s și 2 MB; nu se execută JavaScript și nu se ocolesc pagini de autentificare sau blocaje.
+
+Extragerea caută paragrafe relevante în containerele articolului, elimină navigarea/scripturile și salvează un singur fragment de maximum 20 de cuvinte, indicii prin reguli, data explicită din metadate și amprenta textului. Nu salvează articolul integral și nu produce o traducere sau o evaluare financiară. Indiciile pot aparține contextului istoric ori condițional, nu reprezintă confirmări ale stadiului curent. Pagini fără structură recunoscută produc erori explicite.
+
+Migrarea `202611100005_document_evidence.sql` adaugă o coadă de citire și persistență accesibile numai workerului. Fragmentele și starea citirii sunt publicate prin `list_discoveries_enriched`; accesul direct la tabel rămâne privat. O schimbare de titlu invalidează afișarea fragmentului anterior. Reverificare după minimum 24h; HTTP 403/429 și URL-uri nepermise au pauză de 7 zile. Se prioritizează documentele necitite, apoi cele mai vechi încercări. Schimbările doar în corp pot fi detectate la reverificarea zilnică, fără publicarea automată a dosarelor.
+
+Eșecurile de articol sunt afișate și marchează execuția ca nereușită; o colectare de feed reușită nu este dovadă că articolele au fost citite. Modul `--dry-run` verifică numai feedurile, fără modificări în baza de date. Nu au fost adăugate servicii AI, abonamente sau chei noi.
