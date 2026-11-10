@@ -1,0 +1,4 @@
+interface:
+  display_name: "Interface Craftsmanship"
+  short_description: "Refine interfaces with rigorous visual judgment"
+  default_prompt: "Use $interface-craftsmanship to design or refine this interface with careful alignment, typography, color, motion, and state behavior."

@@ -1,0 +1,18 @@
+import type { Metadata } from "next";
+import "./globals.css";
+export const metadata: Metadata = {
+  title: "stockagentai — Înaintea următoarei listări",
+  description:
+    "Spațiul tău de cercetare pentru viitoarele listări. Prototip demonstrativ în limba română.",
+};
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="ro">
+      <body>{children}</body>
+    </html>
+  );
+}
