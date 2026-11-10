@@ -1,4 +1,6 @@
 export type Stage =
+  | "Calendar estimativ"
+  | "Posibilă amânare"
   | "Documente depuse"
   | "Intenție anunțată"
   | "Semnal preliminar"
@@ -7,6 +9,8 @@ export type Stage =
   | "Roadshow lansat"
   | "Amânată";
 export type Company = {
+  aliases?: string[];
+  sourceLabel?: string;
   id: string;
   name: string;
   monogram: string;

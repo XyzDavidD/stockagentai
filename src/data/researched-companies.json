@@ -1,0 +1,316 @@
+[
+  {
+    "id": "nscale",
+    "name": "Nscale",
+    "monogram": "N",
+    "color": "mint",
+    "country": "Regatul Unit",
+    "flag": "🇬🇧",
+    "sector": "Infrastructură pentru inteligență artificială",
+    "exchange": "NYSE · simbol propus NSCL",
+    "stage": "Posibilă amânare",
+    "confidence": "Medie",
+    "priority": 50,
+    "publishedAt": "2026-11-10",
+    "checkedAt": "2026-11-11",
+    "official": false,
+    "sourceName": "Reuters · posibilă amânare a listării",
+    "sourceLabel": "Presă neoficială",
+    "sourceUrl": "https://www.streetinsider.com/Reuters/AI%2Bcloud%2Bfirm%2BNscale%2Bconsiders%2Bdelaying%2B%2435%2Bbillion%2Blisting%2C%2BThe%2BTelegraph%2Breports/27322509.html",
+    "summary": "Companie britanică de infrastructură cloud și centre de date pentru AI. Are un proces de IPO documentat, dar calendarul este incert.",
+    "signal": "Compania a anunțat oficial depunerea formularului S-1 la 18 septembrie. Reuters relata la 10 noiembrie, citând The Telegraph, că este analizată amânarea până anul viitor. Aceasta este o relatare de presă, nu o amânare confirmată de emitent.",
+    "date": null,
+    "dateLabel": "2027 posibil · neconfirmat",
+    "evidence": 2,
+    "opportunity": "De analizat: capacitatea operațională, contractele cu clienții și investițiile necesare pentru extinderea centrelor de date.",
+    "risk": "Documentele depuse nu garantează debutul. Verifică o eventuală decizie oficială de amânare, necesarul de finanțare și dependența de clienți mari.",
+    "aliases": [
+      "Nscale Limited"
+    ],
+    "documents": [
+      {
+        "url": "https://www.streetinsider.com/Reuters/AI%2Bcloud%2Bfirm%2BNscale%2Bconsiders%2Bdelaying%2B%2435%2Bbillion%2Blisting%2C%2BThe%2BTelegraph%2Breports/27322509.html",
+        "title": "Reuters · posibilă amânare a listării",
+        "publishedAt": "2026-11-10",
+        "checkedAt": "2026-11-11"
+      },
+      {
+        "url": "https://www.nscale.com/press-releases/nscale-files-initial-public-offering",
+        "title": "Nscale · anunț oficial privind depunerea documentelor",
+        "publishedAt": "2026-09-18",
+        "checkedAt": "2026-11-11"
+      }
+    ]
+  },
+  {
+    "id": "zilch",
+    "name": "Zilch",
+    "monogram": "Z",
+    "color": "mint",
+    "country": "Regatul Unit",
+    "flag": "🇬🇧",
+    "sector": "Plăți și credit de consum",
+    "exchange": "Londra · intenție relatată",
+    "stage": "Intenție anunțată",
+    "confidence": "Medie",
+    "priority": 50,
+    "publishedAt": "2026-11-10",
+    "checkedAt": "2026-11-11",
+    "official": false,
+    "sourceName": "Sky News · pregătiri pentru o posibilă listare",
+    "sourceLabel": "Presă neoficială",
+    "sourceUrl": "https://news.sky.com/story/fintech-unicorn-zilch-lands-165m-debt-boost-as-listing-beckons-13610573",
+    "summary": "Fintech britanic care oferă servicii de plată și finanțare pentru cumpărături. Este urmărit pentru o posibilă listare la Londra.",
+    "signal": "Sky News relatează că Zilch pregătește o listare, posibil în 2027, și selectează bănci de investiții. Finanțarea prin datorie anunțată în articol nu este oferta publică de acțiuni.",
+    "date": null,
+    "dateLabel": "2027 posibil · presă",
+    "evidence": 1,
+    "opportunity": "De analizat: creșterea veniturilor, costul finanțării și calitatea portofoliului de credite.",
+    "risk": "Nu avem un prospect sau o dată de debut confirmată în dosar. Riscurile includ pierderile din creditare și schimbarea condițiilor de finanțare.",
+    "aliases": [
+      "Zilch Technology"
+    ],
+    "documents": [
+      {
+        "url": "https://news.sky.com/story/fintech-unicorn-zilch-lands-165m-debt-boost-as-listing-beckons-13610573",
+        "title": "Sky News · pregătiri pentru o posibilă listare",
+        "publishedAt": "2026-11-10",
+        "checkedAt": "2026-11-11"
+      }
+    ]
+  },
+  {
+    "id": "openai",
+    "name": "OpenAI",
+    "monogram": "O",
+    "color": "mint",
+    "country": "SUA",
+    "flag": "🇺🇸",
+    "sector": "Inteligență artificială",
+    "exchange": "Bursă neconfirmată",
+    "stage": "Intenție anunțată",
+    "confidence": "Medie",
+    "priority": 50,
+    "publishedAt": "2026-11-04",
+    "checkedAt": "2026-11-11",
+    "official": false,
+    "sourceName": "Reuters · declarații despre pregătirea pentru IPO",
+    "sourceLabel": "Presă neoficială",
+    "sourceUrl": "https://www.investing.com/news/stock-market-news/openai-ready-to-ipo-in-2027-now-counts-majority-of-sales-from-enterprises-brockman-says-5002023",
+    "summary": "Compania din spatele ChatGPT dezvoltă modele și servicii de inteligență artificială pentru consumatori și companii.",
+    "signal": "Reuters relatează declarația lui Greg Brockman potrivit căreia OpenAI ar putea fi pregătită pentru IPO în 2027. Pregătirea pentru IPO nu stabilește data listării.",
+    "date": null,
+    "dateLabel": "2027 posibil · fără dată confirmată",
+    "evidence": 1,
+    "opportunity": "De analizat: conversia utilizării în venituri, retenția clienților și sustenabilitatea costurilor de calcul.",
+    "risk": "Nu există în sursa citată un calendar ferm sau un preț de ofertă. Concurența, costurile infrastructurii și guvernanța necesită analiză.",
+    "aliases": [],
+    "documents": [
+      {
+        "url": "https://www.investing.com/news/stock-market-news/openai-ready-to-ipo-in-2027-now-counts-majority-of-sales-from-enterprises-brockman-says-5002023",
+        "title": "Reuters · declarații despre pregătirea pentru IPO",
+        "publishedAt": "2026-11-04",
+        "checkedAt": "2026-11-11"
+      }
+    ]
+  },
+  {
+    "id": "oura",
+    "name": "Oura",
+    "monogram": "O",
+    "color": "mint",
+    "country": "SUA / Finlanda",
+    "flag": "🇫🇮",
+    "sector": "Dispozitive pentru monitorizarea sănătății",
+    "exchange": "Nasdaq · plan amânat",
+    "stage": "Amânată",
+    "confidence": "Medie",
+    "priority": 50,
+    "publishedAt": "2026-09-29",
+    "checkedAt": "2026-11-11",
+    "official": false,
+    "sourceName": "MedTech Dive · amânarea IPO-ului",
+    "sourceLabel": "Presă neoficială",
+    "sourceUrl": "https://www.medtechdive.com/news/oura-delays-ipo/831650/",
+    "summary": "Producătorul inelelor inteligente Oura, folosite pentru urmărirea somnului și a activității. Modelul comercial combină dispozitivele cu abonamentele.",
+    "signal": "MedTech Dive relatează anunțul companiei din 29 septembrie: oferta publică planificată este amânată din cauza incertitudinii pieței. O depunere mai veche nu înseamnă că IPO-ul este încă programat.",
+    "date": null,
+    "dateLabel": "Amânată · fără nouă dată",
+    "evidence": 1,
+    "opportunity": "De analizat: retenția abonaților și contribuția veniturilor recurente față de vânzările de dispozitive.",
+    "risk": "Reluarea procesului nu este confirmată în dosar. Verifică evaluarea cerută, concurența și ponderea acțiunilor vândute de acționarii existenți.",
+    "aliases": [
+      "Oura Inc.",
+      "Oura Health"
+    ],
+    "documents": [
+      {
+        "url": "https://www.medtechdive.com/news/oura-delays-ipo/831650/",
+        "title": "MedTech Dive · amânarea IPO-ului",
+        "publishedAt": "2026-09-29",
+        "checkedAt": "2026-11-11"
+      }
+    ]
+  },
+  {
+    "id": "windward-bio",
+    "name": "Windward Bio",
+    "monogram": "WB",
+    "color": "mint",
+    "country": "Elveția",
+    "flag": "🇨🇭",
+    "sector": "Biotehnologie · boli respiratorii",
+    "exchange": "Nasdaq · simbol propus WWB",
+    "stage": "Documente depuse",
+    "confidence": "Ridicată",
+    "priority": 50,
+    "publishedAt": "2026-11-09",
+    "checkedAt": "2026-11-11",
+    "official": true,
+    "sourceName": "SEC · prospect F-1 actualizat",
+    "sourceLabel": "Oficială",
+    "sourceUrl": "https://www.sec.gov/Archives/edgar/data/2145089/000119312526452536/d111653df1a.htm",
+    "summary": "Companie de biotehnologie din Basel, care dezvoltă tratamente experimentale cu anticorpi pentru boli respiratorii.",
+    "signal": "Prospectul F-1 a fost actualizat la 9 noiembrie. Calendarul IPOX indică un debut așteptat la 13 noiembrie; acea dată este estimarea agregatorului, nu o confirmare a începerii tranzacționării.",
+    "date": null,
+    "dateLabel": "13 nov. 2026 · estimare IPOX",
+    "evidence": 2,
+    "opportunity": "De analizat: rezultatele studiilor clinice, banii disponibili și etapele finanțate prin ofertă.",
+    "risk": "Tratamentele sunt experimentale. Rezultatele clinice, autorizarea și necesarul viitor de finanțare pot schimba radical perspectivele.",
+    "aliases": [
+      "Windward Bio Group AG"
+    ],
+    "documents": [
+      {
+        "url": "https://www.sec.gov/Archives/edgar/data/2145089/000119312526452536/d111653df1a.htm",
+        "title": "SEC · prospect F-1 actualizat",
+        "publishedAt": "2026-11-09",
+        "checkedAt": "2026-11-11"
+      },
+      {
+        "url": "https://www.ipox.com/ipo-calendar/windward-bio",
+        "title": "IPOX · profil și calendar estimativ",
+        "publishedAt": "",
+        "checkedAt": "2026-11-11"
+      }
+    ]
+  },
+  {
+    "id": "rezera",
+    "name": "Rezera",
+    "monogram": "R",
+    "color": "mint",
+    "country": "SUA",
+    "flag": "🇺🇸",
+    "sector": "Biotehnologie · inflamație",
+    "exchange": "Nasdaq · simbol propus RZRA",
+    "stage": "Calendar estimativ",
+    "confidence": "Medie",
+    "priority": 50,
+    "publishedAt": "",
+    "checkedAt": "2026-11-11",
+    "official": false,
+    "sourceName": "IPOX · profil și calendar estimativ",
+    "sourceLabel": "Agregator neoficial",
+    "sourceUrl": "https://www.ipox.com/ipo-calendar/rezera",
+    "summary": "Companie care dezvoltă medicamente orale experimentale pentru reducerea inflamației, cu aplicații potențiale în boli cardiovasculare și neurologice.",
+    "signal": "IPOX indică un debut așteptat la 12 noiembrie 2026 și o ofertă cu termeni indicativi. Este un calendar neoficial, nu dovada că acțiunile se tranzacționează deja.",
+    "date": null,
+    "dateLabel": "12 nov. 2026 · estimare IPOX",
+    "evidence": 1,
+    "opportunity": "De analizat: progresul candidatului principal ruvonoflast și finanțarea necesară studiilor de fază avansată.",
+    "risk": "Riscul clinic și necesarul de capital sunt importante. Prețul, calendarul și realizarea ofertei pot fi modificate.",
+    "aliases": [
+      "Rezera Inc.",
+      "Nodthera"
+    ],
+    "documents": [
+      {
+        "url": "https://www.ipox.com/ipo-calendar/rezera",
+        "title": "IPOX · profil și calendar estimativ",
+        "publishedAt": "",
+        "checkedAt": "2026-11-11"
+      }
+    ]
+  },
+  {
+    "id": "vvardis",
+    "name": "vVARDIS",
+    "monogram": "v",
+    "color": "mint",
+    "country": "Elveția",
+    "flag": "🇨🇭",
+    "sector": "Tehnologie dentară",
+    "exchange": "NYSE · simbol propus VVVV",
+    "stage": "Calendar estimativ",
+    "confidence": "Medie",
+    "priority": 50,
+    "publishedAt": "",
+    "checkedAt": "2026-11-11",
+    "official": false,
+    "sourceName": "IPOX · profil și calendar estimativ",
+    "sourceLabel": "Agregator neoficial",
+    "sourceUrl": "https://www.ipox.com/ipo-calendar/vvardis",
+    "summary": "Companie fondată în Elveția, care dezvoltă produse dentare pe bază de peptide pentru leziuni carioase incipiente și protejarea structurii dintelui.",
+    "signal": "Compania apare în calendarul IPOX pentru o ofertă pe NYSE. Data de 13 noiembrie 2026 este estimativă și trebuie reconfirmată înainte de a fi tratată drept debut.",
+    "date": null,
+    "dateLabel": "13 nov. 2026 · estimare IPOX",
+    "evidence": 1,
+    "opportunity": "De analizat: adoptarea produselor Curodont în cabinetele stomatologice și dependența de distribuitori.",
+    "risk": "Verifică afirmațiile clinice, regimul de autorizare al produselor și concentrarea distribuției. Calendarul agregatorului nu confirmă finalizarea ofertei.",
+    "aliases": [
+      "vVARDIS Holding AG"
+    ],
+    "documents": [
+      {
+        "url": "https://www.ipox.com/ipo-calendar/vvardis",
+        "title": "IPOX · profil și calendar estimativ",
+        "publishedAt": "",
+        "checkedAt": "2026-11-11"
+      }
+    ]
+  },
+  {
+    "id": "sb-energy",
+    "name": "SB Energy",
+    "monogram": "SE",
+    "color": "mint",
+    "country": "SUA",
+    "flag": "🇺🇸",
+    "sector": "Energie și infrastructură pentru centre de date",
+    "exchange": "SUA · ofertă propusă",
+    "stage": "Amânată",
+    "confidence": "Medie",
+    "priority": 50,
+    "publishedAt": "2026-09-26",
+    "checkedAt": "2026-11-11",
+    "official": false,
+    "sourceName": "IFR · întârzierea lansării ofertei",
+    "sourceLabel": "Presă neoficială",
+    "sourceUrl": "https://www.ifre.com/equities/2490131/sb-energy-delays-ipo-launch-amid-data-centre-backlash",
+    "summary": "Dezvoltator de proiecte energetice și centre de date, susținut de SoftBank.",
+    "signal": "IFR relatează întârzierea lansării IPO-ului după depunerea documentelor, pe fondul diferențelor de evaluare dintre companie și investitori. Nu avem o nouă dată confirmată.",
+    "date": null,
+    "dateLabel": "Lansare întârziată · fără dată",
+    "evidence": 2,
+    "opportunity": "De analizat: transformarea proiectelor și contractelor în venituri efective, costurile construcției și finanțarea.",
+    "risk": "Investițiile mari înainte de încasarea veniturilor creează risc de execuție și finanțare. O depunere SEC nu înlătură posibilitatea unei amânări.",
+    "aliases": [
+      "SB Energy, Inc."
+    ],
+    "documents": [
+      {
+        "url": "https://www.ifre.com/equities/2490131/sb-energy-delays-ipo-launch-amid-data-centre-backlash",
+        "title": "IFR · întârzierea lansării ofertei",
+        "publishedAt": "2026-09-26",
+        "checkedAt": "2026-11-11"
+      },
+      {
+        "url": "https://www.sec.gov/Archives/edgar/data/2133037/000162828026062846/sbenergy-sx1a2.htm",
+        "title": "SEC · documente de ofertă actualizate",
+        "publishedAt": "2026-09-21",
+        "checkedAt": "2026-11-11"
+      }
+    ]
+  }
+]

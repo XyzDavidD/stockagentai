@@ -32,32 +32,31 @@ import {
   CheckCheck,
 } from "lucide-react";
 import { type Company, type Source, type Scheduler } from "@/lib/data";
-import Discoveries from "@/components/discoveries";
-import RadarOverview from "@/components/radar-overview";
-import CompanyUniverse from "@/components/company-universe";
+
+
+
 import type {Discovery,StartupProfile} from "@/lib/data";
 import {useRouter} from 'next/navigation';
 import {platformRoutes,type View} from '@/lib/platform-routes';
-import {companyUniverse,estimatedCalendar,discoveryKey} from '@/lib/universe.mjs';
+
+import {relatedSources} from '@/lib/dossiers.mjs';
 import {sourceCategory} from '@/lib/provenance.mjs';
 import {safeEvidenceUrl} from '@/lib/signals.mjs';
-import CompanyResearch from '@/components/company-research';
-import StartupDirectory from '@/components/startup-directory';
+
+
 const navigation = [
   { id: "overview", label: "Privire de ansamblu", icon: LayoutDashboard },
-  { id: "discoveries", label: "Radar IPO · toate sursele", icon: Globe2 },
-  { id: "universe", label: "Companii și startupuri", icon: Building2 },
-  { id: "companies", label: "Dosare verificate", icon: ShieldCheck },
+  { id: "universe", label: "Companii", icon: Building2 },
   { id: "calendar", label: "Calendar IPO", icon: CalendarDays },
   { id: "watchlist", label: "Lista mea", icon: Bookmark },
   { id: "research", label: "Centrul de cercetare", icon: Radio },
 ] as const;
 const titles: Record<View, string> = {
   overview: "Privire de ansamblu",
-  discoveries: "Radar IPO extins",
-  universe: "Companii și startupuri",
+  discoveries: "Companii cu semnale de listare",
+  universe: "Companii cu planuri de listare",
   companies: "Dosare verificate",
-  startups:"Registru YC",
+  startups:"Companii cu planuri de listare",
   dossiers:"Dosare și semnale",
   calendar: "Calendarul listărilor",
   watchlist: "Companiile pe care le urmărești",
@@ -92,12 +91,10 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
   const coverage = [...new Set(sources.filter(s=>s.last_attempt_at&&s.checked_at&&!s.status.startsWith('Suspendat')).map(s=>s.area))].filter(a=>['SUA','România','Germania','Austria','Regatul Unit','Franța'].includes(a));
   const regionCodes:Record<string,string>={'SUA':'SUA','România':'RO','Germania':'DE','Austria':'AT','Regatul Unit':'UK','Franța':'FR'};
   const router=useRouter();
-  const universe=useMemo(()=>companyUniverse(allCompanies,discoveries,startups),[allCompanies,discoveries,startups]);
-  const estimated=useMemo(()=>estimatedCalendar(discoveries),[discoveries]);
-  const [alertLimit,setAlertLimit]=useState(25);
+  const associated=useMemo(()=>relatedSources(discoveries,allCompanies),[discoveries,allCompanies]);
   const [archive, setArchive] = useState(false);
   const companies = allCompanies.filter(c => c.stage !== "Listată");
-  const formatDate = (value: string) => new Intl.DateTimeFormat("ro-RO", {dateStyle: "medium", timeZone: "Europe/Bucharest"}).format(new Date(value));
+  const formatDate = (value: string) => !value||!Number.isFinite(Date.parse(value))?"Dată neprecizată":new Intl.DateTimeFormat("ro-RO", {dateStyle: "medium", timeZone: "Europe/Bucharest"}).format(new Date(value));
   const stale = (c: Company) => Date.now() - new Date(c.publishedAt).getTime() > 90 * 86400000;
   const pendingTotal = sources.reduce((sum, source) => sum + (source.pending_count || 0), 0);
   const timestamp = (value: string) => new Intl.DateTimeFormat("ro-RO", {dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Bucharest"}).format(new Date(value));
@@ -199,20 +196,19 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
   const alerts = companies
     .filter((c) => !onlyOfficial || c.official);
   const alertKey = (c: Company) => `${c.id}:${c.publishedAt}:${c.signal}`;
-  const documentAlerts=useMemo(()=>discoveries.filter(i=>!onlyOfficial||sourceCategory(i.source_kind).startsWith('Oficială')).sort((a,b)=>b.discovered_at.localeCompare(a.discovered_at)),[discoveries,onlyOfficial]);
-  const unread = alerts.filter((c) => !read.includes(alertKey(c))).length+documentAlerts.filter(i=>!read.includes(discoveryKey(i))).length;
+  const unread = alerts.filter((c) => !read.includes(alertKey(c))).length;
   const table = (
     <section className="table-panel">
       <div className="section-heading">
         <div>
           <h2>
-            {view === "watchlist" ? "Lista de urmărire" : archive ? "Arhiva listărilor" : "Dosare verificate pe radar"}{" "}
+            {view === "watchlist" ? "Lista de urmărire" : archive ? "Arhiva listărilor" : "Companii cu semnale de listare"}{" "}
             <span className="count">{filtered.length}</span>
           </h2>
-          <p>De la primul semnal, până la prima zi de tranzacționare.</p>
+          <p>O singură intrare per companie. Apasă pe nume pentru analiză, calendar și surse.</p>
         </div>
         {view === "overview" && (
-          <button className="text-button" onClick={() => navigate("companies")}>
+          <button className="text-button" onClick={() => navigate("universe")}>
             Vezi toate <ArrowRight size={15} />
           </button>
         )}
@@ -236,7 +232,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
             value={country}
             onChange={(e) => setCountry(e.target.value)}
           >
-            {["Toate țările", "SUA", "România", "Germania", "Austria", "Franța"].map(
+            {["Toate țările", ...new Set(allCompanies.flatMap(c=>c.regions||[c.country]))].map(
               (v) => (
                 <option key={v}>{v}</option>
               ),
@@ -252,6 +248,8 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
           >
             {[
               "Toate stadiile",
+              "Calendar estimativ",
+              "Posibilă amânare",
               "Documente depuse",
               "Roadshow lansat",
               "Amânată",
@@ -294,7 +292,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
           </thead>
           <tbody>
             {filtered.map((c) => (
-              <tr key={c.id}>
+              <tr key={c.id} className="clickable-company" onClick={e=>{if(!(e.target as HTMLElement).closest("button,a,input"))setSelected(c);}}>
                 <td>
                   <button
                     className="company-cell"
@@ -317,7 +315,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
                   <Badge stage={c.stage} />
                 </td>
                 <td>
-                  <span className="confidence">{c.official ? "Oficiale" : "Presă"}{stale(c) && <small>Necesită reconfirmare</small>}</span>
+                  <span className="confidence">{c.sourceLabel||(c.official ? "Oficială" : "Presă")}{stale(c) && <small>Necesită reconfirmare</small>}</span>
                 </td>
                 <td className="horizon">{c.dateLabel}</td>
                 <td>
@@ -351,7 +349,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
           <button
             className="secondary"
             onClick={() => {
-              if (view === "watchlist" && !watch.length) navigate("companies");
+              if (view === "watchlist" && !watch.length) navigate("universe");
               else {
                 setQuery("");
                 setCountry("Toate țările");
@@ -366,7 +364,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
       <div className="table-footer">
         <span>
           {filtered.length} {filtered.length === 1 ? "companie" : "companii"} ·
-          date din Supabase
+          dosare de cercetare · rezumate în română
         </span>
         <span>Stadiul documentelor nu indică randamentul investiției.</span>
       </div>
@@ -424,7 +422,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
               <n.icon size={18} />
               <span className="nav-text">{n.label}</span>
               {n.id === "watchlist" && (
-                <span className="nav-count">{universe.filter(r=>watch.includes(r.id)).length}</span>
+                <span className="nav-count">{allCompanies.filter(r=>watch.includes(r.id)).length}</span>
               )}
             </button>
           ))}
@@ -551,7 +549,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
               </h1>
               <p>
                 {view === "overview"
-                  ? "Radar extins, surse etichetate și dosare verificate separat."
+                  ? "Companii cu intenții de listare. Analiză în română, surse și stadii explicate."
                   : view === "research"
                     ? "Transparență asupra surselor și a modului în care vor fi analizate."
                     : "Informația potrivită, cu dovezile și contextul la îndemână."}
@@ -563,7 +561,6 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
             </div>
           </div>
 
-          <nav className="platform-links" aria-label="Secțiuni de cercetare"><a href="/companii">Companii</a><a href="/descoperiri">Radar extins</a><a href="/startupuri">Registru YC</a><a href="/dosare">Dosare și semnale</a><button onClick={()=>router.refresh()}>Actualizează datele</button></nav>
           {error && <div role="alert" className="notice">{error}</div>}
           {notice && (
             <div role="status" className="notice">
@@ -581,16 +578,16 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
             <>
               <div className="metrics">
                 {[
-                  {label:"Documente în radar",value:discoveryError?"—":discoveries.length,sub:"Rezultate disponibile · maximum 1000",icon:Radio},
-                  {label:"Piețe monitorizate",value:error?"—":coverage.length,sub:coverage.join(" · "),icon:Globe2},
-                  {label:"Startupuri YC active",value:startupError?"—":startups.filter(r=>r.profile.status==='Active').length,sub:"Profiluri de context · IPO neconfirmat",icon:Building2},
-                  {label:"Dosare verificate active",value:error?"—":companies.length,sub:"Stadii revizuite · nu toate descoperirile",icon:ShieldCheck},
+                  {label:"Companii urmărite",value:companies.length,sub:"Dosare unice cu dovezi privind listarea",icon:Building2},
+                  {label:"Documente / ofertă în pregătire",value:companies.filter(c=>['Documente depuse','Roadshow lansat','Ofertă programată'].includes(c.stage)).length,sub:"Proces documentat · debutul poate fi incert",icon:FileText},
+                  {label:"Intenții și semnale timpurii",value:companies.filter(c=>['Intenție anunțată','Semnal preliminar','Calendar estimativ'].includes(c.stage)).length,sub:"Planuri sau estimări, nu listări garantate",icon:Radio},
+                  {label:"Amânări de urmărit",value:companies.filter(c=>['Amânată','Posibilă amânare'].includes(c.stage)).length,sub:"Amânări confirmate sau relatate separat",icon:CalendarDays},
                 ].map((m, i) => (
                   <button
                     className="metric"
                     key={m.label}
                     onClick={() => {
-                      navigate(i===0?"discoveries":i===1?"research":i===2?"universe":"companies");
+                      navigate("universe");
                     }}
                   >
                     <div>
@@ -605,47 +602,10 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
                   </button>
                 ))}
               </div>
-              <RadarOverview items={discoveries} error={discoveryError} onExplore={()=>navigate("discoveries")}/>
-              <div className="content-grid">
+              <section className="company-intro"><strong>Ce companii ar putea ajunge la bursă?</strong><p>În fiecare dosar găsești ce face compania, cine vorbește despre listare, când ar putea avea loc și ce rămâne de verificat. „Amânată” și „Posibilă amânare” sunt afișate explicit.</p></section>
+              <div className="overview-companies">
                 <div>{table}</div>
-                <aside className="signal-panel">
-                  <div className="section-heading">
-                    <h2>Semnale din dosarele verificate</h2>
-                    <span className="signal-symbol">
-                      <Radio size={17} />
-                    </span>
-                  </div>
-                  <p className="signal-caption">
-                    Publicarea surselor, în ordine cronologică
-                  </p>
-                  <div className="timeline">
-                    {companies.slice(0, 3).map((c, i) => (
-                      <button
-                        className="signal"
-                        key={c.id}
-                        onClick={() => setSelected(c)}
-                      >
-                        <span className={`timeline-dot dot-${i}`} />
-                        <span className="signal-time">
-                          {formatDate(c.publishedAt)}
-                        </span>
-                        <strong>{c.name}</strong>
-                        <p>{c.signal}</p>
-                        <span className="signal-source">
-                          <FileText size={12} />
-                          {c.sourceName}{" "}
-                          <ArrowUpRight size={12} />
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-                  <button
-                    className="signal-all"
-                    onClick={() => navigate("alerts")}
-                  >
-                    Toate semnalele <ArrowRight size={15} />
-                  </button>
-                </aside>
+
               </div>
               <div className="bottom-note">
                 <ShieldCheck size={16} />
@@ -658,12 +618,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
               </div>
             </>
           )}
-          {view === "discoveries" && <Discoveries items={discoveries} error={discoveryError} embedded/>}
-          {view === "universe" && <CompanyUniverse companies={allCompanies} items={discoveries} startups={startups} error={discoveryError||startupError||error} onVerified={()=>navigate("companies")} watch={watch} onToggle={toggle}/>}
-          {view === "companies" && table}
-          {view === "watchlist" && <CompanyUniverse companies={allCompanies} items={discoveries} startups={startups} error={discoveryError||startupError||error} onVerified={()=>navigate("universe")} watch={watch} onToggle={toggle} savedOnly/>}
-          {view === "startups" && <StartupDirectory rows={startups} error={startupError} embedded/>}
-          {view === "dossiers" && <CompanyResearch companies={allCompanies} items={discoveries} error={discoveryError||error} evaluatedAt={evaluatedAt} embedded/>}
+          {['discoveries','universe','companies','watchlist','startups','dossiers'].includes(view) && table}
           {view === "calendar" && (
             <section className="table-panel calendar-panel">
               <div className="section-heading">
@@ -737,18 +692,11 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
                   },
                 )}
               </div>
-              <div className="calendar-unscheduled">
-                <h3>Calendar raportat de agregator · estimări neconfirmate</h3>
-                <p>Datele de mai jos provin din calendarul Stock Analysis; nu sunt date confirmate de subscriere. Depunerile SEC raportate nu sunt introduse ca date de listare.</p>
-                {discoveryError&&<p role="alert">{discoveryError}</p>}
-                {estimated.filter(i=>i.eventDate?.startsWith(`${new Date(currentYear,month,1).getFullYear()}-${String(new Date(currentYear,month,1).getMonth()+1).padStart(2,'0')}`)).map(i=><p key={i.url}><strong>{i.eventDate}</strong> · {safeEvidenceUrl(i.url)?<a href={i.url} target="_blank" rel="noopener noreferrer">{i.title} ↗</a>:i.title} · Neoficial / estimativ</p>)}
-                {!estimated.some(i=>i.eventDate?.startsWith(`${new Date(currentYear,month,1).getFullYear()}-${String(new Date(currentYear,month,1).getMonth()+1).padStart(2,'0')}`))&&<p>Nicio estimare disponibilă pentru luna selectată.</p>}
-                <button className="text-button" onClick={()=>navigate('universe')}>Explorează toate companiile și startupurile →</button>
-              </div>
+              <div className="calendar-unscheduled"><h3>Orizonturi estimate · deschide analiza</h3><p>Aceste estimări sunt separate de datele confirmate de subscriere.</p>{companies.filter(c=>c.dateLabel.includes('estimare')).map(c=><button key={c.id} onClick={()=>setSelected(c)}><Logo company={c} small/><strong>{c.name}</strong><span>{c.dateLabel}</span><ArrowUpRight size={15}/></button>)}</div>
               <div className="calendar-unscheduled">
                 <h3>Orizont neconfirmat</h3>
                 {companies
-                  .filter((c) => !c.date)
+                  .filter((c) => !c.date&&!c.dateLabel.includes("estimare"))
                   .map((c) => (
                     <button key={c.id} onClick={() => setSelected(c)}>
                       <Logo company={c} small />
@@ -775,8 +723,8 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
                   {scheduler?.enabled ? "Programare activă" : "Programare oprită"}
                 </span>
               </div>
-              <a className="research-discovery-link" href="/descoperiri">Vezi documentele descoperite <ExternalLink size={16} /></a>
-              <a className="research-discovery-link" href="/dosare">Dosare și semnale <ExternalLink size={16} /></a>
+              <p className="notice">{discoveries.length} documente colectate în fundal. {companies.length} companii au dosare publicate. Documentele noi nu devin automat companii sau stadii confirmate.</p>
+              <a className="research-discovery-link" href="/companii">Deschide dosarele companiilor <ExternalLink size={16} /></a>
               <section className="table-panel">
                 <div className="section-heading">
                   <h2>Registrul surselor</h2>
@@ -845,21 +793,16 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
               <div className="section-heading">
                 <div>
                   <h2>Schimbări care merită atenția ta</h2>
-                  <p>{unread} semnale necitite · dosare și documente descoperite</p>
+                  <p>{unread} dosare necitite · un rezumat în română pentru fiecare companie</p>
                 </div>
                 <button
                   className="secondary"
-                  onClick={() => setRead(r=>Array.from(new Set([...r,...alerts.map(alertKey),...documentAlerts.map(discoveryKey)])))}
+                  onClick={() => setRead(r=>Array.from(new Set([...r,...alerts.map(alertKey)])))}
                 >
                   <CheckCheck size={16} />
                   Marchează citite
                 </button>
               </div>
-              {discoveryError&&<p role="alert" className="notice">{discoveryError}</p>}
-              <h3 className="home-radar-count">Documente descoperite · {documentAlerts.length}</h3>
-              {documentAlerts.slice(0,alertLimit).map(i=><article className={`alert-row ${read.includes(discoveryKey(i))?'':'unread'}`} key={i.url}><div className="alert-content"><strong>{safeEvidenceUrl(i.url)?<a href={i.url} target="_blank" rel="noopener noreferrer">{i.title} ↗</a>:i.title}</strong><p>{sourceCategory(i.source_kind)} · {i.area} · {i.source_name}</p><small>Detectat: {formatDate(i.discovered_at)} · Publicat: {i.published_at?formatDate(i.published_at):'necunoscut'} · stadiu de verificat</small></div><button className="secondary" aria-label={`Marchează documentul ${read.includes(discoveryKey(i))?'necitit':'citit'}: ${i.title}`} onClick={()=>setRead(r=>r.includes(discoveryKey(i))?r.filter(k=>k!==discoveryKey(i)):[...r,discoveryKey(i)])}>{read.includes(discoveryKey(i))?'Citit ✓':'Marchează citit'}</button></article>)}
-              {documentAlerts.length>alertLimit&&<button className="discovery-button" onClick={()=>setAlertLimit(n=>n+25)}>Arată încă 25 documente</button>}
-              <h3 className="home-radar-count">Dosare verificate · {alerts.length}</h3>
               {alerts.map((c) => (
                 <div
                   className={`alert-row ${!read.includes(alertKey(c)) ? "unread" : ""}`}
@@ -913,7 +856,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
                 <div>
                   <strong>Doar semnale cu dovezi solide</strong>
                   <p>
-                    În notificări, afișează doar dosarele și documentele provenite din surse oficiale.
+                    În notificări, afișează doar dosarele a căror sursă principală este oficială.
                   </p>
                 </div>
                 <button
@@ -939,7 +882,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
               <div className="setting-row">
                 <div>
                   <strong>Limba platformei</strong>
-                  <p>Rezumatele și interfața vor fi disponibile în română.</p>
+                  <p>Dosarele și interfața sunt în română. Documentele originale se deschid prin link extern.</p>
                 </div>
                 <span>Română 🇷🇴</span>
               </div>
@@ -1042,10 +985,10 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
                   </div>
                 </div>
                 <p className="score-explainer">
-                  Document consultat la {formatDate(selected.checkedAt)}. Citirea sursei nu confirmă că stadiul nu s-a schimbat între timp.
+                  Dosar verificat la {formatDate(selected.checkedAt)}. Tipul sursei: {selected.sourceLabel||(selected.official?"Oficială":"Presă")}. Stadiul se poate schimba după această verificare.
                 </p>
                 <section className="detail-section">
-                  <h3>Ce s-a schimbat</h3>
+                  <h3>Ce știm despre listare</h3>
                   <p>{selected.signal}</p>
                   <div className="detail-fact">
                     <span>Bursa vizată</span>
@@ -1065,7 +1008,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
                   </div>
                 </section>
                 <section className="detail-section">
-                  <h3>De ce merită cercetată</h3>
+                  <h3>Ce merită analizat</h3>
                   <p>{selected.opportunity}</p>
                 </section>
                 <section className="detail-section risk-section">
@@ -1077,15 +1020,16 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
                 </section>
                 <section className="detail-section">
                   <h3>Surse și istoric</h3>
-                  <a className="research-discovery-link" href={`/dosare#${encodeURIComponent(selected.id)}`}>Compară semnalele colectate <ExternalLink size={14}/></a>
+                  <p>Rezumatul de mai sus este în română. Documentele originale se deschid separat, în limba sursei.</p>
                   {(selected.documents || [{url:selected.sourceUrl,title:selected.sourceName,publishedAt:selected.publishedAt,checkedAt:selected.checkedAt}]).map(document => (
                     <div className="evidence" key={document.url}><FileText size={18} /><div>
                       <a href={document.url} target="_blank" rel="noreferrer">{document.title} <ExternalLink size={14} /></a>
                       <p>Publicat: {formatDate(document.publishedAt)}</p>
-                      <p>Consultat manual: {formatDate(document.checkedAt)}</p>
+                      <p>Verificat pentru dosar: {formatDate(document.checkedAt)}</p>
                     </div></div>
                   ))}
                 </section>
+                {!!associated[selected.id]?.length&&<section className="detail-section"><details><summary>Alte surse colectate ({associated[selected.id].length})</summary><p>Asociere după numele companiei; aceste linkuri nu au fost folosite automat pentru a modifica analiza. Articolele care menționează mai multe companii sunt excluse.</p>{associated[selected.id].slice(0,20).map((d:Discovery,i:number)=><div className="evidence" key={d.url}><a href={d.url} target="_blank" rel="noopener noreferrer">Sursă externă {i+1} · {d.source_name} ↗</a><small>{sourceCategory(d.source_kind)} · {formatDate(d.published_at||'')}</small></div>)}{associated[selected.id].length>20&&<p>Afișăm primele 20 de linkuri. Dosarul rezumă separat sursele verificate.</p>}</details></section>}
               </>
             )}
           </Dialog.Content>
