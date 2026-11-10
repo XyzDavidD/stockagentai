@@ -1,0 +1,96 @@
+[
+  {
+    "id": "knds",
+    "profile": {
+      "priority": 0,
+      "date": null,
+      "dateLabel": "Dată neconfirmată",
+      "evidence": 2,
+      "checkedAt": "2026-11-10",
+      "official": false,
+      "confidence": "Medie",
+      "id": "knds",
+      "name": "KNDS",
+      "monogram": "K",
+      "color": "blue",
+      "country": "Germania / Franța",
+      "regions": [
+        "Germania",
+        "Franța"
+      ],
+      "flag": "🇪🇺",
+      "sector": "Industrie de apărare",
+      "exchange": "Frankfurt / Paris · propus",
+      "stage": "Intenție anunțată",
+      "publishedAt": "2026-10-19",
+      "summary": "Grup franco-german de apărare care pregătește accesul la piețele de capital. Monitorizat pentru piețele Frankfurt și Paris.",
+      "signal": "Reuters relata la 19 octombrie că intenția de IPO rămâne în strategie și depinde de condițiile pieței. Nu există în dosar o dată confirmată de debut.",
+      "opportunity": "De analizat: portofoliul de comenzi, capacitatea de producție, structura acționariatului și utilizarea fondurilor dintr-o eventuală ofertă.",
+      "risk": "Calendar dependent de piață și de structura acționariatului. Intenția de dublă listare din 2025 nu confirmă executarea IPO în 2026.",
+      "sourceName": "Reuters via MarketScreener",
+      "sourceUrl": "https://www.marketscreener.com/news/knds-would-seek-ipo-as-soon-as-possible-ceo-says-ce785cdbdb8ff427",
+      "documents": [
+        {
+          "url": "https://www.marketscreener.com/news/knds-would-seek-ipo-as-soon-as-possible-ceo-says-ce785cdbdb8ff427",
+          "title": "Reuters · intenția de IPO rămâne în strategie",
+          "publishedAt": "2026-10-19",
+          "checkedAt": "2026-11-10"
+        },
+        {
+          "url": "https://knds.com/en/press-releases/knds-intends-to-list-in-2026-to-support-its-long-term-growth-strategy",
+          "title": "KNDS · pregătirea listării la Frankfurt și Paris",
+          "publishedAt": "2025-12-17",
+          "checkedAt": "2026-11-10"
+        }
+      ]
+    },
+    "published": true
+  },
+  {
+    "id": "bitpanda",
+    "profile": {
+      "priority": 0,
+      "date": null,
+      "dateLabel": "Dată neconfirmată",
+      "evidence": 2,
+      "checkedAt": "2026-11-10",
+      "official": false,
+      "confidence": "Medie",
+      "id": "bitpanda",
+      "name": "Bitpanda",
+      "monogram": "B",
+      "color": "mint",
+      "country": "Austria",
+      "regions": [
+        "Austria",
+        "Germania"
+      ],
+      "flag": "🇦🇹",
+      "sector": "Platformă de investiții",
+      "exchange": "Frankfurt · plan amânat",
+      "stage": "Amânată",
+      "publishedAt": "2026-09-15",
+      "summary": "Platformă austriacă de investiții urmărită pentru un posibil IPO. Calendarul inițial a fost amânat, potrivit presei.",
+      "signal": "Finance Magnates relata la 15 septembrie amânarea IPO-ului din Frankfurt din cauza condițiilor de piață. Nu este anunțat un nou calendar.",
+      "opportunity": "De urmărit: reluarea procesului, prospectul, veniturile pe segmente și capacitatea de a transforma creșterea în profit.",
+      "risk": "IPO amânat; expunere la ciclurile pieței cripto și schimbări de conducere. Nu trebuie tratat ca ofertă programată.",
+      "sourceName": "Finance Magnates · relatare de presă",
+      "sourceUrl": "https://www.financemagnates.com/cryptocurrency/exchange/bitpanda-ceo-to-depart-as-crypto-broker-delays-frankfurt-ipo/",
+      "documents": [
+        {
+          "url": "https://www.financemagnates.com/cryptocurrency/exchange/bitpanda-ceo-to-depart-as-crypto-broker-delays-frankfurt-ipo/",
+          "title": "Amânarea IPO-ului și schimbări de conducere",
+          "publishedAt": "2026-09-15",
+          "checkedAt": "2026-11-10"
+        },
+        {
+          "url": "https://www.boerse-am-sonntag.de/unternehmen/unternehmen/moeglicher-boersengang-bitpanda-sieht-ipo-als-option-fuer-2026",
+          "title": "Istoric · IPO ca opțiune strategică",
+          "publishedAt": "2025-09-19",
+          "checkedAt": "2026-11-10"
+        }
+      ]
+    },
+    "published": true
+  }
+]

@@ -38,3 +38,27 @@ test('payload hash stable and dates remain unknown when source has no date',()=>
  const r={id:'a',started:'s',finished:'f',error:null,candidates:[{url:'https://example.com',title:'IPO',text:'IPO'}]};
  const p=toPayload(r,'one');assert.equal(p.candidates[0].published_at,null);assert.equal(p.candidates[0].content_hash,toPayload(r,'two').candidates[0].content_hash);
 });
+
+import {parseDeutscheBoerse,parseVienna,candidateReason} from '../scripts/collectors.mjs';
+test('German discovery recognizes umlauts and rejects bonds, ETFs and foreign article hosts',()=>{
+ assert.ok(candidateReason('Unternehmen plant Börsengang'));
+ assert.equal(candidateReason('Neue Anleihe zur Erstnotiz'),null);
+ assert.equal(candidateReason('Neue ETFs zum Handelsstart'),null);
+ const xml='<rss><channel><title>Exchange</title><item><title>Neuer Börsengang</title><link>https://www.boerse-frankfurt.de/nachrichten/ipo</link></item><item><title>IPO</title><link>https://attacker.example/ipo</link></item></channel></rss>';
+ assert.equal(parseDeutscheBoerse(xml).length,1);
+});
+test('Vienna discovery captures debut as completed candidate, with actual source date',()=>{
+ const r=parseVienna('<article><a href="/news/wiener-boerse-news/example/">Handelsstart für Example</a><time>10.09.2026</time></article>');
+ assert.equal(r[0].publishedAt,'2026-09-10T00:00:00Z');assert.match(r[0].reason,/încheiat/);
+ assert.throws(()=>parseVienna('<main>Consent required</main>'));
+});
+test('modern secret keys use apikey header without pretending to be JWTs',async()=>{
+ let captured;
+ const p=createPersistence({url:'https://abc.supabase.co',key:'sb_secret_test',fetcher:async(url,options)=>{captured=options.headers;return new Response('{}');}});
+ await p({});assert.equal(captured.apikey,'sb_secret_test');assert.equal(captured.Authorization,undefined);
+});
+test('transport errors cannot echo an API key into worker logs',async()=>{
+ const p=createPersistence({url:'https://abc.supabase.co',key:'sb_secret_test',fetcher:async()=>{throw new Error('invalid header sb_secret_test');}});
+ await assert.rejects(p({}),{message:'PERSIST_NETWORK_ERROR'});
+ assert.throws(()=>createPersistence({url:'https://abc.supabase.co',key:'secret\nvalue'}),/CONFIGURATION/);
+});

@@ -75,3 +75,15 @@ Workflow: `.github/workflows/research.yml`, orar la minutul 17, cu execuții nec
 GitHub Actions oferă programare best-effort: joburile pot întârzia; feedurile au istoric limitat și pot pierde știri între execuții. Nu există încă notificări prin e-mail sau clasificare AI. Candidații rămân privați până la revizuire. Următorul pas este un panou privat de aprobare, apoi extragerea afirmațiilor și analiza financiară cu dovezi.
 
 Actualizare documentată: `supabase/updates/20261110_anthropic_roadshow.sql` păstrează istoricul S-1 și adaugă comunicatul oficial de roadshow din 10 noiembrie. Nu atribuie o dată de debut.
+
+## Germania, Austria și activarea workerului
+
+Colectorii includ acum RSS-ul oficial Deutsche Börse și comunicatele Wiener Börse. Detectarea include termeni germani (Börsengang, Handelsstart, Erstnotiz); exclude anunțurile despre obligațiuni, certificate și ETF/ETP. Comunicatele de debut sunt doar candidați de verificat, nu listări viitoare. Pagina vieneză acoperă comunicatele recente, fără backfill complet. Feedurile pot omite evenimente, deci nu constituie o acoperire exhaustivă.
+
+Dosare europene revizuite: KNDS (grup franco-german, intenție documentată, fără calendar confirmat) și Bitpanda (Austria, planul Frankfurt amânat conform presei din 15 septembrie). Filtrul „țară sau piață” folosește și `regions`, astfel încât o companie austriacă interesată de Frankfurt poate apărea în ambele filtre. Data originală și istoricul surselor rămân vizibile. JSON-urile din `supabase/updates/20261110_europe*.json` păstrează snapshotul de import, nu date actualizate automat.
+
+Workerul acceptă cheia server modernă `sb_secret_...` în secretul GitHub numit `SUPABASE_SERVICE_ROLE_KEY` (numele este păstrat pentru compatibilitate). Pentru cheile moderne trimite `apikey`, fără a le trata ca JWT. Cheia este disponibilă doar pasului de persistare, nu instalării dependențelor, testelor, frontendului sau repository-ului. Erorile de transport sunt înlocuite cu un cod generic pentru a nu expune antete.
+
+Migrarea `202611100003_agent_status.sql` separă starea configurării programului de dovada unei execuții: `agent_status.enabled` arată dacă programul este activat, iar `research_sources.last_attempt_at`/`checked_at` arată ultimele încercări/succese. Marcajul `last_trigger=schedule` este înregistrat numai când GitHub chiar pornește execuția programată. O rulare manuală de verificare nu este prezentată ca rulare cron.
+
+Notificările citite sunt legate de versiunea semnalului (companie + data sursei + rezumat). O schimbare documentată reapare ca necitită. Trimiterea prin Resend și extragerea cu un model AI nu sunt încă activate.

@@ -4,13 +4,15 @@ export type Stage =
   | "Semnal preliminar"
   | "Ofertă programată"
   | "Listată"
-  | "Roadshow lansat";
+  | "Roadshow lansat"
+  | "Amânată";
 export type Company = {
   id: string;
   name: string;
   monogram: string;
   color: string;
   country: string;
+  regions?: string[];
   flag: string;
   sector: string;
   exchange: string;
@@ -33,3 +35,5 @@ export type Company = {
 };
 
 export type Source = { id: string; name: string; area: string; kind: string; url: string; status: string; checked_at: string | null; detail: string; last_attempt_at?: string | null; last_error?: string | null; consecutive_failures?: number; pending_count?: number; last_trigger?: string | null };
+
+export type Scheduler = {enabled: boolean; cadence_minutes: number; configured_at: string};

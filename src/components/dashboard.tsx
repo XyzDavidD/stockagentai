@@ -31,7 +31,7 @@ import {
   Mail,
   CheckCheck,
 } from "lucide-react";
-import { type Company, type Source } from "@/lib/data";
+import { type Company, type Source, type Scheduler } from "@/lib/data";
 type View =
   | "overview"
   | "companies"
@@ -79,13 +79,12 @@ function Badge({ stage }: { stage: string }) {
     </span>
   );
 }
-export default function Dashboard({ companies: allCompanies, sources, error }: { companies: Company[]; sources: Source[]; error: string | null }) {
+export default function Dashboard({ companies: allCompanies, sources, error, scheduler }: { companies: Company[]; sources: Source[]; error: string | null; scheduler: Scheduler | null }) {
   const [archive, setArchive] = useState(false);
   const companies = allCompanies.filter(c => c.stage !== "Listată");
   const formatDate = (value: string) => new Intl.DateTimeFormat("ro-RO", {dateStyle: "medium", timeZone: "Europe/Bucharest"}).format(new Date(value));
   const stale = (c: Company) => Date.now() - new Date(c.publishedAt).getTime() > 90 * 86400000;
   const pendingTotal = sources.reduce((sum, source) => sum + (source.pending_count || 0), 0);
-  const scheduledSeen = sources.some(source => source.last_trigger === "schedule");
   const timestamp = (value: string) => new Intl.DateTimeFormat("ro-RO", {dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Bucharest"}).format(new Date(value));
   const currentYear = new Date().getFullYear();
   const [view, setView] = useState<View>("overview");
@@ -170,7 +169,7 @@ export default function Dashboard({ companies: allCompanies, sources, error }: {
             `${c.name} ${c.sector} ${c.country}`
               .toLocaleLowerCase("ro")
               .includes(query.toLocaleLowerCase("ro")) &&
-            (country === "Toate țările" || country === c.country) &&
+            (country === "Toate țările" || country === c.country || c.regions?.includes(country)) &&
             (stage === "Toate stadiile" || stage === c.stage),
         )
         .sort((a, b) =>
@@ -181,9 +180,9 @@ export default function Dashboard({ companies: allCompanies, sources, error }: {
     [view, watch, query, country, stage, sort, archive, allCompanies],
   );
   const alerts = companies
-    .slice(0, 4)
     .filter((c) => !onlyOfficial || c.official);
-  const unread = alerts.filter((c) => !read.includes(c.id)).length;
+  const alertKey = (c: Company) => `${c.id}:${c.publishedAt}:${c.signal}`;
+  const unread = alerts.filter((c) => !read.includes(alertKey(c))).length;
   const table = (
     <section className="table-panel">
       <div className="section-heading">
@@ -215,11 +214,11 @@ export default function Dashboard({ companies: allCompanies, sources, error }: {
         <label className="select-field">
           <Globe2 size={14} />
           <select
-            aria-label="Filtrează după țară"
+            aria-label="Filtrează după țară sau piață"
             value={country}
             onChange={(e) => setCountry(e.target.value)}
           >
-            {["Toate țările", "SUA", "România"].map(
+            {["Toate țările", "SUA", "România", "Germania", "Austria", "Franța"].map(
               (v) => (
                 <option key={v}>{v}</option>
               ),
@@ -237,6 +236,7 @@ export default function Dashboard({ companies: allCompanies, sources, error }: {
               "Toate stadiile",
               "Documente depuse",
               "Roadshow lansat",
+              "Amânată",
               "Intenție anunțată",
               "Semnal preliminar",
               "Ofertă programată",
@@ -387,7 +387,7 @@ export default function Dashboard({ companies: allCompanies, sources, error }: {
           <span className="workspace-icon">D</span>
           <div>
             <strong>Spațiul meu de cercetare</strong>
-            <small>SUA & România · date publice</small>
+            <small>SUA · RO · DE · AT</small>
           </div>
           <span className="workspace-lock">
             <ShieldCheck size={15} />
@@ -564,7 +564,7 @@ export default function Dashboard({ companies: allCompanies, sources, error }: {
                   {
                     label: "Companii pe radar",
                     value: companies.length,
-                    sub: "SUA & România",
+                    sub: "SUA · România · Germania · Austria",
                     icon: Building2,
                   },
                   {
@@ -808,12 +808,12 @@ export default function Dashboard({ companies: allCompanies, sources, error }: {
                 <div>
                   <h2>Supabase · registrul de cercetare</h2>
                   <p>
-                    {pendingTotal} documente așteaptă verificarea. {scheduledSeen ? "Au fost înregistrate rulări programate; verifică mai jos prospețimea fiecărei surse." : "Rularea orară este pregătită; nicio execuție programată nu a fost încă înregistrată."} SEC rămâne suspendat după refuzul accesului.
+                    {pendingTotal} documente așteaptă verificarea. {scheduler?.enabled ? `Colectarea este programată la fiecare ${scheduler.cadence_minutes} minute. Verifică mai jos ultima execuție reușită; programarea poate avea întârzieri.` : "Programarea automată este oprită."} SEC rămâne suspendat după refuzul accesului.
                   </p>
                 </div>
                 <span className="badge gray">
                   <span />
-                  {scheduledSeen ? "Colectare programată" : "Activare în așteptare"}
+                  {scheduler?.enabled ? "Programare activă" : "Programare oprită"}
                 </span>
               </div>
               <section className="table-panel">
@@ -834,7 +834,7 @@ export default function Dashboard({ companies: allCompanies, sources, error }: {
                     </div>
                     <span className="source-frequency">
                       {s.checked_at ? <>Ultimul succes<br />{timestamp(s.checked_at)}</> : "Fără colectare reușită"}
-                      {s.last_attempt_at && <small>Ultima încercare: {timestamp(s.last_attempt_at)}<br />{s.last_trigger === "schedule" ? "Programată" : "La cerere"}{s.last_trigger === "schedule" && Date.now() - new Date(s.last_attempt_at).getTime() > 2 * 3600000 ? " · Întârziere peste 2h" : ""}</small>}
+                      {s.last_attempt_at && <small>Ultima încercare: {timestamp(s.last_attempt_at)}<br />{s.last_trigger === "schedule" ? "Programată" : "La cerere"}{scheduler?.enabled && Date.now() - new Date(s.last_attempt_at).getTime() > 2 * 3600000 ? " · Întârziere peste 2h" : ""}</small>}
                     </span>
                     <span className="badge gray">
                       <span />
@@ -888,7 +888,7 @@ export default function Dashboard({ companies: allCompanies, sources, error }: {
                 </div>
                 <button
                   className="secondary"
-                  onClick={() => setRead(alerts.map((c) => c.id))}
+                  onClick={() => setRead(alerts.map(alertKey))}
                 >
                   <CheckCheck size={16} />
                   Marchează citite
@@ -896,7 +896,7 @@ export default function Dashboard({ companies: allCompanies, sources, error }: {
               </div>
               {alerts.map((c) => (
                 <div
-                  className={`alert-row ${!read.includes(c.id) ? "unread" : ""}`}
+                  className={`alert-row ${!read.includes(alertKey(c)) ? "unread" : ""}`}
                   key={c.id}
                 >
                   <Logo company={c} />
@@ -904,7 +904,7 @@ export default function Dashboard({ companies: allCompanies, sources, error }: {
                     className="alert-content"
                     onClick={() => {
                       setSelected(c);
-                      setRead((r) => Array.from(new Set([...r, c.id])));
+                      setRead((r) => Array.from(new Set([...r, alertKey(c)])));
                     }}
                   >
                     <strong>
@@ -916,16 +916,16 @@ export default function Dashboard({ companies: allCompanies, sources, error }: {
                   </button>
                   <button
                     className="icon-button"
-                    aria-label={`Marchează ${c.name} ${read.includes(c.id) ? "necitit" : "citit"}`}
+                    aria-label={`Marchează ${c.name} ${read.includes(alertKey(c)) ? "necitit" : "citit"}`}
                     onClick={() =>
                       setRead((r) =>
-                        r.includes(c.id)
-                          ? r.filter((x) => x !== c.id)
-                          : [...r, c.id],
+                        r.includes(alertKey(c))
+                          ? r.filter((x) => x !== alertKey(c))
+                          : [...r, alertKey(c)],
                       )
                     }
                   >
-                    {read.includes(c.id) ? (
+                    {read.includes(alertKey(c)) ? (
                       <Check size={17} />
                     ) : (
                       <span className="unread-dot" />

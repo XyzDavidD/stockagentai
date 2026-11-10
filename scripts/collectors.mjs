@@ -6,6 +6,8 @@ export const feeds = [
   {id:'sec', paused:true, url:'https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=S-1&count=40&output=atom', parse:parseSec},
   {id:'bvb-news', url:'https://www.bvb.ro/AboutUs/MediaCenter/PressReleases', parse:parseBvbNews},
   {id:'anthropic-news', url:'https://www.anthropic.com/news', parse:parseAnthropicNews},
+  {id:'deutsche-boerse', url:'https://api.boerse-frankfurt.de/v1/feeds/news.rss', parse:parseDeutscheBoerse},
+  {id:'wiener-boerse', url:'https://www.wienerborse.at/presse/pressemitteilungen/', parse:parseVienna},
   {id:'prnewswire', url:'https://www.prnewswire.com/rss/financial-services-latest-news/financial-services-latest-news-list.rss', parse:parsePrNewswire},
 ];
 const normalized = text => text.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim();
@@ -62,9 +64,9 @@ export function resultSql(result) {
 
 export function candidateReason(title) {
   const text = normalized(title).toLowerCase();
-  if (/obligatiuni|titluri de stat|fidelis|\betf\b|\bbonds?\b|\bnotes\b|secondary offering|follow-on/.test(text)) return null;
-  if (/\bipo\b|initial public offering|ofert[ae] public[ae] initial|s-1|f-1|roadshow|intentia.*list|debut|devine companie publica|incepe.*tranzaction|se listeaza/.test(text)) {
-    return /clos(es|ed|ing)|debut|devine companie publica|incepe.*tranzaction/.test(text) ? 'Posibil eveniment încheiat — verifică stadiul' : 'Posibil semnal IPO — necesită verificare';
+  if (/obligatiuni|titluri de stat|fidelis|anleihe|zertifikat|\betps?\b|\betfs?\b|\bbonds?\b|\bnotes\b|secondary offering|follow-on/.test(text)) return null;
+  if (/\bipos?\b|borsengang|boersengang|borsendebut|boersendebuet|handelsstart|erstnotiz|neuemission|intends to list|intention to float|initial public offering|ofert[ae] public[ae] initial|s-1|f-1|roadshow|intentia.*list|debut|devine companie publica|incepe.*tranzaction|se listeaza/.test(text)) {
+    return /clos(es|ed|ing)|handelsstart|erstnotiz|debut|devine companie publica|incepe.*tranzaction/.test(text) ? 'Posibil eveniment încheiat — verifică stadiul' : 'Posibil semnal IPO — necesită verificare';
   }
   return null;
 }
@@ -117,4 +119,31 @@ export function parsePrNewswire(xml) {
 export function toPayload(result,runKey,trigger='manual') {
   return {run_key:runKey,source_id:result.id,started_at:result.started,finished_at:result.finished,error_code:result.error,trigger,
     candidates:result.candidates.map(c=>({url:c.url,title:c.title.slice(0,500),content_hash:createHash('sha256').update(c.text).digest('hex'),published_at:c.publishedAt||null,reason:c.reason||'Înregistrare de ofertă — verifică dacă este IPO'}))};
+}
+
+export function parseDeutscheBoerse(xml) {
+  if(XMLValidator.validate(xml)!==true)throw new Error('INVALID_DE_XML');
+  const channel=new XMLParser({processEntities:false}).parse(xml).rss?.channel;
+  if(!channel || !channel.title)throw new Error('DE_FEED_SHAPE_CHANGED');
+  const items=channel.item ? (Array.isArray(channel.item)?channel.item:[channel.item]) : [];
+  return uniqueCandidates(items.flatMap(item=>{
+    const title=normalized(String(item.title||'')),reason=candidateReason(title);
+    // Feed host differs from the exchange's article hosts; allow only these two observed publishers.
+    const url=safeUrl(String(item.link||''),'https://www.boerse-frankfurt.de') || safeUrl(String(item.link||''),'https://live.deutsche-boerse.com');
+    const ts=Date.parse(item.pubDate);
+    return reason && url ? [{url,title,text:title,reason,publishedAt:Number.isFinite(ts)?new Date(ts).toISOString():null}] : [];
+  }));
+}
+export function parseVienna(html) {
+  const $=load(html),links=$('a[href^="/news/wiener-boerse-news/"]');
+  if(!links.length)throw new Error('AT_NEWS_SHAPE_CHANGED');
+  const items=[];
+  links.each((_,el)=>{
+    const title=normalized($(el).text()),reason=candidateReason(title);
+    const url=safeUrl($(el).attr('href')||'','https://www.wienerborse.at');
+    const dateText=$(el).closest('article,.article,.news-list-item,.news-row').text();
+    const match=dateText.match(/(\d{2})\.(\d{2})\.(\d{4})/);
+    if(reason && url)items.push({url,title,text:title,reason,publishedAt:match?`${match[3]}-${match[2]}-${match[1]}T00:00:00Z`:null});
+  });
+  return uniqueCandidates(items);
 }

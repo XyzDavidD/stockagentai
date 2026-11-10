@@ -1,0 +1,20 @@
+[
+  {
+    "id": "deutsche-boerse",
+    "name": "Deutsche Börse · RSS",
+    "area": "Germania",
+    "kind": "Bursă",
+    "url": "https://api.boerse-frankfurt.de/v1/feeds/news.rss",
+    "status": "Pregătit",
+    "detail": "Știri ale bursei pentru descoperire; nu reprezintă calendar complet de IPO."
+  },
+  {
+    "id": "wiener-boerse",
+    "name": "Wiener Börse · comunicate",
+    "area": "Austria",
+    "kind": "Bursă",
+    "url": "https://www.wienerborse.at/presse/pressemitteilungen/",
+    "status": "Pregătit",
+    "detail": "Comunicate recente. Debuturile și listările suplimentare necesită verificare separată."
+  }
+]

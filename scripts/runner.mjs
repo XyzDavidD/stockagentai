@@ -36,9 +36,9 @@ export async function runCollection({persist,runKey,trigger='manual',selected=fe
   return results;
 }
 export function createPersistence({url,key,fetcher=fetch}) {
-  if(!key || !url || !/^https:\/\/[a-z0-9]+\.supabase\.co$/.test(url)) throw new Error('MISSING_OR_INVALID_SUPABASE_CONFIGURATION');
+  if(!key || /\s/.test(key) || !url || !/^https:\/\/[a-z0-9]+\.supabase\.co$/.test(url)) throw new Error('MISSING_OR_INVALID_SUPABASE_CONFIGURATION');
   return async payload=>{
-    const r=await fetcher(`${url}/rest/v1/rpc/record_ingestion`,{method:'POST',redirect:'error',signal:AbortSignal.timeout(15000),headers:{apikey:key,Authorization:`Bearer ${key}`,'Content-Type':'application/json'},body:JSON.stringify({payload})});
+    let r; try { r=await fetcher(`${url}/rest/v1/rpc/record_ingestion`,{method:'POST',redirect:'error',signal:AbortSignal.timeout(15000),headers:{apikey:key,...(key.startsWith('sb_secret_')?{}:{Authorization:`Bearer ${key}`}),'Content-Type':'application/json'},body:JSON.stringify({payload})}); } catch { throw new Error('PERSIST_NETWORK_ERROR'); }
     if(!r.ok) throw new Error(`PERSIST_HTTP_${r.status}`); // Never log response body or credentials.
   };
 }
