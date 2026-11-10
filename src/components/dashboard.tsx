@@ -31,7 +31,7 @@ import {
   Mail,
   CheckCheck,
 } from "lucide-react";
-import { companies, sources, type Company } from "@/lib/data";
+import { type Company, type Source } from "@/lib/data";
 type View =
   | "overview"
   | "companies"
@@ -79,20 +79,25 @@ function Badge({ stage }: { stage: string }) {
     </span>
   );
 }
-export default function Dashboard() {
+export default function Dashboard({ companies: allCompanies, sources, error }: { companies: Company[]; sources: Source[]; error: string | null }) {
+  const [archive, setArchive] = useState(false);
+  const companies = allCompanies.filter(c => c.stage !== "Listată");
+  const formatDate = (value: string) => new Intl.DateTimeFormat("ro-RO", {dateStyle: "medium", timeZone: "Europe/Bucharest"}).format(new Date(value));
+  const stale = (c: Company) => Date.now() - new Date(c.publishedAt).getTime() > 90 * 86400000;
+  const currentYear = new Date().getFullYear();
   const [view, setView] = useState<View>("overview");
   const [query, setQuery] = useState("");
   const [country, setCountry] = useState("Toate țările");
   const [stage, setStage] = useState("Toate stadiile");
   const [sort, setSort] = useState("priority");
-  const [watch, setWatch] = useState<string[]>(["aether", "nordwerk"]);
+  const [watch, setWatch] = useState<string[]>([]);
   const [ready, setReady] = useState(false);
   const [selected, setSelected] = useState<Company | null>(null);
   const [mobile, setMobile] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [read, setRead] = useState<string[]>([]);
   const [notice, setNotice] = useState("");
-  const [month, setMonth] = useState(10);
+  const [month, setMonth] = useState(new Date().getMonth());
   const [onlyOfficial, setOnlyOfficial] = useState(false);
   useEffect(() => {
     try {
@@ -103,7 +108,7 @@ export default function Dashboard() {
         setWatch(
           w.filter(
             (id: unknown) =>
-              typeof id === "string" && companies.some((c) => c.id === id),
+              typeof id === "string" && allCompanies.some((c) => c.id === id),
           ),
         );
       const r = JSON.parse(localStorage.getItem("stockagentai-read") || "[]");
@@ -115,7 +120,7 @@ export default function Dashboard() {
       );
     } catch {
       setNotice(
-        "Preferințele locale nu au putut fi încărcate. Poți continua în modul demo.",
+        "Preferințele locale nu au putut fi încărcate. Poți continua fără salvarea preferințelor.",
       );
     }
     setReady(true);
@@ -139,6 +144,7 @@ export default function Dashboard() {
   const navigate = (v: View) => {
     window.scrollTo({ top: 0, behavior: "instant" });
     setView(v);
+    setArchive(false);
     setMobile(false);
     setQuery("");
     setCountry("Toate țările");
@@ -154,7 +160,7 @@ export default function Dashboard() {
   }, [mobile]);
   const filtered = useMemo(
     () =>
-      companies
+      (view === "watchlist" ? allCompanies : archive ? allCompanies.filter(c => c.stage === "Listată") : companies)
         .filter(
           (c) =>
             (view !== "watchlist" || watch.includes(c.id)) &&
@@ -167,20 +173,20 @@ export default function Dashboard() {
         .sort((a, b) =>
           sort === "name"
             ? a.name.localeCompare(b.name)
-            : b.priority - a.priority,
+            : b.publishedAt.localeCompare(a.publishedAt),
         ),
-    [view, watch, query, country, stage, sort],
+    [view, watch, query, country, stage, sort, archive, allCompanies],
   );
   const alerts = companies
     .slice(0, 4)
-    .filter((c) => !onlyOfficial || c.confidence === "Ridicată");
+    .filter((c) => !onlyOfficial || c.official);
   const unread = alerts.filter((c) => !read.includes(c.id)).length;
   const table = (
     <section className="table-panel">
       <div className="section-heading">
         <div>
           <h2>
-            {view === "watchlist" ? "Lista de urmărire" : "Companii pe radar"}{" "}
+            {view === "watchlist" ? "Lista de urmărire" : archive ? "Arhiva listărilor" : "Companii pe radar"}{" "}
             <span className="count">{filtered.length}</span>
           </h2>
           <p>De la primul semnal, până la prima zi de tranzacționare.</p>
@@ -192,6 +198,7 @@ export default function Dashboard() {
         )}
       </div>
       <div className="filters">
+        <button hidden={view === "watchlist"} className="secondary" aria-pressed={archive} onClick={() => setArchive(v => !v)}>{archive ? "Arhivă · vezi radarul" : "Vezi listările încheiate"}</button>
         <label className="search-field">
           <Search size={16} />
           <input
@@ -209,7 +216,7 @@ export default function Dashboard() {
             value={country}
             onChange={(e) => setCountry(e.target.value)}
           >
-            {["Toate țările", "SUA", "România", "Germania", "Austria"].map(
+            {["Toate țările", "SUA", "România"].map(
               (v) => (
                 <option key={v}>{v}</option>
               ),
@@ -229,6 +236,7 @@ export default function Dashboard() {
               "Intenție anunțată",
               "Semnal preliminar",
               "Ofertă programată",
+              "Listată",
             ].map((v) => (
               <option key={v}>{v}</option>
             ))}
@@ -241,7 +249,7 @@ export default function Dashboard() {
             value={sort}
             onChange={(e) => setSort(e.target.value)}
           >
-            <option value="priority">Prioritate</option>
+            <option value="priority">Sursa cea mai recentă</option>
             <option value="name">Nume A–Z</option>
           </select>
         </label>
@@ -254,7 +262,7 @@ export default function Dashboard() {
               <th>PIAȚĂ VIZATĂ</th>
               <th>STADIUL LISTĂRII</th>
               <th>
-                PRIORITATE <Info size={12} />
+                DOVEZI <Info size={12} />
               </th>
               <th>ORIZONT</th>
               <th>
@@ -287,15 +295,7 @@ export default function Dashboard() {
                   <Badge stage={c.stage} />
                 </td>
                 <td>
-                  <span className="score">
-                    <i
-                      style={
-                        { "--score": `${c.priority}%` } as React.CSSProperties
-                      }
-                    />
-                    {c.priority}
-                    <small>/100</small>
-                  </span>
+                  <span className="confidence">{c.official ? "Oficiale" : "Presă"}{stale(c) && <small>Necesită reconfirmare</small>}</span>
                 </td>
                 <td className="horizon">{c.dateLabel}</td>
                 <td>
@@ -344,9 +344,9 @@ export default function Dashboard() {
       <div className="table-footer">
         <span>
           {filtered.length} {filtered.length === 1 ? "companie" : "companii"} ·
-          set demonstrativ
+          date din Supabase
         </span>
-        <span>Prioritatea indică relevanța cercetării, nu randamentul.</span>
+        <span>Stadiul documentelor nu indică randamentul investiției.</span>
       </div>
     </section>
   );
@@ -383,7 +383,7 @@ export default function Dashboard() {
           <span className="workspace-icon">D</span>
           <div>
             <strong>Spațiul meu de cercetare</strong>
-            <small>Prototip public · date demo</small>
+            <small>SUA & România · date publice</small>
           </div>
           <span className="workspace-lock">
             <ShieldCheck size={15} />
@@ -431,11 +431,11 @@ export default function Dashboard() {
           <div className="agent-card">
             <div>
               <span className="status-dot" />
-              MEDIU DEMONSTRATIV
+              CERCETARE DOCUMENTATĂ
             </div>
             <strong>Un pas înaintea pieței.</strong>
             <p>
-              Agentul va urmări sursele publice. Momentan explorezi un prototip.
+              Dosare reale, revizuite manual. Automatizarea continuă este în pregătire.
             </p>
             <button onClick={() => navigate("research")}>
               Descoperă infrastructura <ArrowUpRight size={15} />
@@ -445,7 +445,7 @@ export default function Dashboard() {
             <span className="avatar">D</span>
             <div>
               <strong>Cont local</strong>
-              <small>Acces demonstrativ</small>
+              <small>Preferințe în browser</small>
             </div>
             <button
               className="icon-button sidebar-collapse"
@@ -512,7 +512,7 @@ export default function Dashboard() {
           <div className="top-actions">
             <span className="demo-pill">
               <span />
-              Date demo
+              Date publice
             </span>
             <span className="avatar small-avatar">D</span>
           </div>
@@ -537,9 +537,10 @@ export default function Dashboard() {
             </div>
             <div className="date-label">
               <CalendarDays size={15} />
-              10 noiembrie 2026<span>Snapshot demonstrativ</span>
+              {formatDate(new Date().toISOString())}<span>Surse datate individual</span>
             </div>
           </div>
+          {error && <div role="alert" className="notice">{error}</div>}
           {notice && (
             <div role="status" className="notice">
               {notice}
@@ -559,7 +560,7 @@ export default function Dashboard() {
                   {
                     label: "Companii pe radar",
                     value: companies.length,
-                    sub: "4 țări · 6 sectoare",
+                    sub: "SUA & România",
                     icon: Building2,
                   },
                   {
@@ -573,7 +574,7 @@ export default function Dashboard() {
                   {
                     label: "Evenimente în calendar",
                     value: companies.filter((c) => c.date).length,
-                    sub: "În următoarele 30 de zile",
+                    sub: "Date de subscriere confirmate",
                     icon: CalendarDays,
                   },
                   {
@@ -613,7 +614,7 @@ export default function Dashboard() {
                 <div className="spotlight-content">
                   <div className="spotlight-label">
                     <span className="spark">✳</span> ÎN PRIM-PLAN{" "}
-                    <span>SCENARIU DEMO</span>
+                    <span>DOSARE REALE</span>
                   </div>
                   <h2>
                     Următorul capitol al AI
@@ -621,13 +622,13 @@ export default function Dashboard() {
                     începe înainte de listare.
                   </h2>
                   <p>
-                    Aether Intelligence intră într-o nouă etapă de pregătire.
+                    Urmărește intențiile și documentele de listare.
                     <br className="desktop-break" /> Explorează semnalul,
                     dovezile și întrebările încă deschise.
                   </p>
                   <button
                     className="primary"
-                    onClick={() => setSelected(companies[0])}
+                    onClick={() => companies[0] ? setSelected(companies[0]) : navigate("research")}
                   >
                     Explorează compania <ArrowUpRight size={16} />
                   </button>
@@ -637,7 +638,7 @@ export default function Dashboard() {
                   <div className="orbit o2" />
                   <div className="orbit o3" />
                   <div className="orbit-core">
-                    aı<span>AETHER</span>
+                    ai<span>RESEARCH</span>
                   </div>
                   <span className="orbit-node node1">
                     <FileText size={19} />
@@ -665,7 +666,7 @@ export default function Dashboard() {
                     </span>
                   </div>
                   <p className="signal-caption">
-                    Evoluții din scenariul demonstrativ
+                    Publicarea surselor, în ordine cronologică
                   </p>
                   <div className="timeline">
                     {companies.slice(0, 3).map((c, i) => (
@@ -676,19 +677,13 @@ export default function Dashboard() {
                       >
                         <span className={`timeline-dot dot-${i}`} />
                         <span className="signal-time">
-                          {
-                            [
-                              "10 nov. · 09:42",
-                              "10 nov. · 08:15",
-                              "9 nov. · 16:30",
-                            ][i]
-                          }
+                          {formatDate(c.publishedAt)}
                         </span>
                         <strong>{c.name}</strong>
                         <p>{c.signal}</p>
                         <span className="signal-source">
                           <FileText size={12} />
-                          {c.evidence} dovezi simulate{" "}
+                          {c.sourceName}{" "}
                           <ArrowUpRight size={12} />
                         </span>
                       </button>
@@ -705,8 +700,7 @@ export default function Dashboard() {
               <div className="bottom-note">
                 <ShieldCheck size={16} />
                 <span>
-                  Context înainte de concluzii. Fiecare semnal va avea surse, un
-                  istoric și un nivel de încredere.
+                  Context înainte de concluzii. Fiecare semnal are o sursă și o dată. Intențiile nu garantează listarea.
                 </span>
                 <button onClick={() => navigate("research")}>
                   Cum funcționează <ArrowUpRight size={14} />
@@ -723,10 +717,10 @@ export default function Dashboard() {
                     {new Intl.DateTimeFormat("ro-RO", {
                       month: "long",
                       year: "numeric",
-                    }).format(new Date(2026, month, 1))}
+                    }).format(new Date(currentYear, month, 1))}
                   </h2>
                   <p>
-                    Datele de mai jos aparțin exclusiv scenariului demonstrativ.
+                    Doar date confirmate de subscriere. Nicio dată estimată nu este introdusă automat.
                   </p>
                 </div>
                 <div className="flex gap-2">
@@ -737,8 +731,8 @@ export default function Dashboard() {
                   >
                     <ChevronLeft size={18} />
                   </button>
-                  <button className="secondary" onClick={() => setMonth(10)}>
-                    Luna demo
+                  <button className="secondary" onClick={() => setMonth(new Date().getMonth())}>
+                    Luna curentă
                   </button>
                   <button
                     className="icon-button"
@@ -756,15 +750,15 @@ export default function Dashboard() {
                   </div>
                 ))}
                 {Array.from(
-                  { length: (new Date(2026, month, 1).getDay() + 6) % 7 },
+                  { length: (new Date(currentYear, month, 1).getDay() + 6) % 7 },
                   (_, i) => (
                     <div className="calendar-day muted-day" key={`blank${i}`} />
                   ),
                 )}
                 {Array.from(
-                  { length: new Date(2026, month + 1, 0).getDate() },
+                  { length: new Date(currentYear, month + 1, 0).getDate() },
                   (_, i) => {
-                    const date = new Date(2026, month, i + 1);
+                    const date = new Date(currentYear, month, i + 1);
                     const event = companies.find(
                       (c) =>
                         c.date ===
@@ -772,13 +766,13 @@ export default function Dashboard() {
                     );
                     return (
                       <div
-                        className={`calendar-day ${month === 10 && i === 9 ? "today" : ""}`}
+                        className={`calendar-day ${month === new Date().getMonth() && i + 1 === new Date().getDate() ? "today" : ""}`}
                         key={i}
                       >
                         <span>{i + 1}</span>
                         {event && (
                           <button onClick={() => setSelected(event)}>
-                            <span>SUBSCRIERE · DEMO</span>
+                            <span>SUBSCRIERE</span>
                             {event.name}
                             <ArrowUpRight size={13} />
                           </button>
@@ -808,22 +802,20 @@ export default function Dashboard() {
               <div className="research-intro">
                 <Radio size={26} />
                 <div>
-                  <h2>Infrastructura este pregătită în plan.</h2>
+                  <h2>Supabase · registrul de cercetare</h2>
                   <p>
-                    Colectarea automată nu este conectată. Mai jos sunt sursele
-                    propuse și frecvențele țintă, care vor fi validate înainte
-                    de activare.
+                    Dosarele publicate sunt revizuite manual. Colectorii pregătesc candidați pentru verificare; rularea periodică nu este activată. SEC a limitat accesul automat.
                   </p>
                 </div>
                 <span className="badge gray">
                   <span />
-                  Neconectat
+                  Revizuire manuală
                 </span>
               </div>
               <section className="table-panel">
                 <div className="section-heading">
                   <h2>Registrul surselor</h2>
-                  <span className="count">4 surse propuse</span>
+                  <span className="count">{sources.length} surse</span>
                 </div>
                 {sources.map((s) => (
                   <div className="source-row" key={s.name}>
@@ -833,15 +825,15 @@ export default function Dashboard() {
                     <div>
                       <strong>{s.name}</strong>
                       <small>
-                        {s.area} · {s.kind}
+                        {s.area} · {s.kind}<br />{s.detail}
                       </small>
                     </div>
                     <span className="source-frequency">
-                      Țintă: {s.interval}
+                      {s.checked_at ? formatDate(s.checked_at) : "Fără colectare reușită"}
                     </span>
                     <span className="badge gray">
                       <span />
-                      Neconectat
+                      {s.status}
                     </span>
                     <a
                       className="icon-button"
@@ -887,7 +879,7 @@ export default function Dashboard() {
               <div className="section-heading">
                 <div>
                   <h2>Schimbări care merită atenția ta</h2>
-                  <p>{unread} semnale necitite · toate sunt demonstrative</p>
+                  <p>{unread} dosare necitite · data indică publicarea sursei</p>
                 </div>
                 <button
                   className="secondary"
@@ -915,7 +907,7 @@ export default function Dashboard() {
                       <Badge stage={c.stage} />
                     </strong>
                     <p>{c.signal}</p>
-                    <small>10 noiembrie 2026 · sursă simulată</small>
+                    <small>{formatDate(c.publishedAt)} · {c.sourceName}</small>
                   </button>
                   <button
                     className="icon-button"
@@ -950,8 +942,7 @@ export default function Dashboard() {
                 <div>
                   <strong>Doar semnale cu dovezi solide</strong>
                   <p>
-                    În notificările demo, afișează doar companiile cu încredere
-                    ridicată.
+                    În notificări, afișează doar dosarele cu o sursă oficială.
                   </p>
                 </div>
                 <button
@@ -983,10 +974,9 @@ export default function Dashboard() {
               </div>
               <div className="setting-row">
                 <div>
-                  <strong>Mod demonstrativ</strong>
+                  <strong>Date reale · Supabase</strong>
                   <p>
-                    Toate companiile și evenimentele din acest prototip sunt
-                    fictive.
+                    Date publice revizuite manual. Lista nu acoperă toate IPO-urile. Actualizarea continuă nu este activată.
                   </p>
                 </div>
                 <span className="badge green">
@@ -1001,7 +991,7 @@ export default function Dashboard() {
               stockagentai <span className="footer-slash">/</span> Perspectivă,
               înainte de oportunitate.
             </span>
-            <span>Prototip · Companii fictive · Fără cercetare live</span>
+            <span>Surse publice · Verificare manuală · Fără recomandări de investiții</span>
           </footer>
         </main>
       </div>
@@ -1020,7 +1010,7 @@ export default function Dashboard() {
             {selected && (
               <>
                 <div className="detail-top">
-                  <span className="eyebrow">DOSAR DE CERCETARE · DEMO</span>
+                  <span className="eyebrow">DOSAR DE CERCETARE</span>
                   <Dialog.Close
                     className="icon-button"
                     aria-label="Închide profilul"
@@ -1063,16 +1053,14 @@ export default function Dashboard() {
                 <div className="demo-warning">
                   <Info size={17} />
                   <p>
-                    Companie fictivă. Informațiile și dovezile ilustrează
-                    funcționarea produsului și nu descriu o ofertă reală.
+                    {stale(selected) ? "Sursă mai veche de 90 de zile: stadiul necesită reconfirmare. " : ""}Stadiul reflectă documentul citat, nu garantează că oferta se va realiza.
                   </p>
                 </div>
                 <div className="detail-stats">
                   <div>
-                    <small>PRIORITATE CERCETARE</small>
+                    <small>PUBLICAREA SURSEI</small>
                     <strong>
-                      {selected.priority}
-                      <span>/100</span>
+                      {formatDate(selected.publishedAt)}
                     </strong>
                   </div>
                   <div>
@@ -1083,8 +1071,7 @@ export default function Dashboard() {
                   </div>
                 </div>
                 <p className="score-explainer">
-                  Scor demonstrativ de relevanță, fără valoare predictivă pentru
-                  randament.
+                  Document consultat la {formatDate(selected.checkedAt)}. Citirea sursei nu confirmă că stadiul nu s-a schimbat între timp.
                 </p>
                 <section className="detail-section">
                   <h3>Ce s-a schimbat</h3>
@@ -1103,7 +1090,7 @@ export default function Dashboard() {
                   </div>
                   <div className="detail-fact">
                     <span>Prima zi de tranzacționare</span>
-                    <strong>Neconfirmată</strong>
+                    <strong>{selected.stage === "Listată" ? selected.dateLabel : "Neconfirmată"}</strong>
                   </div>
                 </section>
                 <section className="detail-section">
@@ -1114,31 +1101,17 @@ export default function Dashboard() {
                   <h3>Riscuri & întrebări deschise</h3>
                   <p>{selected.risk}</p>
                   <p>
-                    Evaluarea, veniturile și termenii finali ai ofertei nu sunt
-                    disponibili în acest set demo.
+                    Analiza financiară și scorul de potențial nu sunt încă implementate.
                   </p>
                 </section>
                 <section className="detail-section">
-                  <h3>Istoricul dovezilor</h3>
-                  <div className="evidence">
-                    <FileText size={18} />
-                    <div>
-                      <strong>Actualizare de documentație · simulată</strong>
-                      <p>10 noiembrie 2026 · ultima verificare demo</p>
-                      <small>{selected.signal}</small>
-                    </div>
-                  </div>
-                  <div className="evidence">
-                    <Radio size={18} />
-                    <div>
-                      <strong>Primul semnal identificat · simulat</strong>
-                      <p>3 noiembrie 2026 · adăugat pe radar</p>
-                      <small>
-                        În produsul conectat, fiecare intrare va include
-                        documentul original și fragmentul justificativ.
-                      </small>
-                    </div>
-                  </div>
+                  <h3>Sursa documentară</h3>
+                  <div className="evidence"><FileText size={18} /><div>
+                    <a href={selected.sourceUrl} target="_blank" rel="noreferrer">{selected.sourceName} <ExternalLink size={14} /></a>
+                    <p>Publicat: {formatDate(selected.publishedAt)}</p>
+                    <p>Consultat manual: {formatDate(selected.checkedAt)}</p>
+                    <small>{selected.signal}</small>
+                  </div></div>
                 </section>
               </>
             )}

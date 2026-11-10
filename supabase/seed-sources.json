@@ -1,0 +1,42 @@
+[
+  {
+    "id": "anthropic",
+    "name": "Anthropic · anunț IPO",
+    "area": "SUA",
+    "kind": "Emitent",
+    "url": "https://www.anthropic.com/news/s1-sec",
+    "status": "Verificat manual",
+    "checked_at": "2026-11-10T20:22:24.758717+00:00",
+    "detail": "Anunțul de depunere S-1; calendar neconfirmat."
+  },
+  {
+    "id": "sec",
+    "name": "SEC · EDGAR",
+    "area": "SUA",
+    "kind": "Registru oficial",
+    "url": "https://www.sec.gov/edgar/search/",
+    "status": "Acces limitat",
+    "checked_at": null,
+    "detail": "Endpoint-ul automat a returnat HTTP 403. Nicio colectare reușită declarată."
+  },
+  {
+    "id": "bvb",
+    "name": "BVB · oferte în derulare",
+    "area": "România",
+    "kind": "Bursă",
+    "url": "https://www.bvb.ro/tradingandstatistics/trading/publicoffers",
+    "status": "Verificat manual",
+    "checked_at": "2026-11-10T20:22:24.758717+00:00",
+    "detail": "Pagina consultată conține Fidelis, exclus din IPO-uri de acțiuni. Nu confirmă absența tuturor intențiilor de listare."
+  },
+  {
+    "id": "digi24",
+    "name": "Digi24 · companii de stat",
+    "area": "România",
+    "kind": "Presă",
+    "url": "https://www.digi24.ro/amphtml/stiri/economie/guvernul-analizeaza-listarea-unor-companii-de-stat-la-bursa-cec-bank-si-portul-constanta-printre-variantele-luate-in-calcul-3730311",
+    "status": "Verificat manual",
+    "checked_at": "2026-11-10T20:22:24.758717+00:00",
+    "detail": "Semnale din aprilie 2026; necesită reconfirmare înainte de promovare la intenție confirmată."
+  }
+]

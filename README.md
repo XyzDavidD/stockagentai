@@ -1,47 +1,57 @@
 # stockagentai
 
-Dashboard de cercetare pre-IPO, în română. Milestone 1: prototip public interactiv cu date fictive.
+Dashboard pre-IPO în română, Next.js + TypeScript + Tailwind + Supabase.
+Public: https://stockagentai.vercel.app
 
-## Pornire
+## Pornire și verificare
 
-Node.js 20.9+ și npm.
+Node.js 22.12+; `npm ci`, apoi `npm run dev`.
+`npm run typecheck`, `npm test`, `npm run build`.
+Dacă mediul local nu permite porturile auxiliare Turbopack, folosește `npx next build --webpack`.
+
+## Milestone 2 — date reale
+
+Pagina citește la fiecare cerere dosarele publicate din Supabase (fără cache static și fără fallback la companii fictive). O eroare de conexiune afișează explicit indisponibilitatea datelor.
+
+Setul inițial, consultat la 10 noiembrie 2026:
+- Anthropic: comunicat oficial din 26 octombrie privind depunerea S-1; dată de listare neconfirmată.
+- CEC Bank și CN APM Constanța: semnale preliminare din presa din 16 aprilie, fără decizie finală confirmată; marcate ca vechi și necesitând reconfirmare.
+- Electro-Alfa International: debut confirmat de BVB la 3 martie; apare separat, în arhivă.
+
+Fiecare dosar păstrează URL-ul sursei, data publicării și data consultării. Consultarea unui document vechi nu confirmă stadiul curent. Scorurile fictive au fost eliminate. Nu există încă evaluare financiară automată sau acoperire exhaustivă.
+
+## Supabase și acces
+
+Proiect: `kvssszorqmzmikmxcwll`, Europa (Irlanda).
+- `companies`: profil documentat, vizibil public numai când `published=true`.
+- `research_sources`: registru public și ultima verificare reușită.
+- `ingestion_candidates`: coadă privată de revizuire, deduplicată după URL.
+- `ingestion_runs`: istoric privat al execuțiilor și codurilor de eroare.
+
+RLS este activ pe toate tabelele. `anon`/`authenticated` au doar SELECT pe cercetarea publicată și registrul surselor. Nu au acces la candidați, rulări sau scrieri. Preferințele personale rămân în browser, fără sincronizare. Site-ul public nu are autentificare.
+
+Cheia **publishable** din configurație este destinată expunerii publice și nu poate scrie. Nu sunt folosite sau publicate parole, chei secret/service-role ori credențiale de administrare. Configurația poate fi înlocuită prin variabilele din `.env.example`.
+
+Migrarea inițială este `supabase/migrations/202611100001_research.sql`; a fost aplicată în SQL Editor. Nu se reaplică peste aceleași politici. `supabase/seed.sql` importă setul inițial revizuit; nu îl rula peste cercetări mai noi, deoarece actualizează profilurile cu snapshotul inițial.
+
+## Colectori SUA / România
 
 ```sh
-npm install
-npm run dev
+npm run collect -- /tmp/stockagentai-import.sql
 ```
 
-Deschide http://127.0.0.1:3000. Pentru verificare: `npm run typecheck` și `npm run build`.
+Colectorul execută câte o cerere la BVB și SEC, cu timeout și fără ocolirea blocajelor. Produce SQL pentru revizuire și import în SQL Editor. Această etapă nu cere chei privilegiate în mediul local sau Vercel.
 
-## Ce funcționează
+- BVB: pagina ofertelor publice; exclude Ministerul Finanțelor/Fidelis, obligațiunile identificate explicit și răscumpărările. Celelalte oferte sunt **candidați**, nu IPO-uri confirmate.
+- SEC: feed S-1; păstrează înregistrări S-1 și amendamente pentru revizuire. Un S-1 poate reprezenta ofertă secundară, nu se publică automat drept IPO. Feedul este limitat la cele mai recente 40 înregistrări, nu este backfill sau acoperire completă.
+- Deduplicare după URL, amprentă SHA-256, revenire la revizuire dacă se schimbă conținutul. Ultima verificare reușită nu se modifică la eșec.
+- Rularea din 10 noiembrie: BVB reușit, zero candidați după filtrare; SEC HTTP 403. Rezultatele sunt în Supabase. Acest rezultat nu înseamnă că România nu are intenții de IPO.
 
-- Privire de ansamblu, căutare, filtre combinate și sortare.
-- Dosar de companie în panou accesibil (focus controlat, Escape, revenire la context).
-- Listă de urmărire persistentă în localStorage.
-- Calendar navigabil, perioade cunoscute și orizonturi neconfirmate.
-- Notificări demonstrative, citit/necitit și preferințe persistente.
-- Registru de surse propuse și prezentarea fluxului de cercetare.
-- Layout adaptiv pentru desktop și mobil; suport reduced-motion.
-- Meniu lateral retractabil cu preferință persistentă și notificări într-un singur loc.
-- Text de minimum 12px pentru conținutul obișnuit și contrast întărit.
+**Nu există încă programare 24/7.** Importul este la cerere, cu verificare umană. Nu sunt conectate Resend sau servicii AI. Activarea continuă necesită un worker, credențială limitată de ingestie, programare, respectarea limitelor surselor și monitorizarea erorilor.
 
-## Limitele prototipului
+## Următorii pași
 
-Toate cele șase companii, scorurile și evenimentele sunt fictive. Snapshotul este fixat la 10 noiembrie 2026. Sursele externe din registru sunt reale, dar nu sunt conectate; nu reprezintă dovezi pentru companiile demo. Nu există colectare live, autentificare, bază de date sau trimitere de e-mailuri. Prototipul public nu are barieră de autentificare. Serverul de dezvoltare ascultă doar local.
+3. Descoperire mai largă (anunțuri BVB/ASF, emitenți, presă), documente și afirmații normalizate, reconcilierea stadiilor, extragere AI cu dovezi și evaluare financiară separată de certitudinea listării.
+4. Worker programat, retry cu backoff, observabilitate și alerte doar la schimbări; apoi Resend și acces privat dacă se adaugă note personale.
 
-Nu introduce date sensibile în prototip. Datele locale nu se sincronizează între dispozitive.
-
-## Structură
-
-- `src/app`: shell Next.js, metadata, stiluri și pagina principală.
-- `src/components/dashboard.tsx`: navigare și interacțiuni demonstrative.
-- `src/lib/data.ts`: tipurile de domeniu, companiile fictive și registrul surselor.
-- `ui-skills`: referințele de design furnizate de utilizator, păstrate integral.
-
-## Etapele următoare
-
-2. Supabase/PostgreSQL, acces privat, migrații și colectori oficiali SUA/România.
-3. Descoperire multilingvă, extragere AI cu dovezi, Germania/Austria și evaluare pe date istorice.
-4. Operare continuă, alerte, observabilitate, pilot de 14 zile și ulterior Resend.
-
-Modelul persistent va separa companies, listing_events, sources, documents, claims, evidence, analyses, watchlists, alerts și job_runs. Se vor păstra published_at, detected_at și verified_at separat. Joburile trebuie să fie idempotente și să suporte retry cu backoff, deduplicare, limite pe sursă, buget zilnic și revizuirea contradicțiilor. Conținutul colectat este neîncrezător și nu poate executa instrucțiuni sau accesa secrete.
+Referințele de design ale utilizatorului rămân în `ui-skills`. Datele din surse sunt conținut neîncrezător și nu pot executa instrucțiuni ori accesa secrete.
