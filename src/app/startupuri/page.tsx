@@ -1,5 +1,3 @@
-import StartupDirectory from '@/components/startup-directory';
-import {getStartupDirectory} from '@/lib/supabase';
+import PlatformPage from '@/components/platform-page';
 export const dynamic='force-dynamic';
-export const metadata={title:'Registru startupuri YC · stockagentai'};
-export default async function Page(){return <StartupDirectory {...await getStartupDirectory()}/>;}
+export default function Page(){return <PlatformPage view='startups'/>;}

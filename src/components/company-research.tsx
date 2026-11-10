@@ -6,13 +6,14 @@ import type {Company,Discovery} from '@/lib/data';
 import {reconcile,canonicalSource} from '@/lib/reconciliation.mjs';
 import {safeEvidenceUrl} from '@/lib/signals.mjs';
 const date=(value:string|null)=>value?new Intl.DateTimeFormat('ro-RO',{dateStyle:'medium',timeZone:'Europe/Bucharest'}).format(new Date(value)):'Dată necunoscută';
-export default function CompanyResearch({items,companies,error,evaluatedAt}:{items:Discovery[];companies:Company[];error:string|null;evaluatedAt:string}){
+export default function CompanyResearch({items,companies,error,evaluatedAt,embedded=false}:{items:Discovery[];companies:Company[];error:string|null;evaluatedAt:string;embedded?:boolean}){
+ const Root=embedded?'section':'main';
  const [query,setQuery]=useState(''),[reviewOnly,setReviewOnly]=useState(false);
  const result=useMemo(()=>reconcile(items,companies,Date.parse(evaluatedAt)),[items,companies,evaluatedAt]);
  const groups=result.groups.filter(g=>g.company.name.toLocaleLowerCase('ro').includes(query.toLocaleLowerCase('ro'))&&(!reviewOnly||g.documents.some(d=>d.comparison?.needsReview)));
  const unmatched=result.unmatched.filter(d=>d.item.title.toLocaleLowerCase('ro').includes(query.toLocaleLowerCase('ro')));
- return <main className="discovery-page">
-  <header className="discovery-nav"><Link href="/" className="discovery-back"><ArrowLeft size={17}/> Dashboard</Link><Link href="/descoperiri">Toate documentele <ArrowUpRight size={14}/></Link></header>
+ return <Root className={`discovery-page ${embedded?'embedded-discovery':''}`}>
+  {!embedded&&<header className="discovery-nav"><Link href="/" className="discovery-back"><ArrowLeft size={17}/> Dashboard</Link><Link href="/descoperiri">Toate documentele <ArrowUpRight size={14}/></Link></header>}
   <div className="discovery-heading"><div><p className="discovery-eyebrow">DOCUMENTE CARE SPUN ACEEAȘI POVESTE</p><h1>Dosare și semnale.</h1><p>Istoricul surselor, organizat în jurul fiecărei companii.</p></div><span className="discovery-mode"><Files size={18}/> Asociere prin reguli</span></div>
   <section className="discovery-notice"><strong>Dosarul publicat și indiciile noi rămân distincte.</strong><p>Legăm documentele prin URL-urile din dosare. Numele complet din titlu propune doar o asociere. Comparăm data publicării cu sursa curentă, fără să confundăm o descoperire recentă cu o știre nouă. Nu modificăm automat stadiile.</p></section>
   {error?<div role="alert" className="discovery-notice">{error} <button className="discovery-button" onClick={()=>window.location.reload()}>Reîncearcă</button></div>:<>
@@ -39,5 +40,5 @@ export default function CompanyResearch({items,companies,error,evaluatedAt}:{ite
   {!groups.length&&!unmatched.length&&<div className="discovery-empty"><h2>Niciun rezultat pentru aceste filtre.</h2><button className="discovery-button" onClick={()=>{setQuery('');setReviewOnly(false);}}>Resetează filtrele</button></div>}
   </>}
   <footer className="discovery-footnote">Fără AI și fără recomandări de investiții. Comparația este recalculată la încărcarea paginii; nu este un istoric al tuturor modificărilor și nu trimite notificări.</footer>
- </main>;
+ </Root>;
 }

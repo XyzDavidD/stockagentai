@@ -36,16 +36,13 @@ import Discoveries from "@/components/discoveries";
 import RadarOverview from "@/components/radar-overview";
 import CompanyUniverse from "@/components/company-universe";
 import type {Discovery,StartupProfile} from "@/lib/data";
-type View =
-  | "discoveries"
-  | "universe"
-  | "overview"
-  | "companies"
-  | "calendar"
-  | "watchlist"
-  | "research"
-  | "alerts"
-  | "settings";
+import {useRouter} from 'next/navigation';
+import {platformRoutes,type View} from '@/lib/platform-routes';
+import {companyUniverse,estimatedCalendar,discoveryKey} from '@/lib/universe.mjs';
+import {sourceCategory} from '@/lib/provenance.mjs';
+import {safeEvidenceUrl} from '@/lib/signals.mjs';
+import CompanyResearch from '@/components/company-research';
+import StartupDirectory from '@/components/startup-directory';
 const navigation = [
   { id: "overview", label: "Privire de ansamblu", icon: LayoutDashboard },
   { id: "discoveries", label: "Radar IPO · toate sursele", icon: Globe2 },
@@ -60,6 +57,8 @@ const titles: Record<View, string> = {
   discoveries: "Radar IPO extins",
   universe: "Companii și startupuri",
   companies: "Dosare verificate",
+  startups:"Registru YC",
+  dossiers:"Dosare și semnale",
   calendar: "Calendarul listărilor",
   watchlist: "Companiile pe care le urmărești",
   research: "În spatele fiecărui semnal",
@@ -89,9 +88,13 @@ function Badge({ stage }: { stage: string }) {
     </span>
   );
 }
-export default function Dashboard({ companies: allCompanies, sources, error, scheduler, discoveries, discoveryError, startups, startupError }: {discoveries:Discovery[];discoveryError:string|null;startups:{profile:StartupProfile;checked_at:string}[];startupError:string|null; companies: Company[]; sources: Source[]; error: string | null; scheduler: Scheduler | null }) {
+export default function Dashboard({ companies: allCompanies, sources, error, scheduler, discoveries, discoveryError, startups, startupError, initialView="overview", evaluatedAt }: {initialView?:View;evaluatedAt:string;discoveries:Discovery[];discoveryError:string|null;startups:{profile:StartupProfile;checked_at:string}[];startupError:string|null; companies: Company[]; sources: Source[]; error: string | null; scheduler: Scheduler | null }) {
   const coverage = [...new Set(sources.filter(s=>s.last_attempt_at&&s.checked_at&&!s.status.startsWith('Suspendat')).map(s=>s.area))].filter(a=>['SUA','România','Germania','Austria','Regatul Unit','Franța'].includes(a));
   const regionCodes:Record<string,string>={'SUA':'SUA','România':'RO','Germania':'DE','Austria':'AT','Regatul Unit':'UK','Franța':'FR'};
+  const router=useRouter();
+  const universe=useMemo(()=>companyUniverse(allCompanies,discoveries,startups),[allCompanies,discoveries,startups]);
+  const estimated=useMemo(()=>estimatedCalendar(discoveries),[discoveries]);
+  const [alertLimit,setAlertLimit]=useState(25);
   const [archive, setArchive] = useState(false);
   const companies = allCompanies.filter(c => c.stage !== "Listată");
   const formatDate = (value: string) => new Intl.DateTimeFormat("ro-RO", {dateStyle: "medium", timeZone: "Europe/Bucharest"}).format(new Date(value));
@@ -99,7 +102,8 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
   const pendingTotal = sources.reduce((sum, source) => sum + (source.pending_count || 0), 0);
   const timestamp = (value: string) => new Intl.DateTimeFormat("ro-RO", {dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Bucharest"}).format(new Date(value));
   const currentYear = new Date().getFullYear();
-  const [view, setView] = useState<View>("overview");
+  const [view, setView] = useState<View>(initialView);
+  useEffect(()=>setView(initialView),[initialView]);
   const [query, setQuery] = useState("");
   const [country, setCountry] = useState("Toate țările");
   const [stage, setStage] = useState("Toate stadiile");
@@ -122,7 +126,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
         setWatch(
           w.filter(
             (id: unknown) =>
-              typeof id === "string" && allCompanies.some((c) => c.id === id),
+              typeof id === "string",
           ),
         );
       const r = JSON.parse(localStorage.getItem("stockagentai-read") || "[]");
@@ -158,6 +162,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
   const navigate = (v: View) => {
     window.scrollTo({ top: 0, behavior: "instant" });
     setView(v);
+    router.push(platformRoutes[v]);
     setArchive(false);
     setMobile(false);
     setQuery("");
@@ -194,7 +199,8 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
   const alerts = companies
     .filter((c) => !onlyOfficial || c.official);
   const alertKey = (c: Company) => `${c.id}:${c.publishedAt}:${c.signal}`;
-  const unread = alerts.filter((c) => !read.includes(alertKey(c))).length;
+  const documentAlerts=useMemo(()=>discoveries.filter(i=>!onlyOfficial||sourceCategory(i.source_kind).startsWith('Oficială')).sort((a,b)=>b.discovered_at.localeCompare(a.discovered_at)),[discoveries,onlyOfficial]);
+  const unread = alerts.filter((c) => !read.includes(alertKey(c))).length+documentAlerts.filter(i=>!read.includes(discoveryKey(i))).length;
   const table = (
     <section className="table-panel">
       <div className="section-heading">
@@ -418,7 +424,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
               <n.icon size={18} />
               <span className="nav-text">{n.label}</span>
               {n.id === "watchlist" && (
-                <span className="nav-count">{watch.length}</span>
+                <span className="nav-count">{universe.filter(r=>watch.includes(r.id)).length}</span>
               )}
             </button>
           ))}
@@ -557,6 +563,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
             </div>
           </div>
 
+          <nav className="platform-links" aria-label="Secțiuni de cercetare"><a href="/companii">Companii</a><a href="/descoperiri">Radar extins</a><a href="/startupuri">Registru YC</a><a href="/dosare">Dosare și semnale</a><button onClick={()=>router.refresh()}>Actualizează datele</button></nav>
           {error && <div role="alert" className="notice">{error}</div>}
           {notice && (
             <div role="status" className="notice">
@@ -603,7 +610,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
                 <div>{table}</div>
                 <aside className="signal-panel">
                   <div className="section-heading">
-                    <h2>Ultimele semnale</h2>
+                    <h2>Semnale din dosarele verificate</h2>
                     <span className="signal-symbol">
                       <Radio size={17} />
                     </span>
@@ -652,8 +659,11 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
             </>
           )}
           {view === "discoveries" && <Discoveries items={discoveries} error={discoveryError} embedded/>}
-          {view === "universe" && <CompanyUniverse companies={allCompanies} items={discoveries} startups={startups} error={discoveryError||startupError||error} onVerified={()=>navigate("companies")}/>}
-          {(view === "companies" || view === "watchlist") && table}
+          {view === "universe" && <CompanyUniverse companies={allCompanies} items={discoveries} startups={startups} error={discoveryError||startupError||error} onVerified={()=>navigate("companies")} watch={watch} onToggle={toggle}/>}
+          {view === "companies" && table}
+          {view === "watchlist" && <CompanyUniverse companies={allCompanies} items={discoveries} startups={startups} error={discoveryError||startupError||error} onVerified={()=>navigate("universe")} watch={watch} onToggle={toggle} savedOnly/>}
+          {view === "startups" && <StartupDirectory rows={startups} error={startupError} embedded/>}
+          {view === "dossiers" && <CompanyResearch companies={allCompanies} items={discoveries} error={discoveryError||error} evaluatedAt={evaluatedAt} embedded/>}
           {view === "calendar" && (
             <section className="table-panel calendar-panel">
               <div className="section-heading">
@@ -726,6 +736,14 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
                     );
                   },
                 )}
+              </div>
+              <div className="calendar-unscheduled">
+                <h3>Calendar raportat de agregator · estimări neconfirmate</h3>
+                <p>Datele de mai jos provin din calendarul Stock Analysis; nu sunt date confirmate de subscriere. Depunerile SEC raportate nu sunt introduse ca date de listare.</p>
+                {discoveryError&&<p role="alert">{discoveryError}</p>}
+                {estimated.filter(i=>i.eventDate?.startsWith(`${new Date(currentYear,month,1).getFullYear()}-${String(new Date(currentYear,month,1).getMonth()+1).padStart(2,'0')}`)).map(i=><p key={i.url}><strong>{i.eventDate}</strong> · {safeEvidenceUrl(i.url)?<a href={i.url} target="_blank" rel="noopener noreferrer">{i.title} ↗</a>:i.title} · Neoficial / estimativ</p>)}
+                {!estimated.some(i=>i.eventDate?.startsWith(`${new Date(currentYear,month,1).getFullYear()}-${String(new Date(currentYear,month,1).getMonth()+1).padStart(2,'0')}`))&&<p>Nicio estimare disponibilă pentru luna selectată.</p>}
+                <button className="text-button" onClick={()=>navigate('universe')}>Explorează toate companiile și startupurile →</button>
               </div>
               <div className="calendar-unscheduled">
                 <h3>Orizont neconfirmat</h3>
@@ -827,16 +845,21 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
               <div className="section-heading">
                 <div>
                   <h2>Schimbări care merită atenția ta</h2>
-                  <p>{unread} dosare necitite · data indică publicarea sursei</p>
+                  <p>{unread} semnale necitite · dosare și documente descoperite</p>
                 </div>
                 <button
                   className="secondary"
-                  onClick={() => setRead(alerts.map(alertKey))}
+                  onClick={() => setRead(r=>Array.from(new Set([...r,...alerts.map(alertKey),...documentAlerts.map(discoveryKey)])))}
                 >
                   <CheckCheck size={16} />
                   Marchează citite
                 </button>
               </div>
+              {discoveryError&&<p role="alert" className="notice">{discoveryError}</p>}
+              <h3 className="home-radar-count">Documente descoperite · {documentAlerts.length}</h3>
+              {documentAlerts.slice(0,alertLimit).map(i=><article className={`alert-row ${read.includes(discoveryKey(i))?'':'unread'}`} key={i.url}><div className="alert-content"><strong>{safeEvidenceUrl(i.url)?<a href={i.url} target="_blank" rel="noopener noreferrer">{i.title} ↗</a>:i.title}</strong><p>{sourceCategory(i.source_kind)} · {i.area} · {i.source_name}</p><small>Detectat: {formatDate(i.discovered_at)} · Publicat: {i.published_at?formatDate(i.published_at):'necunoscut'} · stadiu de verificat</small></div><button className="secondary" aria-label={`Marchează documentul ${read.includes(discoveryKey(i))?'necitit':'citit'}: ${i.title}`} onClick={()=>setRead(r=>r.includes(discoveryKey(i))?r.filter(k=>k!==discoveryKey(i)):[...r,discoveryKey(i)])}>{read.includes(discoveryKey(i))?'Citit ✓':'Marchează citit'}</button></article>)}
+              {documentAlerts.length>alertLimit&&<button className="discovery-button" onClick={()=>setAlertLimit(n=>n+25)}>Arată încă 25 documente</button>}
+              <h3 className="home-radar-count">Dosare verificate · {alerts.length}</h3>
               {alerts.map((c) => (
                 <div
                   className={`alert-row ${!read.includes(alertKey(c)) ? "unread" : ""}`}
@@ -890,7 +913,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
                 <div>
                   <strong>Doar semnale cu dovezi solide</strong>
                   <p>
-                    În notificări, afișează doar dosarele cu o sursă oficială.
+                    În notificări, afișează doar dosarele și documentele provenite din surse oficiale.
                   </p>
                 </div>
                 <button
@@ -924,7 +947,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
                 <div>
                   <strong>Date reale · Supabase</strong>
                   <p>
-                    Date publice revizuite manual. Lista nu acoperă toate IPO-urile. Starea colectării apare în Centrul de cercetare.
+                    Date publice colectate automat și dosare revizuite separat. Lista nu acoperă toate IPO-urile. Starea colectării apare în Centrul de cercetare.
                   </p>
                 </div>
                 <span className="badge green">
