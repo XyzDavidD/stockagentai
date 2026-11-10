@@ -6,14 +6,15 @@ import type {Discovery} from '@/lib/data';
 import {sourceCategory,isSpeculative,isPossibleSpac,reportedEventDate} from '@/lib/provenance.mjs';
 import {analyzeSignal,isOldPublication,safeEvidenceUrl} from '@/lib/signals.mjs';
 const date=(value:string|null)=>value?new Intl.DateTimeFormat('ro-RO',{dateStyle:'medium',timeZone:'Europe/Bucharest'}).format(new Date(value)):'Necunoscută';
-export default function Discoveries({items,error}:{items:Discovery[];error:string|null}){
+export default function Discoveries({items,error,embedded=false}:{items:Discovery[];error:string|null;embedded?:boolean}){
+ const Root=embedded?'section':'main';
  const [query,setQuery]=useState(''),[area,setArea]=useState('all'),[stage,setStage]=useState('all');
  const [provider,setProvider]=useState('all'),[sort,setSort]=useState('published');
  const [kind,setKind]=useState('all'),[limit,setLimit]=useState(25),[hideSpacs,setHideSpacs]=useState(false);
  const rows=useMemo(()=>items.map(item=>({...item,analysis:analyzeSignal(item.title)})),[items]);
  const filtered=rows.filter(item=>(provider==='all'||item.source_name===provider)&&(kind==='all'||sourceCategory(item.source_kind)===kind)&&(!hideSpacs||!isPossibleSpac(item.title))&&(area==='all'||item.area===area)&&(stage==='all'||item.analysis.id===stage)&&`${item.title} ${item.source_name}`.toLocaleLowerCase('ro').includes(query.toLocaleLowerCase('ro'))).sort((a,b)=>sort==='title'?a.title.localeCompare(b.title):sort==='event'?(reportedEventDate(b)||'').localeCompare(reportedEventDate(a)||''):sort==='published'?(b.published_at||b.document_evidence?.publication_date||'').localeCompare(a.published_at||a.document_evidence?.publication_date||''):b.discovered_at.localeCompare(a.discovered_at));
- return <main className="discovery-page">
-  <header className="discovery-nav"><Link href="/" className="discovery-back"><ArrowLeft size={17}/> Dashboard</Link><Link href="/startupuri">Registru YC</Link><Link href="/dosare">Dosare și semnale <ArrowUpRight size={14}/></Link></header>
+ return <Root className={`discovery-page ${embedded?'embedded-discovery':''}`}>
+  {!embedded&&<header className="discovery-nav"><Link href="/" className="discovery-back"><ArrowLeft size={17}/> Dashboard</Link><Link href="/startupuri">Registru YC</Link><Link href="/dosare">Dosare și semnale <ArrowUpRight size={14}/></Link></header>}
   <div className="discovery-heading"><div><p className="discovery-eyebrow">DIN SURSE, ÎNAINTE DE CONCLUZII</p><h1>Ce a găsit colectorul.</h1><p>Documente publice, indicii explicabile și întrebări încă deschise.</p></div><span className="discovery-mode"><ScanText size={18}/> Fără AI · fără API plătit</span></div>
   <section className="discovery-notice" aria-label="Cum interpretăm documentele"><strong>Descoperit nu înseamnă confirmat.</strong><p>Regulile verifică titlul și, unde accesul permite, paragrafele articolului. Fragmentele rămân în limba sursei; nu sunt rezumate AI sau estimări de randament. Documentele nu devin automat dosare de companii. Data publicării nu este data listării. Rezultatele includ presă, agregatoare și posibile zvonuri, etichetate separat; mai multe articole pot descrie aceeași companie.</p></section>
   {error?<div role="alert" className="discovery-notice"><p>{error}</p><button className="discovery-button" onClick={()=>window.location.reload()}>Reîncearcă</button></div>:<>
@@ -39,5 +40,5 @@ export default function Discoveries({items,error}:{items:Discovery[];error:strin
   {!filtered.length&&<div className="discovery-empty"><ScanText size={30}/><h2>{items.length?'Niciun document pentru aceste filtre.':'Nu există încă documente în această listă.'}</h2><p>Lipsa rezultatelor nu înseamnă că nu există IPO-uri.</p>{!!items.length&&<button className="discovery-button" onClick={()=>{setQuery('');setArea('all');setStage('all');setKind('all');setProvider('all');setHideSpacs(false);setLimit(25);}}>Resetează filtrele</button>}</div>}
   </>}
   <footer className="discovery-footnote">Acces public, numai pentru citire. Dosarele verificate sunt în dashboard. Colectorul urmărește un set limitat de surse, fără acoperire exhaustivă.</footer>
- </main>;
+ </Root>;
 }

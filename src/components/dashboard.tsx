@@ -32,7 +32,13 @@ import {
   CheckCheck,
 } from "lucide-react";
 import { type Company, type Source, type Scheduler } from "@/lib/data";
+import Discoveries from "@/components/discoveries";
+import RadarOverview from "@/components/radar-overview";
+import CompanyUniverse from "@/components/company-universe";
+import type {Discovery,StartupProfile} from "@/lib/data";
 type View =
+  | "discoveries"
+  | "universe"
   | "overview"
   | "companies"
   | "calendar"
@@ -42,14 +48,18 @@ type View =
   | "settings";
 const navigation = [
   { id: "overview", label: "Privire de ansamblu", icon: LayoutDashboard },
-  { id: "companies", label: "Companii", icon: Building2 },
+  { id: "discoveries", label: "Radar IPO · toate sursele", icon: Globe2 },
+  { id: "universe", label: "Companii și startupuri", icon: Building2 },
+  { id: "companies", label: "Dosare verificate", icon: ShieldCheck },
   { id: "calendar", label: "Calendar IPO", icon: CalendarDays },
   { id: "watchlist", label: "Lista mea", icon: Bookmark },
   { id: "research", label: "Centrul de cercetare", icon: Radio },
 ] as const;
 const titles: Record<View, string> = {
   overview: "Privire de ansamblu",
-  companies: "Universul companiilor",
+  discoveries: "Radar IPO extins",
+  universe: "Companii și startupuri",
+  companies: "Dosare verificate",
   calendar: "Calendarul listărilor",
   watchlist: "Companiile pe care le urmărești",
   research: "În spatele fiecărui semnal",
@@ -79,7 +89,9 @@ function Badge({ stage }: { stage: string }) {
     </span>
   );
 }
-export default function Dashboard({ companies: allCompanies, sources, error, scheduler }: { companies: Company[]; sources: Source[]; error: string | null; scheduler: Scheduler | null }) {
+export default function Dashboard({ companies: allCompanies, sources, error, scheduler, discoveries, discoveryError, startups, startupError }: {discoveries:Discovery[];discoveryError:string|null;startups:{profile:StartupProfile;checked_at:string}[];startupError:string|null; companies: Company[]; sources: Source[]; error: string | null; scheduler: Scheduler | null }) {
+  const coverage = [...new Set(sources.filter(s=>s.last_attempt_at&&s.checked_at&&!s.status.startsWith('Suspendat')).map(s=>s.area))].filter(a=>['SUA','România','Germania','Austria','Regatul Unit','Franța'].includes(a));
+  const regionCodes:Record<string,string>={'SUA':'SUA','România':'RO','Germania':'DE','Austria':'AT','Regatul Unit':'UK','Franța':'FR'};
   const [archive, setArchive] = useState(false);
   const companies = allCompanies.filter(c => c.stage !== "Listată");
   const formatDate = (value: string) => new Intl.DateTimeFormat("ro-RO", {dateStyle: "medium", timeZone: "Europe/Bucharest"}).format(new Date(value));
@@ -188,7 +200,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
       <div className="section-heading">
         <div>
           <h2>
-            {view === "watchlist" ? "Lista de urmărire" : archive ? "Arhiva listărilor" : "Companii pe radar"}{" "}
+            {view === "watchlist" ? "Lista de urmărire" : archive ? "Arhiva listărilor" : "Dosare verificate pe radar"}{" "}
             <span className="count">{filtered.length}</span>
           </h2>
           <p>De la primul semnal, până la prima zi de tranzacționare.</p>
@@ -387,7 +399,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
           <span className="workspace-icon">D</span>
           <div>
             <strong>Spațiul meu de cercetare</strong>
-            <small>SUA · RO · DE · AT</small>
+            <small>{coverage.map(a=>regionCodes[a]).join(" · ")||"Acoperire indisponibilă"}</small>
           </div>
           <span className="workspace-lock">
             <ShieldCheck size={15} />
@@ -533,7 +545,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
               </h1>
               <p>
                 {view === "overview"
-                  ? "Semnale timpurii. Surse verificate. O perspectivă mai clară."
+                  ? "Radar extins, surse etichetate și dosare verificate separat."
                   : view === "research"
                     ? "Transparență asupra surselor și a modului în care vor fi analizate."
                     : "Informația potrivită, cu dovezile și contextul la îndemână."}
@@ -544,7 +556,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
               {formatDate(new Date().toISOString())}<span>Surse datate individual</span>
             </div>
           </div>
-          {view === "overview" && <section className="broad-radar-banner"><div><strong>Explorează radarul extins</strong><p>Mai multe surse, depuneri raportate și intenții de listare. Oficialele și neoficialele sunt etichetate separat.</p></div><a href="/descoperiri">Descoperiri IPO ↗</a><a href="/startupuri">Registru YC ↗</a></section>}
+
           {error && <div role="alert" className="notice">{error}</div>}
           {notice && (
             <div role="status" className="notice">
@@ -562,45 +574,16 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
             <>
               <div className="metrics">
                 {[
-                  {
-                    label: "Dosare verificate pe radar",
-                    value: companies.length,
-                    sub: "SUA · România · Germania · Austria",
-                    icon: Building2,
-                  },
-                  {
-                    label: "Roadshow lansat",
-                    value: companies.filter(
-                      (c) => c.stage === "Roadshow lansat",
-                    ).length,
-                    sub: "Dovezi de nivel ridicat",
-                    icon: FileText,
-                  },
-                  {
-                    label: "Evenimente în calendar",
-                    value: companies.filter((c) => c.date).length,
-                    sub: "Date de subscriere confirmate",
-                    icon: CalendarDays,
-                  },
-                  {
-                    label: "În lista ta",
-                    value: watch.length,
-                    sub: "Perspective de urmărit",
-                    icon: Bookmark,
-                  },
+                  {label:"Documente în radar",value:discoveryError?"—":discoveries.length,sub:"Rezultate disponibile · maximum 1000",icon:Radio},
+                  {label:"Piețe monitorizate",value:error?"—":coverage.length,sub:coverage.join(" · "),icon:Globe2},
+                  {label:"Startupuri YC active",value:startupError?"—":startups.filter(r=>r.profile.status==='Active').length,sub:"Profiluri de context · IPO neconfirmat",icon:Building2},
+                  {label:"Dosare verificate active",value:error?"—":companies.length,sub:"Stadii revizuite · nu toate descoperirile",icon:ShieldCheck},
                 ].map((m, i) => (
                   <button
                     className="metric"
                     key={m.label}
                     onClick={() => {
-                      navigate(
-                        i === 2
-                          ? "calendar"
-                          : i === 3
-                            ? "watchlist"
-                            : "companies",
-                      );
-                      if (i === 1) setStage("Roadshow lansat");
+                      navigate(i===0?"discoveries":i===1?"research":i===2?"universe":"companies");
                     }}
                   >
                     <div>
@@ -615,52 +598,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
                   </button>
                 ))}
               </div>
-              <div className="spotlight">
-                <div className="spotlight-content">
-                  <div className="spotlight-label">
-                    <span className="spark">✳</span> ÎN PRIM-PLAN{" "}
-                    <span>DOSARE REALE</span>
-                  </div>
-                  <h2>
-                    Următorul capitol al AI
-                    <br />
-                    începe înainte de listare.
-                  </h2>
-                  <p>
-                    Urmărește intențiile și documentele de listare.
-                    <br className="desktop-break" /> Explorează semnalul,
-                    dovezile și întrebările încă deschise.
-                  </p>
-                  <button
-                    className="primary"
-                    onClick={() => companies[0] ? setSelected(companies[0]) : navigate("research")}
-                  >
-                    Explorează compania <ArrowUpRight size={16} />
-                  </button>
-                </div>
-                <div className="orbit-art" aria-hidden="true">
-                  <div className="orbit o1" />
-                  <div className="orbit o2" />
-                  <div className="orbit o3" />
-                  <div className="orbit-core">
-                    ai<span>RESEARCH</span>
-                  </div>
-                  <span className="orbit-node node1">
-                    <FileText size={19} />
-                  </span>
-                  <span className="orbit-node node2">
-                    <Activity size={19} />
-                  </span>
-                  <span className="orbit-node node3">
-                    <Globe2 size={18} />
-                  </span>
-                  <div className="art-tag">
-                    <span />
-                    Documente depuse
-                    <ArrowUpRight size={13} />
-                  </div>
-                </div>
-              </div>
+              <RadarOverview items={discoveries} error={discoveryError} onExplore={()=>navigate("discoveries")}/>
               <div className="content-grid">
                 <div>{table}</div>
                 <aside className="signal-panel">
@@ -713,6 +651,8 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
               </div>
             </>
           )}
+          {view === "discoveries" && <Discoveries items={discoveries} error={discoveryError} embedded/>}
+          {view === "universe" && <CompanyUniverse companies={allCompanies} items={discoveries} startups={startups} error={discoveryError||startupError||error} onVerified={()=>navigate("companies")}/>}
           {(view === "companies" || view === "watchlist") && table}
           {view === "calendar" && (
             <section className="table-panel calendar-panel">

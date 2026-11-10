@@ -131,3 +131,7 @@ SEC a fost reevaluat la 10 noiembrie 2026: feedul EDGAR și `data.sec.gov/submis
 Validare producție: prima extindere a salvat 897 documente distincte și 91 profiluri YC. EU-Startups a răspuns HTTP 403 din GitHub și a fost suspendat, deși accesul local funcționase. Căutarea britanică include explicit London/UK/Britain/LSE. UI permite alegerea publicației și sortarea după publicare, detectare sau titlu.
 
 Rularea reală [42907186363](https://github.com/XyzDavidD/stockagentai/actions/runs/42907186363) a reușit pentru toate cele 17 canale active. Snapshot verificat: 960 documente distincte, 85 atribuite canalului britanic, 474 înregistrări din lista de depuneri și 91 profiluri YC (34 cu status Active). Sunt documente și profiluri de context, nu 960 IPO-uri confirmate. Depunerile din agregator pot fi vechi; UI sortează separat după data raportată în index și semnalează înregistrările mai vechi de 90 zile.
+
+### Dashboard integrat
+
+Pagina principală încarcă în paralel dosarele, radarul extins și directorul YC. Acoperirea geografică provine din sursele cu rulări înregistrate, iar filtrul Regatul Unit / Anglia este disponibil direct pe prima pagină. Meniul separă documentele descoperite, înregistrările despre companii/startupuri și dosarele verificate. Numărul documentelor (maximum 1000) și cel al înregistrărilor din surse nu reprezintă companii unice sau IPO-uri confirmate. Aria radarului indică sursa căutării, nu domiciliul emitentului.
