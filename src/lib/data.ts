@@ -1,4 +1,5 @@
 export type CompanyAccessResearch = {
+ contactSummary?:string;
  reviewedAt:string; status:string; conclusion:string;
  parties:{name:string;role:string;evidence:string;kind:string}[];
  contacts:{name:string;role:string;value:string;purpose:string;evidence:string;kind:string;url:string|null}[];

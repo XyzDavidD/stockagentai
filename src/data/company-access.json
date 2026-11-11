@@ -84,7 +84,8 @@
         "publishedAt": null,
         "kind": "official"
       }
-    ]
+    ],
+    "contactSummary": "Nu am identificat un contact public verificabil pentru discuții cu investitori potențiali. Adresa de verificare a ofertelor de mai jos are un scop limitat; nu o prezentăm drept contact IR."
   },
   "nscale": {
     "reviewedAt": "2026-11-11",
@@ -143,7 +144,8 @@
         "publishedAt": "2026-09-18",
         "kind": "official"
       }
-    ]
+    ],
+    "contactSummary": "Contact public dedicat solicitărilor investitorilor. Îl poți folosi pentru a cere o discuție și clarificări despre companie."
   },
   "knds": {
     "reviewedAt": "2026-11-11",
@@ -197,7 +199,8 @@
         "publishedAt": "2026-07-01",
         "kind": "official"
       }
-    ]
+    ],
+    "contactSummary": "Contact public dedicat solicitărilor investitorilor. Îl poți folosi pentru a cere o discuție și clarificări despre companie."
   },
   "openai": {
     "reviewedAt": "2026-11-11",
@@ -245,7 +248,8 @@
         "publishedAt": "2026-05-29",
         "kind": "press"
       }
-    ]
+    ],
+    "contactSummary": "Nu am identificat un contact public verificabil pentru discuții cu investitori potențiali. Adresa de verificare a ofertelor de mai jos are un scop limitat; nu o prezentăm drept contact IR."
   },
   "sb-energy": {
     "reviewedAt": "2026-11-11",
@@ -260,6 +264,15 @@
       }
     ],
     "contacts": [
+      {
+        "name": "Ally Copple · SB Energy",
+        "role": "Contact de comunicare nominalizat de SB Energy",
+        "value": "press@sbenergy.com",
+        "purpose": "Publicat în anunțul numirii CFO din 2023. Cere direcționarea către echipa Capital Markets / relații cu investitorii. Este o posibilă cale de introducere, nu un contact IR confirmat; reconfirmă persoana actuală.",
+        "kind": "routing",
+        "evidence": "sb-energy-conversation",
+        "url": null
+      },
       {
         "name": "Goldman Sachs & Co. LLC",
         "role": "Prospectus Department",
@@ -292,12 +305,20 @@
         "url": "https://www.goldmansachs.com/investor-relations/contacts",
         "publishedAt": null,
         "kind": "official"
+      },
+      {
+        "id": "sb-energy-conversation",
+        "title": "SB Energy · contact nominal din anunțul CFO",
+        "url": "https://sbenergy.com/cfo-announcement/",
+        "publishedAt": null,
+        "kind": "official"
       }
-    ]
+    ],
+    "contactSummary": "Am identificat un reprezentant de comunicare al companiei. Poți cere o introducere către responsabilul financiar / IR, dar nu am verificat un contact direct pentru investiții."
   },
   "zilch": {
     "reviewedAt": "2026-11-11",
-    "status": "Bănci în selecție · contact direct nepublicat",
+    "status": "Responsabilă IR identificată · contact corporate disponibil",
     "conclusion": "Sky News relata la 10 noiembrie că Zilch încă selectează băncile IPO. Nu atribuim Deutsche Bank un mandat de distribuție doar pentru că finanțează creditele Zilch și nu tratăm investitorii existenți ca brokeri.",
     "parties": [
       {
@@ -308,6 +329,15 @@
       }
     ],
     "contacts": [
+      {
+        "name": "Zilch · echipa de comunicare corporate",
+        "role": "Canal pentru o solicitare de introducere către fundraising / IR",
+        "value": "comms@zilch.com",
+        "purpose": "Cere direcționarea către Amy Sandys, responsabila de fundraising și investor relations din profilul oficial de mai jos. Adresa a fost publicată alături de Ryan Mendy în 2024; este o adresă de comunicare, nu un inbox IR confirmat. Reconfirmă interlocutorul actual.",
+        "kind": "routing",
+        "evidence": "zilch-conversation",
+        "url": null
+      },
       {
         "name": "Amy Sandys · Zilch",
         "role": "Responsabilă de fundraising și relații cu investitorii",
@@ -340,8 +370,16 @@
         "url": "https://www.zilch.com/leadership/amy-sandys/",
         "publishedAt": null,
         "kind": "official"
+      },
+      {
+        "id": "zilch-conversation",
+        "title": "Comunicat Zilch / Taktile · contact corporate",
+        "url": "https://www.businesswire.com/news/home/20241106984341/it",
+        "publishedAt": "2024-11-06",
+        "kind": "official"
       }
-    ]
+    ],
+    "contactSummary": "Am identificat un reprezentant de comunicare al companiei. Poți cere o introducere către responsabilul financiar / IR, dar nu am verificat un contact direct pentru investiții."
   },
   "oura": {
     "reviewedAt": "2026-11-11",
@@ -356,6 +394,15 @@
       }
     ],
     "contacts": [
+      {
+        "name": "Kate Brinks · ŌURA",
+        "role": "Contact de comunicare nominalizat în anunțul parteneriatului Dexcom",
+        "value": "press@ouraring.com · +1 415 823 3121",
+        "purpose": "Contact ŌURA, publicat în comunicatul comun din 2024. Poți cere numele și adresa echipei de relații cu investitorii; rolul verificat este pentru presă, nu IR. Reconfirmă persoana actuală.",
+        "kind": "routing",
+        "evidence": "oura-conversation",
+        "url": null
+      },
       {
         "name": "Goldman Sachs & Co. LLC",
         "role": "Prospectus Department",
@@ -420,8 +467,16 @@
         "url": "https://forgeglobal.com/insights/private-market-education/introduction-to-the-role-of-a-forge-private-market-specialist/",
         "publishedAt": "2025-06-24",
         "kind": "platform"
+      },
+      {
+        "id": "oura-conversation",
+        "title": "Comunicat Dexcom / ŌURA · contact nominal ŌURA",
+        "url": "https://investors.dexcom.com/news/news-details/2024/Dexcom-and-URA-Announce-Strategic-Partnership/default.aspx",
+        "publishedAt": "2024-11-19",
+        "kind": "official"
       }
-    ]
+    ],
+    "contactSummary": "Am identificat un reprezentant de comunicare al companiei. Poți cere o introducere către responsabilul financiar / IR, dar nu am verificat un contact direct pentru investiții."
   },
   "bitpanda": {
     "reviewedAt": "2026-11-11",
@@ -436,6 +491,15 @@
       }
     ],
     "contacts": [
+      {
+        "name": "Bitpanda · comunicare corporate",
+        "role": "Contact publicat în comunicatul companiei",
+        "value": "pr@bitpanda.com",
+        "purpose": "Poți cere adresa responsabilului pentru relația cu investitorii în capitalul Bitpanda. Acest canal este destinat presei; nu este confirmat drept IR și nu privește suportul contului de tranzacționare.",
+        "kind": "routing",
+        "evidence": "bitpanda-conversation",
+        "url": null
+      },
       {
         "name": "Forge Securities / Forge",
         "role": "Marketplace de acțiuni private · fără mandat IPO verificat",
@@ -475,8 +539,16 @@
         "url": "https://forgeglobal.com/insights/private-market-education/introduction-to-the-role-of-a-forge-private-market-specialist/",
         "publishedAt": "2025-06-24",
         "kind": "platform"
+      },
+      {
+        "id": "bitpanda-conversation",
+        "title": "Bitpanda · comunicat Ribbon și contact corporate",
+        "url": "https://a.storyblok.com/f/176646/x/e6ab23f4c3/press-release_-ribbon.pdf",
+        "publishedAt": null,
+        "kind": "official"
       }
-    ]
+    ],
+    "contactSummary": "Am identificat un reprezentant de comunicare al companiei. Poți cere o introducere către responsabilul financiar / IR, dar nu am verificat un contact direct pentru investiții."
   },
   "windward-bio": {
     "reviewedAt": "2026-11-11",
@@ -491,6 +563,15 @@
       }
     ],
     "contacts": [
+      {
+        "name": "Windward Bio · solicitări ale investitorilor",
+        "role": "Echipă desemnată pentru investitori, business și presă",
+        "value": "media@windwardbio.com",
+        "purpose": "Deși adresa conține «media», comunicatul companiei o desemnează explicit și pentru investitori. Poți cere o discuție despre finanțare și persoana responsabilă de relația cu investitorii.",
+        "kind": "ir",
+        "evidence": "windward-bio-conversation",
+        "url": null
+      },
       {
         "name": "Jefferies LLC",
         "role": "Equity Syndicate Prospectus Department",
@@ -523,8 +604,16 @@
         "url": "https://www.sec.gov/Archives/edgar/data/2133022/000119312526396384/d79478dfwp.htm",
         "publishedAt": "2026-09-21",
         "kind": "official"
+      },
+      {
+        "id": "windward-bio-conversation",
+        "title": "Windward Bio · contact pentru solicitările investitorilor",
+        "url": "https://www.globenewswire.com/news-release/2026/05/04/3286605/0/en/windward-bio-announces-165m-crossover-financing-to-advance-pipeline-of-long-acting-immunology-therapies-with-best-in-disease-potential.html",
+        "publishedAt": "2026-05-04",
+        "kind": "official"
       }
-    ]
+    ],
+    "contactSummary": "Contact public dedicat solicitărilor investitorilor. Îl poți folosi pentru a cere o discuție și clarificări despre companie."
   },
   "rezera": {
     "reviewedAt": "2026-11-11",
@@ -539,6 +628,15 @@
       }
     ],
     "contacts": [
+      {
+        "name": "Argot Partners · echipa dedicată Rezera",
+        "role": "Reprezentant desemnat pentru investitori și presă",
+        "value": "rezera@argotpartners.com",
+        "purpose": "Comunicatul de schimbare a numelui NodThera în Rezera indică această adresă la «Investors and Media». Cere o întâlnire cu echipa financiară și informații despre procesul de finanțare/listare.",
+        "kind": "ir",
+        "evidence": "rezera-conversation",
+        "url": null
+      },
       {
         "name": "Jefferies LLC",
         "role": "Equity Syndicate Prospectus Department",
@@ -571,8 +669,16 @@
         "url": "https://www.sec.gov/Archives/edgar/data/2133022/000119312526396384/d79478dfwp.htm",
         "publishedAt": "2026-09-21",
         "kind": "official"
+      },
+      {
+        "id": "rezera-conversation",
+        "title": "Comunicat Rezera publicat de investitorul Sofinnova · contact Argot",
+        "url": "https://sofinnovapartners.com/news/nodthera-inc-changes-name-to-rezera-inc-and-announces-ruvonoflast-phase-3-development-program",
+        "publishedAt": "2026-09-09",
+        "kind": "official"
       }
-    ]
+    ],
+    "contactSummary": "Contact public dedicat solicitărilor investitorilor. Îl poți folosi pentru a cere o discuție și clarificări despre companie."
   },
   "vvardis": {
     "reviewedAt": "2026-11-11",
@@ -593,6 +699,15 @@
       }
     ],
     "contacts": [
+      {
+        "name": "Erin Mola · FGS Global pentru vVARDIS",
+        "role": "Reprezentant de comunicare nominalizat de companie",
+        "value": "erin.mola@fgsglobal.com · +1 917 432 8604",
+        "purpose": "Persoană de contact publicată pe pagina oficială vVARDIS. Rolul public este pentru presă; poți solicita o introducere către echipa financiară / IR. Nu avem confirmarea că gestionează solicitări de investiții.",
+        "kind": "routing",
+        "evidence": "vvardis-conversation",
+        "url": null
+      },
       {
         "name": "Goldman Sachs & Co. LLC",
         "role": "Prospectus Department",
@@ -625,8 +740,16 @@
         "url": "https://www.goldmansachs.com/investor-relations/contacts",
         "publishedAt": null,
         "kind": "official"
+      },
+      {
+        "id": "vvardis-conversation",
+        "title": "vVARDIS · reprezentantul FGS Global",
+        "url": "https://www.vvardis.com/en/press-releases",
+        "publishedAt": null,
+        "kind": "official"
       }
-    ]
+    ],
+    "contactSummary": "Am identificat un reprezentant de comunicare al companiei. Poți cere o introducere către responsabilul financiar / IR, dar nu am verificat un contact direct pentru investiții."
   },
   "electro-alfa": {
     "reviewedAt": "2026-11-11",
@@ -641,6 +764,15 @@
       }
     ],
     "contacts": [
+      {
+        "name": "Electro-Alfa · echipa de relații cu investitorii",
+        "role": "Contact dedicat investitorilor",
+        "value": "investitori@electroalfa.ro · +40 734 333 355",
+        "purpose": "Canalul public al emitentului pentru întrebări despre companie, rezultate și acțiunile EAI. Cere o discuție cu responsabilul IR; compania este deja listată.",
+        "kind": "ir",
+        "evidence": "electro-alfa-conversation",
+        "url": null
+      },
       {
         "name": "Stere Gardan · Swiss Capital",
         "role": "Agent de bursă",
@@ -695,7 +827,15 @@
         "url": "https://swisscapital.ro/ro/informatii-legale/",
         "publishedAt": null,
         "kind": "official"
+      },
+      {
+        "id": "electro-alfa-conversation",
+        "title": "Electro-Alfa · e-mail și telefon pentru investitori",
+        "url": "https://electroalfa.ro/relatii-investitori/contact-investitori/",
+        "publishedAt": null,
+        "kind": "official"
       }
-    ]
+    ],
+    "contactSummary": "Contact public dedicat solicitărilor investitorilor. Îl poți folosi pentru a cere o discuție și clarificări despre companie."
   }
 }

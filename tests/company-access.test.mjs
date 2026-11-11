@@ -18,7 +18,8 @@ test('unconfirmed access never becomes an issuer mandate or purchase contact',()
  assert.ok(access.openai.parties.every(p=>p.kind==='press'));
  assert.match(access.anthropic.romaniaAccess,/România nu este/);
  assert.ok(access.openai.contacts.every(c=>c.kind==='verification'));
- assert.ok(access.zilch.contacts.every(c=>c.kind==='profile'&&!c.value.includes('@')));
+ assert.ok(access.zilch.contacts.some(c=>c.kind==='routing'&&c.value==='comms@zilch.com'));
+ assert.ok(access.zilch.contacts.some(c=>c.kind==='profile'));
  assert.ok(access.bitpanda.parties.every(p=>p.kind==='press'));
  assert.match(access.knds.romaniaAccess,/instituțional/);
  assert.match(access['electro-alfa'].status,/încheiat/);
