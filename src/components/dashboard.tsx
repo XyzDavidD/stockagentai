@@ -1,4 +1,5 @@
 "use client";
+import CompanyAccess from '@/components/company-access';
 import { useEffect, useMemo, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import {
@@ -966,6 +967,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
                     {watch.includes(selected.id) ? "În lista mea" : "Urmărește"}
                   </button>
                 </div>
+                <button className="access-jump" onClick={()=>document.getElementById("company-access")?.scrollIntoView({behavior:"smooth",block:"start"})}>Acces la acțiuni și contacte ↓</button>
                 <div className="demo-warning">
                   <Info size={17} />
                   <p>
@@ -1035,6 +1037,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
                   ))}
                 </section>
                 {!!associated[selected.id]?.length&&<section className="detail-section"><details><summary>Alte surse colectate ({associated[selected.id].length})</summary><p>Asociere după numele companiei; aceste linkuri nu au fost folosite automat pentru a modifica analiza. Articolele care menționează mai multe companii sunt excluse.</p>{associated[selected.id].slice(0,20).map((d:Discovery,i:number)=><div className="evidence" key={d.url}><a href={d.url} target="_blank" rel="noopener noreferrer">Sursă externă {i+1} · {d.source_name} ↗</a><small>{sourceCategory(d.source_kind)} · {formatDate(d.published_at||'')}</small></div>)}{associated[selected.id].length>20&&<p>Afișăm primele 20 de linkuri. Dosarul rezumă separat sursele verificate.</p>}</details></section>}
+                <CompanyAccess research={selected.accessResearch} name={selected.name} evaluatedAt={evaluatedAt}/>
               </>
             )}
           </Dialog.Content>

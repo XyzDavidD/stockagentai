@@ -143,3 +143,9 @@ Colectorii continuă să păstreze documentele în Supabase. Contoarele de docum
 ### Context și date de listare
 
 `src/data/company-context.json` adaugă descrierea afacerii, produsele, clienții, modelul comercial și dovezile atribuite pentru fiecare dosar. Data articolului, evenimentul descris, estimarea și prima zi confirmată de tranzacționare sunt separate; un interval de publicare nu devine o zi exactă. Apărarea, AI și infrastructura digitală sunt prioritizate și pot fi filtrate. Pentru România sunt publicate numai procese oficiale documentate, nu intenții speculative. Această filtrare se aplică tuturor paginilor, fără ștergerea înregistrărilor din baza de date. Accesul la subscriere sau o alocare prin broker nu sunt confirmate de platformă.
+
+### Milestone: intermediari și acces la acțiuni
+
+La finalul fiecărui dosar, `CompanyAccess` prezintă cercetarea editorială din `src/data/company-access.json`: bănci și roluri, contacte profesionale cu scop explicit, sursa mandatului separată de sursa contactului, acces privat versus IPO versus piață secundară, condiții încă neconfirmate pentru România și următorii pași. Sunt acoperite cele 11 dosare active și arhiva Electro-Alfa. Informația lipsă rămâne explicit neconfirmată; nu deducem e-mailuri din nume și nu publicăm contacte de suport. Canalele pentru verificarea ofertelor nu sunt etichetate ca vânzători. Marketplace-urile nu sunt prezentate ca mandate ale emitentului sau inventar disponibil.
+
+Cercetare datată 11 noiembrie 2026; nu este confirmare directă de la intermediar. Interfața avertizează după 30 zile. Nu se trimit mesaje, nu se deschid conturi și nu se execută tranzacții. Colectorul nu înlocuiește automat contactele sau mandatele; schimbările trebuie verificate editorial. Pentru companii noi fără cercetare există o stare explicită „canal neverificat”.

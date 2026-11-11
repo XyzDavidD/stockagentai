@@ -2417,3 +2417,23 @@ body {
 .company-intro{padding:22px 26px;margin-bottom:24px;border:1px solid #d5dfd1;background:#edf2e8;border-radius:10px;color:#2c4836}.company-intro strong{font-size:18px}.company-intro p{font-size:14px;line-height:1.7;margin:8px 0 0;max-width:950px}.detail-section details summary{cursor:pointer;color:#2b5941;font-weight:600}.detail-section .evidence{flex-wrap:wrap}.detail-section .evidence small{display:block;width:100%;color:#52604f}
 .clickable-company{cursor:pointer}.clickable-company:hover{background:#f3f6f0}.overview-companies{width:100%;min-width:0}
 .focus-banner{margin:0 24px 14px;padding:14px 16px;background:#edf3e9;border-radius:8px;display:flex;gap:10px 22px;flex-wrap:wrap;align-items:center;font-size:13px;color:#294b37}.focus-banner small{width:100%;line-height:1.6}.focus-banner label{display:flex;gap:8px;align-items:center}.business-facts{margin:16px 0}.business-facts dt{font-weight:650;font-size:13px;margin-top:14px;color:#29382e}.business-facts dd{margin:5px 0;font-size:14px;line-height:1.75;color:#465347}.listing-evidence{padding:18px;margin:16px 0;background:#f5f7f2;border:1px solid #dce4d7;border-radius:9px}.listing-evidence>div{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.listing-evidence h4{margin:12px 0 8px;font-size:15px}.listing-evidence small,.date-explanation{font-size:12px!important;color:#5a6655}.listing-evidence a,.business-section a{font-size:13px;color:#285a3e;text-decoration:underline}.access-section{background:#f1f5eb;padding:20px;border-radius:9px}.detail-panel{width:min(680px,100vw)}
+
+.access-jump{display:block;margin:16px 0;color:var(--green-dark,#285b48);font-weight:600;text-decoration:underline;text-underline-offset:4px;cursor:pointer;background:none;border:0;padding:6px 0;text-align:left}
+.company-access{scroll-margin-top:24px;border-top:2px solid #38654d;padding-top:28px!important}
+.access-heading{display:flex;align-items:flex-start;flex-direction:column;gap:10px;margin-bottom:20px}
+.access-heading .eyebrow{font-size:10px;letter-spacing:.12em;color:#45604c}
+.access-heading h3{font-size:23px;margin:0!important}
+.access-heading small,.access-source small{font-size:11px;line-height:1.6;color:#526156;display:block}
+.access-definitions{padding:16px 18px;background:#f2f5ef;border-radius:10px;margin:20px 0}
+.access-definitions p{margin:0 0 8px!important;font-size:12px!important}.access-definitions p:last-child{margin-bottom:0!important}
+.company-access h4{font-size:15px;margin:26px 0 12px;color:#263b2e}
+.company-access h5{font-size:14px;line-height:1.55;margin:10px 0 6px;color:#263b2e}
+.access-party{padding:14px 0;border-bottom:1px solid #e1e8df}
+.access-contact{padding:18px;margin:12px 0;background:#fff;border:1px solid #d6e2d4;border-left:3px solid #537a5d;border-radius:9px;overflow-wrap:anywhere}
+.access-contact-kind{font-size:10px;font-weight:700;letter-spacing:.03em;color:#526451}
+.access-contact-value{font-size:14px;color:#203d2b;font-weight:600;padding:12px;background:#f2f5ef;border-radius:6px;margin:12px 0;overflow-wrap:anywhere;user-select:all}
+.access-role{font-size:12px!important}.access-evidence,.access-channel{display:block;font-size:11px!important;line-height:1.6;margin-top:10px;overflow-wrap:anywhere}
+.access-conditions{padding:16px;background:#f8f8f3;border-radius:8px}
+.access-steps{padding-left:22px;color:#3c4a40;font-size:13px;line-height:1.8}.access-steps li{padding-left:4px;margin:10px 0}
+.access-sources{margin:22px 0;border-top:1px solid #dce5d8;padding-top:16px}.access-sources summary{font-size:13px;font-weight:600;cursor:pointer}.access-source{margin:14px 0}.access-source a{font-size:12px!important}
+.access-footnote,.access-caution{font-size:12px!important;line-height:1.75!important;padding:14px;border:1px solid #dddcc5;background:#faf9ef;border-radius:8px}

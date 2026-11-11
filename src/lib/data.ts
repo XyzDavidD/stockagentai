@@ -1,3 +1,10 @@
+export type CompanyAccessResearch = {
+ reviewedAt:string; status:string; conclusion:string;
+ parties:{name:string;role:string;evidence:string;kind:string}[];
+ contacts:{name:string;role:string;value:string;purpose:string;evidence:string;kind:string;url:string|null}[];
+ privateAccess:string;romaniaAccess:string;minimum:string;nextSteps:string[];
+ sources:{id:string;title:string;url:string;publishedAt:string|null;kind:string}[];
+};
 export type Stage =
   | "Calendar estimativ"
   | "Posibilă amânare"
@@ -16,6 +23,7 @@ export type CompanyContext = {
 };
 export type Company = {
  context?:CompanyContext;
+ accessResearch?:CompanyAccessResearch;
   aliases?: string[];
   sourceLabel?: string;
   id: string;

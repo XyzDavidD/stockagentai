@@ -1,0 +1,701 @@
+{
+  "anthropic": {
+    "reviewedAt": "2026-11-11",
+    "status": "Sindicat și brokeri retail nominalizați",
+    "conclusion": "Goldman Sachs și Morgan Stanley reprezintă underwriterii în prospect. Anthropic publică separat lista intermediarilor așteptați în oferta retail internațională; participarea depinde de țară și de condițiile finale.",
+    "parties": [
+      {
+        "name": "Goldman Sachs & Co. LLC; Morgan Stanley & Co. LLC",
+        "role": "Reprezentanți ai sindicatului de underwriting",
+        "evidence": "anthropic-sec",
+        "kind": "official"
+      },
+      {
+        "name": "BNP Paribas; Crédit Agricole CIB; Deutsche Bank; eToro; flatexDEGIRO; ING; Interactive Brokers; Nordnet; Revolut; Saxo; Scalable Capital; Trade Republic; UBS",
+        "role": "Intermediari nominalizați de emitent pentru SEE și/sau Elveția. Lista nu extinde oferta în toate țările SEE.",
+        "kind": "official",
+        "evidence": "anthropic-retail"
+      }
+    ],
+    "contacts": [
+      {
+        "name": "Goldman Sachs & Co. LLC",
+        "role": "Prospectus Department",
+        "value": "prospectus-ny@ny.email.gs.com",
+        "purpose": "Solicitare de prospect. Departamentul distribuie documente; nu confirmă o alocare și nu este un formular de cumpărare.",
+        "evidence": "anthropic",
+        "kind": "prospectus",
+        "url": null
+      },
+      {
+        "name": "Morgan Stanley & Co. LLC",
+        "role": "Prospectus Department",
+        "value": "180 Varick Street, etajul 2, New York, NY 10014",
+        "purpose": "Adresă poștală publicată în comunicatul Anthropic pentru solicitarea prospectului. Primirea prospectului nu confirmă o alocare.",
+        "evidence": "anthropic",
+        "kind": "prospectus",
+        "url": null
+      },
+      {
+        "name": "Anthropic",
+        "role": "Verificarea ofertelor de acțiuni",
+        "value": "anthropic-equity-alerts@anthropic.com",
+        "purpose": "Pentru verificarea / semnalarea ofertelor care pretind acces la acțiuni. Nu este un departament de vânzare sau de alocări IPO.",
+        "evidence": "anthropic-policy",
+        "kind": "verification",
+        "url": null
+      }
+    ],
+    "privateAccess": "Politica Anthropic cere aprobarea consiliului pentru transferuri și interzice achizițiile prin SPV descrise în acea politică. Nu tratăm paginile unor marketplace-uri drept acces autorizat la acțiuni Anthropic.",
+    "romaniaAccess": "România nu este între țările SEE enumerate de Anthropic pentru oferta retail: Danemarca, Finlanda, Franța, Germania, Irlanda, Țările de Jos, Norvegia, Spania și Suedia. Nu avem confirmare de acces retail pentru un rezident român; un cont la un broker enumerat nu rezolvă această limitare.",
+    "minimum": "Nepublicat pentru această ofertă; de confirmat cu intermediarul.",
+    "nextSteps": [
+      "Verifică mai întâi țara de eligibilitate din lista oficială. Pentru România, cere în scris dacă există o altă categorie de participare permisă; nu presupune acces printr-un cont străin.",
+      "Solicită prospectul actualizat și confirmarea că oferta mai este activă.",
+      "Cere echipei de distribuție / equity syndicate, prin relația ta de brokeraj, eligibilitatea pentru România, suma minimă, comisioanele și termenul de exprimare a interesului.",
+      "Cere confirmare scrisă asupra alocării; trimiterea unei solicitări sau primirea prospectului nu rezervă acțiuni."
+    ],
+    "sources": [
+      {
+        "id": "anthropic",
+        "title": "Comunicat Anthropic · roadshow",
+        "url": "https://www.anthropic.com/news/roadshow-launch",
+        "publishedAt": "2026-11-10",
+        "kind": "official"
+      },
+      {
+        "id": "anthropic-policy",
+        "title": "Anthropic · restricții asupra transferurilor",
+        "url": "https://support.claude.com/en/articles/13704655-unauthorized-anthropic-stock-sales-and-investment-scams",
+        "publishedAt": "2026-06-29",
+        "kind": "official"
+      },
+      {
+        "id": "anthropic-sec",
+        "title": "SEC · Anthropic S-1/A, Underwriting",
+        "url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026072484/anthropicpbc-sx1ax2.htm",
+        "publishedAt": "2026-11-10",
+        "kind": "official"
+      },
+      {
+        "id": "anthropic-retail",
+        "title": "Anthropic · brokeri retail și jurisdicții",
+        "url": "https://support.claude.com/en/articles/17889756-anthropic-ipo-international-retail-brokers-and-selling-agents",
+        "publishedAt": null,
+        "kind": "official"
+      }
+    ]
+  },
+  "nscale": {
+    "reviewedAt": "2026-11-11",
+    "status": "Bănci confirmate · calendar incert",
+    "conclusion": "Goldman Sachs, J.P. Morgan și Morgan Stanley sunt lead bookrunners în comunicatul de depunere. O posibilă amânare este relatată în dosar; mandatul anunțat în septembrie nu confirmă că ordinele se primesc astăzi.",
+    "parties": [
+      {
+        "name": "Goldman Sachs & Co. LLC; J.P. Morgan; Morgan Stanley",
+        "role": "Coordonatori principali ai registrului de ordine (lead bookrunners)",
+        "evidence": "nscale",
+        "kind": "official"
+      }
+    ],
+    "contacts": [
+      {
+        "name": "Nscale",
+        "role": "Relații cu investitorii",
+        "value": "ir@nscale.com",
+        "purpose": "Solicită stadiul procesului și canalul pentru investitori eligibili; IR nu execută ordine.",
+        "evidence": "nscale",
+        "kind": "ir",
+        "url": null
+      },
+      {
+        "name": "Goldman Sachs & Co. LLC",
+        "role": "Prospectus Department",
+        "value": "prospectus-ny@ny.email.gs.com",
+        "purpose": "Solicitare de prospect. Departamentul distribuie documente; nu confirmă o alocare și nu este un formular de cumpărare.",
+        "evidence": "nscale",
+        "kind": "prospectus",
+        "url": null
+      },
+      {
+        "name": "J.P. Morgan Securities LLC",
+        "role": "Distribuție prospect",
+        "value": "prospectus-eq_fi@jpmchase.com",
+        "purpose": "Adresă publicată în anunțul Nscale pentru documentele ofertei; nu rezervă acțiuni.",
+        "evidence": "nscale",
+        "kind": "prospectus",
+        "url": null
+      }
+    ],
+    "privateAccess": "Nu am identificat în sursele verificate un vânzător privat nominalizat și o ofertă disponibilă acum. Băncile IPO nu reprezintă automat acționari care vând înaintea IPO-ului.",
+    "romaniaAccess": "Accesul unui rezident din România nu este confirmat. Cere băncii sau brokerului verificarea jurisdicției, categoriei de client și a posibilității de participare la această ofertă.",
+    "minimum": "Nepublicat pentru această ofertă; de confirmat cu intermediarul.",
+    "nextSteps": [
+      "Solicită prospectul actualizat și confirmarea că oferta mai este activă.",
+      "Cere echipei de distribuție / equity syndicate, prin relația ta de brokeraj, eligibilitatea pentru România, suma minimă, comisioanele și termenul de exprimare a interesului.",
+      "Cere confirmare scrisă asupra alocării; trimiterea unei solicitări sau primirea prospectului nu rezervă acțiuni."
+    ],
+    "sources": [
+      {
+        "id": "nscale",
+        "title": "Nscale · depunerea S-1 și băncile ofertei",
+        "url": "https://www.nscale.com/press-releases/nscale-files-initial-public-offering",
+        "publishedAt": "2026-09-18",
+        "kind": "official"
+      }
+    ]
+  },
+  "knds": {
+    "reviewedAt": "2026-11-11",
+    "status": "Plasament instituțional · proces suspendat",
+    "conclusion": "Planul din 24 iunie prevedea vânzări ale acționarilor existenți prin plasamente instituționale, fără ofertă publică retail. La 1 iulie, emitentul a anunțat reluarea procesului când piața permite; băncile de mai jos sunt cele din planul publicat.",
+    "parties": [
+      {
+        "name": "BofA Securities; Deutsche Bank AG; Goldman Sachs Bank Europe SE; Société Générale",
+        "role": "Coordonatori globali și bookrunners",
+        "evidence": "knds",
+        "kind": "official"
+      },
+      {
+        "name": "UBS; BNP Paribas; Citigroup; Commerzbank; Crédit Agricole CIB; Natixis; UniCredit",
+        "role": "UBS: senior joint bookrunner; celelalte: joint bookrunners. Lazard este consilier financiar, nu distribuitor de acțiuni.",
+        "evidence": "knds",
+        "kind": "official"
+      }
+    ],
+    "contacts": [
+      {
+        "name": "Ellen Christin Haehnlein · KNDS",
+        "role": "Head of Investor Relations",
+        "value": "investors@knds.nl",
+        "purpose": "Contactul nominal publicat pentru investitori: cere stadiul reluării și direcționarea către coordonatori. Nu reprezintă acceptarea unei subscrieri.",
+        "evidence": "knds",
+        "kind": "ir",
+        "url": null
+      }
+    ],
+    "privateAccess": "Vânzătorii identificați în structura din iunie sunt GIAT Industries și Wegmann. Nu am identificat o ofertă privată deschisă separat investitorilor individuali.",
+    "romaniaAccess": "Planul publicat este instituțional. Un capital personal mare nu confirmă singur eligibilitatea; nu există în acest plan o tranșă retail pentru România.",
+    "minimum": "Nepublicat pentru această ofertă; de confirmat cu intermediarul.",
+    "nextSteps": [
+      "Solicită IR confirmarea că procesul a fost reluat și dacă structura ofertei s-a schimbat.",
+      "Dacă investești printr-o entitate eligibilă, cere introducerea către coordonatorul care o poate deservi în România.",
+      "Nu folosi datele din iunie ca perioadă de subscriere curentă."
+    ],
+    "sources": [
+      {
+        "id": "knds",
+        "title": "KNDS · structura ofertei și coordonatorii, prin EQS",
+        "url": "https://www.eqs-news.com/news/corporate/knds-announces-intention-to-proceed-with-an-ipo-to-support-its-long-term-growth-strategy/58fd0944-f32e-4c4f-856c-ec407791bce1_en",
+        "publishedAt": "2026-06-24",
+        "kind": "official"
+      },
+      {
+        "id": "knds-pause",
+        "title": "KNDS · reluare condiționată de piață",
+        "url": "https://webdisclosure.com/press-release/knds-nv-etr-knds-to-resume-its-initial-public-offering-process-when-capital-markets-conditions-are-supportive-Ek32speiukU",
+        "publishedAt": "2026-07-01",
+        "kind": "official"
+      }
+    ]
+  },
+  "openai": {
+    "reviewedAt": "2026-11-11",
+    "status": "Bănci relatate în presă · fără canal confirmat",
+    "conclusion": "Bloomberg relata la 29 mai discuții cu Citi și J.P. Morgan pentru a se alătura Goldman Sachs și Morgan Stanley în pregătirile IPO. Nu am identificat o confirmare oficială a sindicatului sau un canal public de subscriere în sursele consultate.",
+    "parties": [
+      {
+        "name": "Goldman Sachs; Morgan Stanley; Citigroup; J.P. Morgan",
+        "role": "Goldman și Morgan Stanley: pregătiri relatate; Citi și J.P. Morgan: discuții privind participarea. Mandatele curente nu sunt confirmate oficial în această cercetare.",
+        "kind": "press",
+        "evidence": "openai-banks"
+      }
+    ],
+    "contacts": [
+      {
+        "name": "OpenAI",
+        "role": "Corporate Legal · verificarea ofertelor de acțiuni",
+        "value": "corp-legal@openai.com",
+        "purpose": "Adresa indicată de OpenAI pentru situațiile în care o firmă pretinde acces la acțiuni. Se folosește pentru verificare, nu pentru cumpărare.",
+        "evidence": "openai",
+        "kind": "verification",
+        "url": null
+      }
+    ],
+    "privateAccess": "OpenAI cere consimțământ scris pentru transferurile directe și indirecte. Politica include SPV-uri, tokenuri și contracte forward; un profil de marketplace nu dovedește aprobarea emitentului.",
+    "romaniaAccess": "Accesul unui rezident din România nu este confirmat. Cere băncii sau brokerului verificarea jurisdicției, categoriei de client și a posibilității de participare la această ofertă.",
+    "minimum": "Nepublicat pentru această ofertă; de confirmat cu intermediarul.",
+    "nextSteps": [
+      "Dacă primești o ofertă, cere identitatea juridică a vânzătorului, instrumentul exact și dovada acordului scris al OpenAI.",
+      "Verifică oferta prin canalul Corporate Legal publicat.",
+      "Pentru IPO, așteaptă nominalizarea distribuitorilor și documentele ofertei."
+    ],
+    "sources": [
+      {
+        "id": "openai",
+        "title": "OpenAI · transferuri de acțiuni neautorizate",
+        "url": "https://openai.com/policies/unauthorized-openai-equity-transactions/",
+        "publishedAt": "2025-07-16",
+        "kind": "official"
+      },
+      {
+        "id": "openai-banks",
+        "title": "Bloomberg · discuții cu băncile IPO",
+        "url": "https://news.bloomberglaw.com/capital-markets/openai-said-to-discuss-adding-citigroup-jpmorgan-to-ipo-lineup",
+        "publishedAt": "2026-05-29",
+        "kind": "press"
+      }
+    ]
+  },
+  "sb-energy": {
+    "reviewedAt": "2026-11-11",
+    "status": "Bănci confirmate · ofertă întârziată",
+    "conclusion": "Prospectul S-1/A numește J.P. Morgan, Goldman Sachs și Morgan Stanley ca reprezentanți ai sindicatului. Existența documentului nu înseamnă reluarea lansării întârziate relatate de IFR.",
+    "parties": [
+      {
+        "name": "J.P. Morgan Securities LLC; Goldman Sachs & Co. LLC; Morgan Stanley & Co. LLC",
+        "role": "Joint book-running managers și reprezentanți ai underwriterilor",
+        "evidence": "sb-energy",
+        "kind": "official"
+      }
+    ],
+    "contacts": [
+      {
+        "name": "Goldman Sachs & Co. LLC",
+        "role": "Prospectus Department",
+        "value": "prospectus-ny@ny.email.gs.com",
+        "purpose": "Solicitare de prospect. Departamentul distribuie documente; nu confirmă o alocare și nu este un formular de cumpărare.",
+        "evidence": "goldman",
+        "kind": "prospectus",
+        "url": null
+      }
+    ],
+    "privateAccess": "Plasamentul NVIDIA este o tranzacție nominală separată, nu un canal de acces pentru alți investitori. Programul de acțiuni rezervate, administrat de J.P. Morgan, vizează persoane asociate companiei; nu este o invitație publică.",
+    "romaniaAccess": "Accesul unui rezident din România nu este confirmat. Cere băncii sau brokerului verificarea jurisdicției, categoriei de client și a posibilității de participare la această ofertă.",
+    "minimum": "Nepublicat pentru această ofertă; de confirmat cu intermediarul.",
+    "nextSteps": [
+      "Solicită prospectul actualizat și confirmarea că oferta mai este activă.",
+      "Cere echipei de distribuție / equity syndicate, prin relația ta de brokeraj, eligibilitatea pentru România, suma minimă, comisioanele și termenul de exprimare a interesului.",
+      "Cere confirmare scrisă asupra alocării; trimiterea unei solicitări sau primirea prospectului nu rezervă acțiuni."
+    ],
+    "sources": [
+      {
+        "id": "sb-energy",
+        "title": "SEC · SB Energy S-1/A, Underwriting",
+        "url": "https://www.sec.gov/Archives/edgar/data/2133037/000162828026062846/sbenergy-sx1a2.htm",
+        "publishedAt": "2026-09-21",
+        "kind": "official"
+      },
+      {
+        "id": "goldman",
+        "title": "Goldman Sachs · departamentul de prospecte",
+        "url": "https://www.goldmansachs.com/investor-relations/contacts",
+        "publishedAt": null,
+        "kind": "official"
+      }
+    ]
+  },
+  "zilch": {
+    "reviewedAt": "2026-11-11",
+    "status": "Bănci în selecție · contact direct nepublicat",
+    "conclusion": "Sky News relata la 10 noiembrie că Zilch încă selectează băncile IPO. Nu atribuim Deutsche Bank un mandat de distribuție doar pentru că finanțează creditele Zilch și nu tratăm investitorii existenți ca brokeri.",
+    "parties": [
+      {
+        "name": "Amy Sandys · Zilch",
+        "role": "General Counsel; responsabilități oficiale de fundraising și investor relations. Nu este identificată drept broker sau vânzător.",
+        "evidence": "zilch-person",
+        "kind": "official"
+      }
+    ],
+    "contacts": [
+      {
+        "name": "Amy Sandys · Zilch",
+        "role": "Responsabilă de fundraising și relații cu investitorii",
+        "value": "Adresă directă de investiții nepublicată în sursa verificată",
+        "purpose": "Profil profesional oficial. Nu deducem adrese de e-mail din nume și nu înlocuim contactul cu suportul pentru clienți.",
+        "evidence": "zilch-person",
+        "kind": "profile",
+        "url": "https://www.zilch.com/leadership/amy-sandys/"
+      }
+    ],
+    "privateAccess": "Nu am identificat în sursele verificate un vânzător privat nominalizat și o ofertă disponibilă acum. Băncile IPO nu reprezintă automat acționari care vând înaintea IPO-ului.",
+    "romaniaAccess": "Accesul unui rezident din România nu este confirmat. Cere băncii sau brokerului verificarea jurisdicției, categoriei de client și a posibilității de participare la această ofertă.",
+    "minimum": "Nepublicat pentru această ofertă; de confirmat cu intermediarul.",
+    "nextSteps": [
+      "Urmărește anunțul numirii băncilor; selecția nu este un mandat final.",
+      "O introducere profesională către funcția de fundraising / IR poate clarifica existența unui proces privat; nu avem public un canal de subscriere.",
+      "Înaintea unei tranzacții private, cere identitatea vânzătorului, drepturile cumpărate și aprobarea transferului."
+    ],
+    "sources": [
+      {
+        "id": "zilch",
+        "title": "Sky News · selecția băncilor IPO",
+        "url": "https://news.sky.com/story/fintech-unicorn-zilch-lands-165m-debt-boost-as-listing-beckons-13610573",
+        "publishedAt": "2026-11-10",
+        "kind": "press"
+      },
+      {
+        "id": "zilch-person",
+        "title": "Zilch · responsabilitățile Amy Sandys",
+        "url": "https://www.zilch.com/leadership/amy-sandys/",
+        "publishedAt": null,
+        "kind": "official"
+      }
+    ]
+  },
+  "oura": {
+    "reviewedAt": "2026-11-11",
+    "status": "Bănci confirmate · IPO amânat",
+    "conclusion": "Comunicatul din 21 septembrie identifică băncile și contactele de prospect. IPO-ul a fost ulterior amânat; contactele documentează sindicatul anunțat, nu o fereastră de subscriere activă.",
+    "parties": [
+      {
+        "name": "Goldman Sachs; Morgan Stanley; J.P. Morgan; Allen & Company; Jefferies",
+        "role": "Joint lead book-running managers",
+        "evidence": "oura",
+        "kind": "official"
+      }
+    ],
+    "contacts": [
+      {
+        "name": "Goldman Sachs & Co. LLC",
+        "role": "Prospectus Department",
+        "value": "prospectus-ny@ny.email.gs.com",
+        "purpose": "Solicitare de prospect. Departamentul distribuie documente; nu confirmă o alocare și nu este un formular de cumpărare.",
+        "evidence": "oura",
+        "kind": "prospectus",
+        "url": null
+      },
+      {
+        "name": "Morgan Stanley & Co. LLC",
+        "role": "Prospectus Department",
+        "value": "prospectus@morganstanley.com",
+        "purpose": "Solicită prospectul și stadiul actual; adresa este publicată în comunicatul Oura.",
+        "evidence": "oura",
+        "kind": "prospectus",
+        "url": null
+      },
+      {
+        "name": "Forge Securities / Forge",
+        "role": "Marketplace de acțiuni private · fără mandat IPO verificat",
+        "value": "Profil Oura și acces la specialiști prin platformă",
+        "purpose": "Pistă pentru verificarea unei tranzacții secundare. Nu confirmă un vânzător disponibil sau autorizarea unei oferte de către Oura.",
+        "evidence": "forge-oura",
+        "kind": "marketplace",
+        "url": "https://forgeglobal.com/oura_stock/"
+      }
+    ],
+    "privateAccess": "Forge publică un profil Oura și cere statut de investitor acreditat. Disponibilitatea, tipul instrumentului (acțiuni sau SPV), acceptarea rezidenței și aprobările de transfer trebuie confirmate pentru tranzacția concretă.",
+    "romaniaAccess": "Accesul unui rezident din România nu este confirmat. Cere băncii sau brokerului verificarea jurisdicției, categoriei de client și a posibilității de participare la această ofertă.",
+    "minimum": "Nepublicat pentru această ofertă; de confirmat cu intermediarul.",
+    "nextSteps": [
+      "Solicită prospectul actualizat și confirmarea că oferta mai este activă.",
+      "Cere echipei de distribuție / equity syndicate, prin relația ta de brokeraj, eligibilitatea pentru România, suma minimă, comisioanele și termenul de exprimare a interesului.",
+      "Cere confirmare scrisă asupra alocării; trimiterea unei solicitări sau primirea prospectului nu rezervă acțiuni."
+    ],
+    "sources": [
+      {
+        "id": "oura",
+        "title": "SEC · comunicatul Oura de lansare a ofertei",
+        "url": "https://www.sec.gov/Archives/edgar/data/2133022/000119312526396384/d79478dfwp.htm",
+        "publishedAt": "2026-09-21",
+        "kind": "official"
+      },
+      {
+        "id": "oura-pause",
+        "title": "MedTech Dive · IPO amânat",
+        "url": "https://www.medtechdive.com/news/oura-delays-ipo/831650/",
+        "publishedAt": "2026-09-29",
+        "kind": "press"
+      },
+      {
+        "id": "forge-oura",
+        "title": "Forge · profil Oura și condițiile pieței private",
+        "url": "https://forgeglobal.com/oura_stock/",
+        "publishedAt": null,
+        "kind": "platform"
+      },
+      {
+        "id": "forge-specialist",
+        "title": "Forge · specialiști pentru tranzacții private",
+        "url": "https://forgeglobal.com/insights/private-market-education/introduction-to-the-role-of-a-forge-private-market-specialist/",
+        "publishedAt": "2025-06-24",
+        "kind": "platform"
+      }
+    ]
+  },
+  "bitpanda": {
+    "reviewedAt": "2026-11-11",
+    "status": "Mandat relatat în presă · de reconfirmat",
+    "conclusion": "The Block, citând Bloomberg în ianuarie, numește Goldman Sachs, Citigroup și Deutsche Bank. Nu am găsit în această cercetare un prospect care să confirme un sindicat activ; IPO-ul este relatat ca amânat în dosar.",
+    "parties": [
+      {
+        "name": "Goldman Sachs; Citigroup; Deutsche Bank",
+        "role": "Bănci raportate pentru IPO, nu mandat curent verificat la emitent",
+        "evidence": "bitpanda",
+        "kind": "press"
+      }
+    ],
+    "contacts": [
+      {
+        "name": "Forge Securities / Forge",
+        "role": "Marketplace de acțiuni private · fără mandat IPO verificat",
+        "value": "Profil Bitpanda și specialiști pentru piața privată",
+        "purpose": "Pistă pentru o cerere de disponibilitate. Profilul public nu dovedește că există acțiuni de vânzare sau că Bitpanda a aprobat transferul.",
+        "evidence": "forge-bitpanda",
+        "kind": "marketplace",
+        "url": "https://forgeglobal.com/bitpanda_stock/"
+      }
+    ],
+    "privateAccess": "Forge prezintă un profil Bitpanda destinat investitorilor acreditați, cu aprobări și restricții de transfer. Identitatea vânzătorului și oferta executabilă nu sunt confirmate public.",
+    "romaniaAccess": "Accesul unui rezident din România nu este confirmat. Cere băncii sau brokerului verificarea jurisdicției, categoriei de client și a posibilității de participare la această ofertă.",
+    "minimum": "Nepublicat pentru această ofertă; de confirmat cu intermediarul.",
+    "nextSteps": [
+      "Cere intermediarului identitatea vânzătorului, clasa de acțiuni și dacă dobândești acțiuni directe sau un interes într-un vehicul.",
+      "Cere confirmarea acceptării rezidenților români, minimul și toate comisioanele înainte de deschiderea unei tranzacții.",
+      "Pentru IPO, cere reconfirmarea mandatului și reluării procesului; știrea din ianuarie nu dovedește o ofertă activă."
+    ],
+    "sources": [
+      {
+        "id": "bitpanda",
+        "title": "The Block, citând Bloomberg · băncile IPO",
+        "url": "https://www.theblock.co/news/deals/2026-01-13-bitpanda-ipo-2026-385494",
+        "publishedAt": "2026-01-13",
+        "kind": "press"
+      },
+      {
+        "id": "forge-bitpanda",
+        "title": "Forge · profil Bitpanda și condițiile pieței private",
+        "url": "https://forgeglobal.com/bitpanda_stock/",
+        "publishedAt": null,
+        "kind": "platform"
+      },
+      {
+        "id": "forge-specialist",
+        "title": "Forge · specialiști pentru tranzacții private",
+        "url": "https://forgeglobal.com/insights/private-market-education/introduction-to-the-role-of-a-forge-private-market-specialist/",
+        "publishedAt": "2025-06-24",
+        "kind": "platform"
+      }
+    ]
+  },
+  "windward-bio": {
+    "reviewedAt": "2026-11-11",
+    "status": "Sindicat confirmat în prospect",
+    "conclusion": "Prospectul din 9 noiembrie identifică sindicatul ofertei propuse. Sanofi este cumpărător într-un plasament separat, nu broker pentru investitori externi.",
+    "parties": [
+      {
+        "name": "Jefferies; TD Cowen; Piper Sandler; UBS Investment Bank",
+        "role": "Bănci ale ofertei; rolul este documentat în secțiunea Underwriting",
+        "evidence": "windward-bio",
+        "kind": "official"
+      }
+    ],
+    "contacts": [
+      {
+        "name": "Jefferies LLC",
+        "role": "Equity Syndicate Prospectus Department",
+        "value": "Prospectus_Department@Jefferies.com · +1 877 821 7388",
+        "purpose": "Canalul public de prospecte al băncii, verificat în comunicatul Oura depus la SEC. Mandatul pentru compania de față este documentat separat; contactul nu confirmă accesul la ofertă.",
+        "evidence": "oura",
+        "kind": "prospectus",
+        "url": null
+      }
+    ],
+    "privateAccess": "Nu am identificat în sursele verificate un vânzător privat nominalizat și o ofertă disponibilă acum. Băncile IPO nu reprezintă automat acționari care vând înaintea IPO-ului.",
+    "romaniaAccess": "Accesul unui rezident din România nu este confirmat. Cere băncii sau brokerului verificarea jurisdicției, categoriei de client și a posibilității de participare la această ofertă.",
+    "minimum": "Nepublicat pentru această ofertă; de confirmat cu intermediarul.",
+    "nextSteps": [
+      "Solicită prospectul actualizat și confirmarea că oferta mai este activă.",
+      "Cere echipei de distribuție / equity syndicate, prin relația ta de brokeraj, eligibilitatea pentru România, suma minimă, comisioanele și termenul de exprimare a interesului.",
+      "Cere confirmare scrisă asupra alocării; trimiterea unei solicitări sau primirea prospectului nu rezervă acțiuni."
+    ],
+    "sources": [
+      {
+        "id": "windward-bio",
+        "title": "SEC · Windward Bio F-1/A, Underwriting",
+        "url": "https://www.sec.gov/Archives/edgar/data/2145089/000119312526452536/d111653df1a.htm",
+        "publishedAt": "2026-11-09",
+        "kind": "official"
+      },
+      {
+        "id": "oura",
+        "title": "SEC · comunicatul Oura de lansare a ofertei",
+        "url": "https://www.sec.gov/Archives/edgar/data/2133022/000119312526396384/d79478dfwp.htm",
+        "publishedAt": "2026-09-21",
+        "kind": "official"
+      }
+    ]
+  },
+  "rezera": {
+    "reviewedAt": "2026-11-11",
+    "status": "Sindicat confirmat în prospect",
+    "conclusion": "Prospectul din 9 noiembrie identifică sindicatul ofertei propuse. Wedbush PacGrow este indicat ca lead manager.",
+    "parties": [
+      {
+        "name": "Jefferies; TD Cowen; Cantor Fitzgerald",
+        "role": "Bănci ale ofertei; rolul este documentat în secțiunea Underwriting",
+        "evidence": "rezera",
+        "kind": "official"
+      }
+    ],
+    "contacts": [
+      {
+        "name": "Jefferies LLC",
+        "role": "Equity Syndicate Prospectus Department",
+        "value": "Prospectus_Department@Jefferies.com · +1 877 821 7388",
+        "purpose": "Canalul public de prospecte al băncii, verificat în comunicatul Oura depus la SEC. Mandatul pentru compania de față este documentat separat; contactul nu confirmă accesul la ofertă.",
+        "evidence": "oura",
+        "kind": "prospectus",
+        "url": null
+      }
+    ],
+    "privateAccess": "Nu am identificat în sursele verificate un vânzător privat nominalizat și o ofertă disponibilă acum. Băncile IPO nu reprezintă automat acționari care vând înaintea IPO-ului.",
+    "romaniaAccess": "Accesul unui rezident din România nu este confirmat. Cere băncii sau brokerului verificarea jurisdicției, categoriei de client și a posibilității de participare la această ofertă.",
+    "minimum": "Nepublicat pentru această ofertă; de confirmat cu intermediarul.",
+    "nextSteps": [
+      "Solicită prospectul actualizat și confirmarea că oferta mai este activă.",
+      "Cere echipei de distribuție / equity syndicate, prin relația ta de brokeraj, eligibilitatea pentru România, suma minimă, comisioanele și termenul de exprimare a interesului.",
+      "Cere confirmare scrisă asupra alocării; trimiterea unei solicitări sau primirea prospectului nu rezervă acțiuni."
+    ],
+    "sources": [
+      {
+        "id": "rezera",
+        "title": "SEC · Rezera S-1/A, Underwriting",
+        "url": "https://www.sec.gov/Archives/edgar/data/2141583/000110465926124074/tmq-20261109xs1a.htm",
+        "publishedAt": "2026-11-09",
+        "kind": "official"
+      },
+      {
+        "id": "oura",
+        "title": "SEC · comunicatul Oura de lansare a ofertei",
+        "url": "https://www.sec.gov/Archives/edgar/data/2133022/000119312526396384/d79478dfwp.htm",
+        "publishedAt": "2026-09-21",
+        "kind": "official"
+      }
+    ]
+  },
+  "vvardis": {
+    "reviewedAt": "2026-11-11",
+    "status": "Sindicat confirmat în prospect",
+    "conclusion": "Prospectul F-1/A din 6 noiembrie identifică Goldman Sachs și J.P. Morgan ca reprezentanți ai underwriterilor. Data estimată din calendar nu confirmă primirea ordinelor sau o alocare.",
+    "parties": [
+      {
+        "name": "Goldman Sachs & Co. LLC; J.P. Morgan Securities LLC",
+        "role": "Reprezentanți ai underwriterilor și joint bookrunning managers",
+        "evidence": "vvardis",
+        "kind": "official"
+      },
+      {
+        "name": "William Blair; UBS; Deutsche Bank Securities",
+        "role": "Bookrunners",
+        "evidence": "vvardis",
+        "kind": "official"
+      }
+    ],
+    "contacts": [
+      {
+        "name": "Goldman Sachs & Co. LLC",
+        "role": "Prospectus Department",
+        "value": "prospectus-ny@ny.email.gs.com",
+        "purpose": "Solicitare de prospect. Departamentul distribuie documente; nu confirmă o alocare și nu este un formular de cumpărare.",
+        "evidence": "goldman",
+        "kind": "prospectus",
+        "url": null
+      }
+    ],
+    "privateAccess": "Nu am identificat în sursele verificate un vânzător privat nominalizat și o ofertă disponibilă acum. Băncile IPO nu reprezintă automat acționari care vând înaintea IPO-ului.",
+    "romaniaAccess": "Accesul unui rezident din România nu este confirmat. Cere băncii sau brokerului verificarea jurisdicției, categoriei de client și a posibilității de participare la această ofertă.",
+    "minimum": "Nepublicat pentru această ofertă; de confirmat cu intermediarul.",
+    "nextSteps": [
+      "Solicită prospectul actualizat și confirmarea că oferta mai este activă.",
+      "Cere echipei de distribuție / equity syndicate, prin relația ta de brokeraj, eligibilitatea pentru România, suma minimă, comisioanele și termenul de exprimare a interesului.",
+      "Cere confirmare scrisă asupra alocării; trimiterea unei solicitări sau primirea prospectului nu rezervă acțiuni."
+    ],
+    "sources": [
+      {
+        "id": "vvardis",
+        "title": "SEC · vVARDIS F-1/A, Underwriting",
+        "url": "https://www.sec.gov/Archives/edgar/data/1907709/000114036126042406/ny20076472x13_f1a.htm",
+        "publishedAt": "2026-11-06",
+        "kind": "official"
+      },
+      {
+        "id": "goldman",
+        "title": "Goldman Sachs · departamentul de prospecte",
+        "url": "https://www.goldmansachs.com/investor-relations/contacts",
+        "publishedAt": null,
+        "kind": "official"
+      }
+    ]
+  },
+  "electro-alfa": {
+    "reviewedAt": "2026-11-11",
+    "status": "IPO încheiat · numai piață secundară",
+    "conclusion": "Electro-Alfa a desemnat Swiss Capital și UniCredit Bank drept coordonatori ai IPO-ului încheiat. Acest dosar este istoric; nu mai există acces înainte de acel IPO.",
+    "parties": [
+      {
+        "name": "SSIF Swiss Capital S.A.; UniCredit Bank S.A.",
+        "role": "Coordonatori comuni ai IPO-ului încheiat",
+        "evidence": "electro-alfa",
+        "kind": "official"
+      }
+    ],
+    "contacts": [
+      {
+        "name": "Stere Gardan · Swiss Capital",
+        "role": "Agent de bursă",
+        "value": "stere.gardan@swisscapital.ro",
+        "purpose": "Contact profesional public pentru brokeraj; poate clarifica accesul la piața secundară EAI. Nu este o ofertă early-bird.",
+        "evidence": "swiss",
+        "kind": "broker",
+        "url": null
+      },
+      {
+        "name": "Vlad Zaharia · Swiss Capital",
+        "role": "Agent de bursă",
+        "value": "vlad.zaharia@swisscapital.ro",
+        "purpose": "Alternativă din aceeași echipă oficială de brokeraj; nu rezervă acțiuni.",
+        "evidence": "swiss",
+        "kind": "broker",
+        "url": null
+      }
+    ],
+    "privateAccess": "Oferta IPO este închisă. Nu prezentăm o cumpărare pe BVB drept investiție pre-IPO.",
+    "romaniaAccess": "Piața secundară BVB, printr-un intermediar care acceptă clientul; condițiile concrete sunt cele ale contului de brokeraj.",
+    "minimum": "Swiss Capital publică 50.000 EUR pentru deschiderea contului (inclusiv portofoliul transferat). Nu este un minim IPO; cere reconfirmare.",
+    "nextSteps": [
+      "Discută despre tranzacționarea EAI pe BVB, nu despre o subscriere IPO.",
+      "Confirmă tariful și condițiile contului. Minimul publicat de Swiss Capital privește contul, nu prețul unei acțiuni sau minimul vechiului IPO."
+    ],
+    "sources": [
+      {
+        "id": "electro-alfa",
+        "title": "Electro-Alfa · coordonatorii IPO",
+        "url": "https://electroalfa.ro/news/Electro-Alfa-International-attracts-EBRD-and-NN-Pensii/",
+        "publishedAt": null,
+        "kind": "official"
+      },
+      {
+        "id": "electro-close",
+        "title": "Electro-Alfa · închiderea anticipată a ofertei",
+        "url": "https://electroalfa.ro/noutati/anunt-inchidere-anticipata-ipo/",
+        "publishedAt": null,
+        "kind": "official"
+      },
+      {
+        "id": "swiss",
+        "title": "Swiss Capital · agenții de bursă",
+        "url": "https://swisscapital.ro/ro/despre-noi/",
+        "publishedAt": null,
+        "kind": "official"
+      },
+      {
+        "id": "swiss-min",
+        "title": "Swiss Capital · condiții de cont",
+        "url": "https://swisscapital.ro/ro/informatii-legale/",
+        "publishedAt": null,
+        "kind": "official"
+      }
+    ]
+  }
+}
