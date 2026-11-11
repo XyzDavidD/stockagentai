@@ -33,3 +33,13 @@ export function relatedSources(items,companies){
  for(const rows of Object.values(output))rows.sort((a,b)=>(b.published_at||'').localeCompare(a.published_at||''));
  return output;
 }
+
+/** Romanian dossiers require a documented official process, not speculative press.
+ * @param {import('./data').Company} company */
+export function eligibleCompany(company){
+ const romanian=company.country==='România'||company.regions?.includes('România');
+ return !romanian||(company.official&&['Documente depuse','Roadshow lansat','Ofertă programată','Listată'].includes(company.stage));
+}
+/** Never infer a trading date from a source, filing or estimated date.
+ * @param {import('./data').Company} company */
+export function listingDates(company){return {confirmed:company.context?.listingDate||null,estimated:company.context?.estimatedListingDate||null};}

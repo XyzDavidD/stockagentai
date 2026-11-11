@@ -8,7 +8,14 @@ export type Stage =
   | "Listată"
   | "Roadshow lansat"
   | "Amânată";
+export type CompanyContext = {
+ theme:string; focus:boolean;
+ business:{description:string;products:string;customers:string;model:string;sourceUrl:string};
+ listingEvidence:{sourceName:string;url:string;publishedDate:string|null;dateExplanation:string;statement:string;kind:string}[];
+ nextCheckpoint:string; listingDate:string|null; estimatedListingDate:string|null;
+};
 export type Company = {
+ context?:CompanyContext;
   aliases?: string[];
   sourceLabel?: string;
   id: string;

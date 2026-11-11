@@ -39,7 +39,7 @@ import type {Discovery,StartupProfile} from "@/lib/data";
 import {useRouter} from 'next/navigation';
 import {platformRoutes,type View} from '@/lib/platform-routes';
 
-import {relatedSources} from '@/lib/dossiers.mjs';
+import {relatedSources,listingDates} from '@/lib/dossiers.mjs';
 import {sourceCategory} from '@/lib/provenance.mjs';
 import {safeEvidenceUrl} from '@/lib/signals.mjs';
 
@@ -101,6 +101,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
   const currentYear = new Date().getFullYear();
   const [view, setView] = useState<View>(initialView);
   useEffect(()=>setView(initialView),[initialView]);
+  const [focusOnly,setFocusOnly]=useState(false);
   const [query, setQuery] = useState("");
   const [country, setCountry] = useState("Toate țările");
   const [stage, setStage] = useState("Toate stadiile");
@@ -179,7 +180,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
       (view === "watchlist" ? allCompanies : archive ? allCompanies.filter(c => c.stage === "Listată") : companies)
         .filter(
           (c) =>
-            (view !== "watchlist" || watch.includes(c.id)) &&
+            (view !== "watchlist" || watch.includes(c.id)) && (!focusOnly||c.context?.focus===true) &&
             `${c.name} ${c.sector} ${c.country}`
               .toLocaleLowerCase("ro")
               .includes(query.toLocaleLowerCase("ro")) &&
@@ -189,9 +190,9 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
         .sort((a, b) =>
           sort === "name"
             ? a.name.localeCompare(b.name)
-            : b.publishedAt.localeCompare(a.publishedAt),
+            : Number(!!b.context?.focus)-Number(!!a.context?.focus)||b.publishedAt.localeCompare(a.publishedAt),
         ),
-    [view, watch, query, country, stage, sort, archive, allCompanies],
+    [view, watch, query, country, stage, sort, archive, allCompanies,focusOnly],
   );
   const alerts = companies
     .filter((c) => !onlyOfficial || c.official);
@@ -213,6 +214,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
           </button>
         )}
       </div>
+      <div className="focus-banner"><strong>Prioritate: apărare, AI, software și infrastructură digitală</strong><label><input type="checkbox" checked={focusOnly} onChange={e=>setFocusOnly(e.target.checked)}/> Doar domeniile prioritare</label><small>România: afișăm numai procese documentate oficial. CEC Bank și Portul Constanța sunt excluse cât timp există doar intenții speculative.</small></div>
       <div className="filters">
         <button hidden={view === "watchlist"} className="secondary" aria-pressed={archive} onClick={() => setArchive(v => !v)}>{archive ? "Arhivă · vezi radarul" : "Vezi listările încheiate"}</button>
         <label className="search-field">
@@ -269,7 +271,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
             value={sort}
             onChange={(e) => setSort(e.target.value)}
           >
-            <option value="priority">Sursa cea mai recentă</option>
+            <option value="priority">Domenii prioritare, apoi surse recente</option>
             <option value="name">Nume A–Z</option>
           </select>
         </label>
@@ -284,7 +286,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
               <th>
                 DOVEZI <Info size={12} />
               </th>
-              <th>ORIZONT</th>
+              <th>ORIZONT RELATAT</th>
               <th>
                 <span className="sr-only">Urmărește</span>
               </th>
@@ -301,7 +303,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
                     <Logo company={c} />
                     <span>
                       <strong>{c.name}</strong>
-                      <small>{c.sector}</small>
+                      <small>{c.sector}{c.context?.focus?" · Prioritar":""}</small>
                     </span>
                   </button>
                 </td>
@@ -970,11 +972,12 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
                     {stale(selected) ? "Sursă mai veche de 90 de zile: stadiul necesită reconfirmare. " : ""}Stadiul reflectă documentul citat, nu garantează că oferta se va realiza.
                   </p>
                 </div>
+                {selected.context&&<section className="detail-section business-section"><h3>Ce face concret compania</h3><p>{selected.context.business.description}</p><dl className="business-facts"><dt>Produse și servicii</dt><dd>{selected.context.business.products}</dd><dt>Cui se adresează</dt><dd>{selected.context.business.customers}</dd><dt>Cum funcționează afacerea</dt><dd>{selected.context.business.model}</dd></dl><a href={selected.context.business.sourceUrl} target="_blank" rel="noopener noreferrer">Sursa descrierii afacerii ↗</a></section>}
                 <div className="detail-stats">
                   <div>
-                    <small>PUBLICAREA SURSEI</small>
+                    <small>VERIFICAREA DOSARULUI</small>
                     <strong>
-                      {formatDate(selected.publishedAt)}
+                      {formatDate(selected.checkedAt)}
                     </strong>
                   </div>
                   <div>
@@ -988,8 +991,9 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
                   Dosar verificat la {formatDate(selected.checkedAt)}. Tipul sursei: {selected.sourceLabel||(selected.official?"Oficială":"Presă")}. Stadiul se poate schimba după această verificare.
                 </p>
                 <section className="detail-section">
-                  <h3>Ce știm despre listare</h3>
+                  <h3>Unde a fost anunțată listarea</h3>
                   <p>{selected.signal}</p>
+                  {selected.context?.listingEvidence.map((e,i)=><article className="listing-evidence" key={e.url}><div><span className="badge gray">{e.kind==='official'?'Sursă oficială':e.kind==='aggregator'?'Agregator · neconfirmat':'Relatare de presă'}</span><small>{e.publishedDate?formatDate(e.publishedDate):'Fără zi exactă de publicare'}</small></div><h4>{e.sourceName}</h4><p>{e.statement}</p><p className="date-explanation">{e.dateExplanation}</p><a href={e.url} target="_blank" rel="noopener noreferrer">Deschide dovada {i+1} ↗</a></article>)}
                   <div className="detail-fact">
                     <span>Bursa vizată</span>
                     <strong>{selected.exchange}</strong>
@@ -1004,9 +1008,10 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
                   </div>
                   <div className="detail-fact">
                     <span>Prima zi de tranzacționare</span>
-                    <strong>{selected.stage === "Listată" ? selected.dateLabel : "Neconfirmată"}</strong>
+                    <strong>{listingDates(selected).confirmed?formatDate(listingDates(selected).confirmed!):"Nicio dată confirmată în dosar"}</strong>
                   </div>
                 </section>
+                {selected.context&&<section className="detail-section access-section"><h3>Ce urmărești pentru o intrare timpurie</h3><p>{selected.context.nextCheckpoint}</p><div className="detail-fact"><span>Debut estimat de agregator</span><strong>{listingDates(selected).estimated?`${formatDate(listingDates(selected).estimated!)} · neconfirmat`:'Nicio zi estimată publicată în dosar'}</strong></div><p>Data unui articol, depunerea unui prospect și lansarea roadshow-ului nu sunt date de cumpărare. Accesul la subscriere și alocarea printr-un broker nu sunt confirmate de această platformă.</p></section>}
                 <section className="detail-section">
                   <h3>Ce merită analizat</h3>
                   <p>{selected.opportunity}</p>
@@ -1019,7 +1024,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
                   </p>
                 </section>
                 <section className="detail-section">
-                  <h3>Surse și istoric</h3>
+                  <h3>Documente originale</h3>
                   <p>Rezumatul de mai sus este în română. Documentele originale se deschid separat, în limba sursei.</p>
                   {(selected.documents || [{url:selected.sourceUrl,title:selected.sourceName,publishedAt:selected.publishedAt,checkedAt:selected.checkedAt}]).map(document => (
                     <div className="evidence" key={document.url}><FileText size={18} /><div>

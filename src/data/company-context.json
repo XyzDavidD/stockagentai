@@ -1,0 +1,338 @@
+{
+  "anthropic": {
+    "theme": "AI · software",
+    "focus": true,
+    "business": {
+      "description": "Anthropic dezvoltă familia de modele Claude și aplicații care ajută utilizatorii să redacteze, să analizeze documente și să lucreze cu cod. Companiile pot integra modelele în propriile produse și procese prin API. Este o afacere de software și cercetare AI, diferită de operatorii care construiesc centrele de date necesare acestor modele.",
+      "products": "Claude, instrumente de programare și acces la modele prin API.",
+      "customers": "Persoane, dezvoltatori și organizații care folosesc AI în activitatea profesională.",
+      "model": "Acces prin abonamente și consum de servicii API; proporția veniturilor și marjele trebuie verificate în prospect.",
+      "sourceUrl": "https://claude.com/product/overview"
+    },
+    "listingEvidence": [
+      {
+        "sourceName": "Lansarea roadshow-ului",
+        "url": "https://www.anthropic.com/news/roadshow-launch",
+        "publishedDate": "2026-11-10",
+        "dateExplanation": "Data publicării documentului; nu data IPO-ului.",
+        "statement": "Anthropic anunță oficial lansarea roadshow-ului la 10 noiembrie 2026 și solicitarea listării pe Nasdaq, cu simbolul ANT. Roadshow înseamnă prezentarea ofertei investitorilor; comunicatul nu precizează prima zi de tranzacționare.",
+        "kind": "official"
+      },
+      {
+        "sourceName": "Depunerea formularului S-1",
+        "url": "https://www.anthropic.com/news/s1-sec",
+        "publishedDate": "2026-10-26",
+        "dateExplanation": "Data publicării documentului; nu data IPO-ului.",
+        "statement": "Comunicatul anunță depunerea formularului S-1 la SEC. Este o etapă de pregătire a ofertei, nu începutul tranzacționării.",
+        "kind": "official"
+      }
+    ],
+    "nextCheckpoint": "Prospectul final, prețul ofertei și anunțul Nasdaq privind debutul. Comunicatul de roadshow nu este deschiderea tranzacționării.",
+    "listingDate": null,
+    "estimatedListingDate": null
+  },
+  "knds": {
+    "theme": "Apărare",
+    "focus": true,
+    "business": {
+      "description": "KNDS este un grup european de apărare terestră, cu activități industriale în Germania și Franța. Dezvoltă sisteme și echipamente pentru forțele armate și investește în capacitatea de producție și tehnologie. Portofoliul de comenzi pe mai mulți ani contează pentru vizibilitatea veniturilor, dar trebuie analizată și capacitatea de a livra la timp.",
+      "products": "Sisteme de apărare terestră, echipamente și soluții pentru misiuni militare.",
+      "customers": "Forțe armate și clienți instituționali din domeniul apărării.",
+      "model": "Contracte industriale și livrări pe termen lung; comenzile nu sunt echivalente cu venituri deja încasate.",
+      "sourceUrl": "https://knds.com/en/press-releases/knds-intends-to-list-in-2026-to-support-its-long-term-growth-strategy"
+    },
+    "listingEvidence": [
+      {
+        "sourceName": "Reuters · intenția de IPO rămâne în strategie",
+        "url": "https://www.marketscreener.com/news/knds-would-seek-ipo-as-soon-as-possible-ceo-says-ce785cdbdb8ff427",
+        "publishedDate": "2026-10-19",
+        "dateExplanation": "Data publicării documentului; nu data IPO-ului.",
+        "statement": "Reuters relata la 19 octombrie că intenția de IPO rămâne în strategie și depinde de condițiile pieței. Nu există în dosar o dată confirmată de debut.",
+        "kind": "press"
+      },
+      {
+        "sourceName": "KNDS · pregătirea listării la Frankfurt și Paris",
+        "url": "https://knds.com/en/press-releases/knds-intends-to-list-in-2026-to-support-its-long-term-growth-strategy",
+        "publishedDate": "2025-12-17",
+        "dateExplanation": "Data publicării documentului; nu data IPO-ului.",
+        "statement": "În comunicatul din 17 decembrie 2025, consiliul KNDS anunță continuarea pregătirilor pentru un IPO în 2026 la Frankfurt și Paris, condiționat de piață. 2026 este ținta din acel comunicat, nu o dată fermă.",
+        "kind": "official"
+      }
+    ],
+    "nextCheckpoint": "Publicarea prospectului, structura dublei listări și calendarul ofertei la Frankfurt și Paris.",
+    "listingDate": null,
+    "estimatedListingDate": null
+  },
+  "nscale": {
+    "theme": "Infrastructură AI",
+    "focus": true,
+    "business": {
+      "description": "Nscale furnizează infrastructura pe care se antrenează și rulează modele AI: centre de date, capacitate de calcul GPU, rețele și servicii cloud. Clienții închiriază resurse de calcul în loc să construiască întreaga infrastructură. Afacerea depinde atât de cererea pentru AI, cât și de livrarea efectivă a capacității promise.",
+      "products": "Calcul GPU, infrastructură cloud și servicii pentru antrenarea și rularea modelelor AI.",
+      "customers": "Organizații care au nevoie de capacitate mare de calcul.",
+      "model": "Furnizarea de capacitate și servicii de infrastructură; investițiile în echipamente și centre de date preced încasările.",
+      "sourceUrl": "https://www.nscale.com/press-releases/nscale-files-initial-public-offering"
+    },
+    "listingEvidence": [
+      {
+        "sourceName": "Reuters · posibilă amânare a listării",
+        "url": "https://www.streetinsider.com/Reuters/AI%2Bcloud%2Bfirm%2BNscale%2Bconsiders%2Bdelaying%2B%2435%2Bbillion%2Blisting%2C%2BThe%2BTelegraph%2Breports/27322509.html",
+        "publishedDate": "2026-11-10",
+        "dateExplanation": "Data publicării documentului; nu data IPO-ului.",
+        "statement": "Compania a anunțat oficial depunerea formularului S-1 la 18 septembrie. Reuters relata la 10 noiembrie, citând The Telegraph, că este analizată amânarea până anul viitor. Aceasta este o relatare de presă, nu o amânare confirmată de emitent.",
+        "kind": "press"
+      },
+      {
+        "sourceName": "Nscale · anunț oficial privind depunerea documentelor",
+        "url": "https://www.nscale.com/press-releases/nscale-files-initial-public-offering",
+        "publishedDate": "2026-09-18",
+        "dateExplanation": "Data publicării documentului; nu data IPO-ului.",
+        "statement": "La 18 septembrie 2026, Nscale anunță depunerea S-1 și cererea de listare la NYSE sub simbolul NSCL. Prețul și numărul de acțiuni nu erau stabilite în acel comunicat.",
+        "kind": "official"
+      }
+    ],
+    "nextCheckpoint": "Confirmarea oficială a continuării sau amânării procesului, apoi prospectul final și data debutului NYSE.",
+    "listingDate": null,
+    "estimatedListingDate": null
+  },
+  "openai": {
+    "theme": "AI · software",
+    "focus": true,
+    "business": {
+      "description": "OpenAI dezvoltă ChatGPT, modele AI și instrumente pentru dezvoltatori și organizații. Produsele sunt folosite pentru conversație, lucru cu informații și programare. Reuters descrie o extindere a vânzărilor către companii și promovarea Codex; această orientare comercială este relevantă pentru viitorul dosar de IPO, dar nu constituie un calendar de ofertă.",
+      "products": "ChatGPT, modele AI și Codex pentru activități de programare.",
+      "customers": "Consumatori, dezvoltatori și clienți enterprise.",
+      "model": "Servicii software pentru consumatori și companii; structura financiară completă trebuie verificată în documentele publice ale ofertei.",
+      "sourceUrl": "https://www.investing.com/news/stock-market-news/openai-ready-to-ipo-in-2027-now-counts-majority-of-sales-from-enterprises-brockman-says-5002023"
+    },
+    "listingEvidence": [
+      {
+        "sourceName": "Reuters · declarații despre pregătirea pentru IPO",
+        "url": "https://www.investing.com/news/stock-market-news/openai-ready-to-ipo-in-2027-now-counts-majority-of-sales-from-enterprises-brockman-says-5002023",
+        "publishedDate": "2026-11-04",
+        "dateExplanation": "Reuters: publicat la 4 noiembrie, actualizat la 5 noiembrie 2026. Declarația lui Greg Brockman a fost făcută la conferința WSJ din 4 noiembrie.",
+        "statement": "Reuters relatează declarația lui Greg Brockman potrivit căreia OpenAI ar putea fi pregătită pentru IPO în 2027. Pregătirea pentru IPO nu stabilește data listării.",
+        "kind": "press"
+      }
+    ],
+    "nextCheckpoint": "Anunț formal al ofertei, prospect public și bursă aleasă. Declarația despre 2027 descrie pregătirea companiei, nu ziua în care vei putea cumpăra acțiuni.",
+    "listingDate": null,
+    "estimatedListingDate": null
+  },
+  "sb-energy": {
+    "theme": "Infrastructură AI",
+    "focus": true,
+    "business": {
+      "description": "SB Energy dezvoltă proiecte energetice și centre de date pentru cererea de calcul AI. IFR descrie trecerea de la o activitate axată pe energie regenerabilă către dezvoltarea de centre de date. Este o investiție în infrastructura fizică a AI, nu într-un producător de modele: finanțarea, construcția și punerea în funcțiune sunt esențiale.",
+      "products": "Proiecte de energie și infrastructură pentru centre de date.",
+      "customers": "Clienți care au nevoie de energie și capacitate pentru infrastructură digitală.",
+      "model": "Dezvoltare de active și contracte de infrastructură; valoarea proiectelor planificate nu înseamnă venit realizat.",
+      "sourceUrl": "https://www.ifre.com/equities/2490131/sb-energy-delays-ipo-launch-amid-data-centre-backlash"
+    },
+    "listingEvidence": [
+      {
+        "sourceName": "IFR · întârzierea lansării ofertei",
+        "url": "https://www.ifre.com/equities/2490131/sb-energy-delays-ipo-launch-amid-data-centre-backlash",
+        "publishedDate": null,
+        "dateExplanation": "Ediția IFR 2652: 26 septembrie – 2 octombrie 2026. Ziua publicării articolului nu este precizată; 26 septembrie nu este data IPO-ului.",
+        "statement": "IFR relatează întârzierea lansării IPO-ului după depunerea documentelor, pe fondul diferențelor de evaluare dintre companie și investitori. Nu avem o nouă dată confirmată.",
+        "kind": "press"
+      },
+      {
+        "sourceName": "SEC · documente de ofertă actualizate",
+        "url": "https://www.sec.gov/Archives/edgar/data/2133037/000162828026062846/sbenergy-sx1a2.htm",
+        "publishedDate": "2026-09-21",
+        "dateExplanation": "Data publicării documentului; nu data IPO-ului.",
+        "statement": "Amendamentul S-1 din 21 septembrie 2026 documentează oferta propusă. Data depunerii nu este data listării.",
+        "kind": "official"
+      }
+    ],
+    "nextCheckpoint": "Reluarea roadshow-ului, actualizarea termenilor ofertei și un calendar public după întârzierea relatată.",
+    "listingDate": null,
+    "estimatedListingDate": null
+  },
+  "zilch": {
+    "theme": "Fintech",
+    "focus": false,
+    "business": {
+      "description": "Zilch este o aplicație britanică de plăți și credit de consum. Sky News descrie un card digital, recompense la plată și opțiuni prin care clienții pot împărți costul cumpărăturilor în rate. Facilitățile de datorie finanțează activitatea de creditare; ele nu sunt acțiuni oferite publicului.",
+      "products": "Plăți digitale, recompense și finanțarea cumpărăturilor în rate.",
+      "customers": "Consumatori din piața britanică.",
+      "model": "Servicii de plată și creditare; costul finanțării și pierderile din credite trebuie analizate separat de creșterea numărului de clienți.",
+      "sourceUrl": "https://news.sky.com/story/fintech-unicorn-zilch-lands-165m-debt-boost-as-listing-beckons-13610573"
+    },
+    "listingEvidence": [
+      {
+        "sourceName": "Sky News · pregătiri pentru o posibilă listare",
+        "url": "https://news.sky.com/story/fintech-unicorn-zilch-lands-165m-debt-boost-as-listing-beckons-13610573",
+        "publishedDate": "2026-11-10",
+        "dateExplanation": "Data publicării documentului; nu data IPO-ului.",
+        "statement": "Sky News relatează că Zilch pregătește o listare, posibil în 2027, și selectează bănci de investiții. Finanțarea prin datorie anunțată în articol nu este oferta publică de acțiuni.",
+        "kind": "press"
+      }
+    ],
+    "nextCheckpoint": "Anunțul emitentului privind oferta, băncile mandatate, prospectul și calendarul de la Londra.",
+    "listingDate": null,
+    "estimatedListingDate": null
+  },
+  "oura": {
+    "theme": "Tehnologie medicală",
+    "focus": false,
+    "business": {
+      "description": "Oura produce inele inteligente care urmăresc somnul și activitatea și prezintă utilizatorului informații despre sănătate. Compania combină vânzarea dispozitivului cu abonamentul pentru serviciile digitale. Creșterea utilizatorilor și retenția abonaților sunt lucruri diferite de momentul unei listări; oferta planificată a fost amânată.",
+      "products": "Inele inteligente și servicii digitale de monitorizare a sănătății.",
+      "customers": "Consumatori interesați de somn, activitate și sănătate.",
+      "model": "Venituri din dispozitive și abonamente recurente.",
+      "sourceUrl": "https://www.medtechdive.com/news/oura-delays-ipo/831650/"
+    },
+    "listingEvidence": [
+      {
+        "sourceName": "MedTech Dive · amânarea IPO-ului",
+        "url": "https://www.medtechdive.com/news/oura-delays-ipo/831650/",
+        "publishedDate": "2026-09-29",
+        "dateExplanation": "Data publicării documentului; nu data IPO-ului.",
+        "statement": "MedTech Dive relatează anunțul companiei din 29 septembrie: oferta publică planificată este amânată din cauza incertitudinii pieței. O depunere mai veche nu înseamnă că IPO-ul este încă programat.",
+        "kind": "press"
+      }
+    ],
+    "nextCheckpoint": "Un nou anunț de reluare a ofertei. Vechea perioadă de IPO nu trebuie reutilizată ca termen viitor.",
+    "listingDate": null,
+    "estimatedListingDate": null
+  },
+  "bitpanda": {
+    "theme": "Fintech",
+    "focus": false,
+    "business": {
+      "description": "Bitpanda este o platformă austriacă de investiții și intermediere, cunoscută pentru accesul la active digitale. Utilizatorii accesează piața prin platformă; cumpărarea unui activ în aplicație este diferită de cumpărarea acțiunilor companiei Bitpanda. Dosarul urmărește IPO-ul companiei, despre care presa a relatat că a fost amânat.",
+      "products": "Platformă digitală de investiții și servicii de intermediere pentru active digitale.",
+      "customers": "Utilizatori ai serviciilor de investiții digitale.",
+      "model": "Intermediere și servicii de platformă; structura veniturilor și expunerea la volumele pieței cripto necesită verificare în prospect.",
+      "sourceUrl": "https://www.financemagnates.com/cryptocurrency/exchange/bitpanda-ceo-to-depart-as-crypto-broker-delays-frankfurt-ipo/"
+    },
+    "listingEvidence": [
+      {
+        "sourceName": "Amânarea IPO-ului și schimbări de conducere",
+        "url": "https://www.financemagnates.com/cryptocurrency/exchange/bitpanda-ceo-to-depart-as-crypto-broker-delays-frankfurt-ipo/",
+        "publishedDate": "2026-09-15",
+        "dateExplanation": "Data publicării documentului; nu data IPO-ului.",
+        "statement": "Finance Magnates relata la 15 septembrie amânarea IPO-ului din Frankfurt din cauza condițiilor de piață. Nu este anunțat un nou calendar.",
+        "kind": "press"
+      },
+      {
+        "sourceName": "Istoric · IPO ca opțiune strategică",
+        "url": "https://www.boerse-am-sonntag.de/unternehmen/unternehmen/moeglicher-boersengang-bitpanda-sieht-ipo-als-option-fuer-2026",
+        "publishedDate": "2025-09-19",
+        "dateExplanation": "Data publicării documentului; nu data IPO-ului.",
+        "statement": "Document istoric al procesului de listare; nu confirmă singur calendarul curent.",
+        "kind": "press"
+      }
+    ],
+    "nextCheckpoint": "Confirmare oficială a reluării procesului, prospect și datele unei eventuale oferte la Frankfurt.",
+    "listingDate": null,
+    "estimatedListingDate": null
+  },
+  "windward-bio": {
+    "theme": "Biotehnologie",
+    "focus": false,
+    "business": {
+      "description": "Windward Bio dezvoltă medicamente experimentale cu anticorpi pentru boli respiratorii. Programul include tratamente cu acțiune îndelungată, urmărite în studii clinice. Valoarea comercială depinde de rezultate, aprobări și accesul pe piață; existența unui prospect IPO nu validează eficacitatea tratamentelor.",
+      "products": "Candidați terapeutici pentru astm și alte boli respiratorii.",
+      "customers": "Potențial, pacienți și sisteme de sănătate; produsele descrise sunt încă în dezvoltare.",
+      "model": "Cercetare și dezvoltare clinică finanțate înainte de comercializare.",
+      "sourceUrl": "https://www.ipox.com/ipo-calendar/windward-bio"
+    },
+    "listingEvidence": [
+      {
+        "sourceName": "SEC · prospect F-1 actualizat",
+        "url": "https://www.sec.gov/Archives/edgar/data/2145089/000119312526452536/d111653df1a.htm",
+        "publishedDate": "2026-11-09",
+        "dateExplanation": "Data publicării documentului; nu data IPO-ului.",
+        "statement": "Prospectul F-1 a fost actualizat la 9 noiembrie. Calendarul IPOX indică un debut așteptat la 13 noiembrie; acea dată este estimarea agregatorului, nu o confirmare a începerii tranzacționării.",
+        "kind": "official"
+      },
+      {
+        "sourceName": "IPOX · profil și calendar estimativ",
+        "url": "https://www.ipox.com/ipo-calendar/windward-bio",
+        "publishedDate": null,
+        "dateExplanation": "Sursa nu precizează o dată exactă de publicare.",
+        "statement": "Document istoric al procesului de listare; nu confirmă singur calendarul curent.",
+        "kind": "aggregator"
+      }
+    ],
+    "nextCheckpoint": "Prospect final și anunțul bursei. Data calendarului IPOX rămâne o estimare până la confirmarea emitentului sau bursei.",
+    "listingDate": null,
+    "estimatedListingDate": "2026-11-13"
+  },
+  "rezera": {
+    "theme": "Biotehnologie",
+    "focus": false,
+    "business": {
+      "description": "Rezera dezvoltă medicamente orale experimentale care urmăresc mecanismul inflamator NLRP3, cu aplicații potențiale în boli cardiovasculare și neurologice. Candidatul principal descris de IPOX este ruvonoflast. Pentru această afacere, etapele clinice și banii necesari studiilor sunt mai relevante decât simpla apropiere a datei IPO.",
+      "products": "Medicamente experimentale împotriva inflamației; programul ruvonoflast.",
+      "customers": "Potențial, pacienți cu boli cardiovasculare sau neurologice, dacă tratamentele sunt autorizate.",
+      "model": "Dezvoltare clinică înaintea comercializării; finanțarea studiilor trebuie urmărită în documentele ofertei.",
+      "sourceUrl": "https://www.ipox.com/ipo-calendar/rezera"
+    },
+    "listingEvidence": [
+      {
+        "sourceName": "IPOX · profil și calendar estimativ",
+        "url": "https://www.ipox.com/ipo-calendar/rezera",
+        "publishedDate": null,
+        "dateExplanation": "Sursa nu precizează o dată exactă de publicare.",
+        "statement": "IPOX indică un debut așteptat la 12 noiembrie 2026 și o ofertă cu termeni indicativi. Este un calendar neoficial, nu dovada că acțiunile se tranzacționează deja.",
+        "kind": "aggregator"
+      }
+    ],
+    "nextCheckpoint": "Confirmarea termenilor și a debutului de către emitent sau Nasdaq; calendarul agregatorului nu dovedește disponibilitatea acțiunilor.",
+    "listingDate": null,
+    "estimatedListingDate": "2026-11-12"
+  },
+  "vvardis": {
+    "theme": "Tehnologie dentară",
+    "focus": false,
+    "business": {
+      "description": "vVARDIS dezvoltă produse dentare pe bază de peptide pentru intervenția asupra cariilor incipiente și protejarea smalțului. Gama Curodont este folosită în cabinete stomatologice. Spre deosebire de o platformă AI, motorul comercial este adoptarea produselor de către clinici și distribuția lor, alături de cerințele de autorizare.",
+      "products": "Produse Curodont pentru tratamentul leziunilor carioase incipiente.",
+      "customers": "Cabinete stomatologice și profesioniști din domeniul dentar.",
+      "model": "Vânzarea produselor prin canale de distribuție; în SUA, IPOX menționează Henry Schein.",
+      "sourceUrl": "https://www.ipox.com/ipo-calendar/vvardis"
+    },
+    "listingEvidence": [
+      {
+        "sourceName": "IPOX · profil și calendar estimativ",
+        "url": "https://www.ipox.com/ipo-calendar/vvardis",
+        "publishedDate": null,
+        "dateExplanation": "Sursa nu precizează o dată exactă de publicare.",
+        "statement": "Compania apare în calendarul IPOX pentru o ofertă pe NYSE. Data de 13 noiembrie 2026 este estimativă și trebuie reconfirmată înainte de a fi tratată drept debut.",
+        "kind": "aggregator"
+      }
+    ],
+    "nextCheckpoint": "Anunțul final al ofertei și debutul NYSE. Data IPOX este o estimare, nu un termen de subscriere.",
+    "listingDate": null,
+    "estimatedListingDate": "2026-11-13"
+  },
+  "electro-alfa": {
+    "theme": "Infrastructură electrică",
+    "focus": false,
+    "business": {
+      "description": "Electro-Alfa International produce echipamente electrice și soluții pentru infrastructura energetică. Dosarul este păstrat ca istoric al unui emitent român deja listat. Nu este o oportunitate de intrare înainte de IPO.",
+      "products": "Echipamente electrice și soluții pentru infrastructura energetică.",
+      "customers": "Clienți din infrastructură și industrie.",
+      "model": "Producție și livrare de echipamente; rezultatele curente trebuie urmărite în raportările emitentului.",
+      "sourceUrl": "https://www.bvb.ro/AboutUs/MediaCenter/PressItem/Electro-Alfa-International-devine-companie-publica-la-Bursa-de-Valori-Bucuresti-in-urma-unei-Ofertei-Publice-Initiale-in-valoare-de-579.64-milioane-de-lei/6352"
+    },
+    "listingEvidence": [
+      {
+        "sourceName": "BVB · comunicat oficial",
+        "url": "https://www.bvb.ro/AboutUs/MediaCenter/PressItem/Electro-Alfa-International-devine-companie-publica-la-Bursa-de-Valori-Bucuresti-in-urma-unei-Ofertei-Publice-Initiale-in-valoare-de-579.64-milioane-de-lei/6352",
+        "publishedDate": "2026-03-03",
+        "dateExplanation": "Data publicării documentului; nu data IPO-ului.",
+        "statement": "BVB confirmă debutul tranzacționării la 3 martie 2026. Acest dosar este în arhivă, nu reprezintă un IPO viitor.",
+        "kind": "official"
+      }
+    ],
+    "nextCheckpoint": "Compania este deja listată. Pentru piața secundară se urmăresc raportările emitentului și cotațiile curente, nu termenii IPO-ului încheiat.",
+    "listingDate": "2026-03-03",
+    "estimatedListingDate": null
+  }
+}
