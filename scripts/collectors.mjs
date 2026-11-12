@@ -1,3 +1,4 @@
+import {earlySources} from './early-sources.mjs';
 import {safeUrl,candidateReason} from './source-utils.mjs';
 export {safeUrl,candidateReason} from './source-utils.mjs';
 import { broadSources } from './broad-sources.mjs';
@@ -6,6 +7,7 @@ import { XMLParser, XMLValidator } from 'fast-xml-parser';
 import { createHash } from 'node:crypto';
 export const feeds = [
   ...broadSources,
+  ...earlySources,
   {id:'bvb', url:'https://www.bvb.ro/tradingandstatistics/trading/publicoffers', parse:parseBvb},
   {id:'sec', paused:true, url:'https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=S-1&count=40&output=atom', parse:parseSec},
   {id:'bvb-news', url:'https://www.bvb.ro/AboutUs/MediaCenter/PressReleases', parse:parseBvbNews},

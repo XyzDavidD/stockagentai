@@ -1,3 +1,4 @@
+import {registerEarlySources} from './early-sources.mjs';
 import {syncStartupDirectory} from './startup-directory.mjs';
 import { documentStore, enrichDocuments } from './documents.mjs';
 import { runCollection, createPersistence } from './runner.mjs';
@@ -8,6 +9,7 @@ const dryRun=process.argv.includes('--dry-run');
 const runKey=process.env.GITHUB_RUN_ID ? `github-${process.env.GITHUB_RUN_ID}` : `local-${randomUUID()}`;
 const trigger=process.env.GITHUB_EVENT_NAME==='schedule'?'schedule':'manual';
 const persist=dryRun?undefined:createPersistence({url:process.env.SUPABASE_URL,key:process.env.SUPABASE_SERVICE_ROLE_KEY});
+if(!dryRun)await registerEarlySources({url:process.env.SUPABASE_URL,key:process.env.SUPABASE_SERVICE_ROLE_KEY});
 const results=await runCollection({persist,runKey,trigger});
 const lines=results.map(r=>`${r.id}: ${r.error || 'success'} · ${r.candidates.length} candidați`);
 console.log(lines.join('\n'));

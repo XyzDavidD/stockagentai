@@ -1,4 +1,5 @@
 "use client";
+import EarlyRadar from '@/components/early-radar';
 import CompanyAccess from '@/components/company-access';
 import { useEffect, useMemo, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -48,11 +49,13 @@ import {safeEvidenceUrl} from '@/lib/signals.mjs';
 const navigation = [
   { id: "overview", label: "Privire de ansamblu", icon: LayoutDashboard },
   { id: "universe", label: "Companii", icon: Building2 },
+  { id: "early", label: "Radar timpuriu", icon: Radio },
   { id: "calendar", label: "Calendar IPO", icon: CalendarDays },
   { id: "watchlist", label: "Lista mea", icon: Bookmark },
   { id: "research", label: "Centrul de cercetare", icon: Radio },
 ] as const;
 const titles: Record<View, string> = {
+  early: "Radar timpuriu",
   overview: "Privire de ansamblu",
   discoveries: "Companii cu semnale de listare",
   universe: "Companii cu planuri de listare",
@@ -92,7 +95,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
   const coverage = [...new Set(sources.filter(s=>s.last_attempt_at&&s.checked_at&&!s.status.startsWith('Suspendat')).map(s=>s.area))].filter(a=>['SUA','România','Germania','Austria','Regatul Unit','Franța'].includes(a));
   const regionCodes:Record<string,string>={'SUA':'SUA','România':'RO','Germania':'DE','Austria':'AT','Regatul Unit':'UK','Franța':'FR'};
   const router=useRouter();
-  const associated=useMemo(()=>relatedSources(discoveries,allCompanies),[discoveries,allCompanies]);
+  const associated=useMemo(()=>relatedSources(discoveries.filter(d=>!d.source_name.startsWith('Radar timpuriu ·')),allCompanies),[discoveries,allCompanies]);
   const [archive, setArchive] = useState(false);
   const companies = allCompanies.filter(c => c.stage !== "Listată");
   const formatDate = (value: string) => !value||!Number.isFinite(Date.parse(value))?"Dată neprecizată":new Intl.DateTimeFormat("ro-RO", {dateStyle: "medium", timeZone: "Europe/Bucharest"}).format(new Date(value));
@@ -622,6 +625,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
             </>
           )}
           {['discoveries','universe','companies','watchlist','startups','dossiers'].includes(view) && table}
+          {view === "early" && <EarlyRadar items={discoveries} sources={sources} error={discoveryError} evaluatedAt={evaluatedAt}/>}
           {view === "calendar" && (
             <section className="table-panel calendar-panel">
               <div className="section-heading">
