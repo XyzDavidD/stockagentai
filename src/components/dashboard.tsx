@@ -461,7 +461,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
             </div>
             <strong>Un pas înaintea pieței.</strong>
             <p>
-              Colectori conectați. Semnalele sunt revizuite înainte de publicare.
+              Dosare revizuite și semnale automate, etichetate separat.
             </p>
             <button onClick={() => navigate("research")}>
               Descoperă infrastructura <ArrowUpRight size={15} />
