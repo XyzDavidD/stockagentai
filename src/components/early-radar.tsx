@@ -9,7 +9,7 @@ const languages='Română, engleză, germană, franceză, spaniolă, italiană, 
 const date=(s:string|null)=>s&&Number.isFinite(Date.parse(s))?new Intl.DateTimeFormat('ro-RO',{dateStyle:'medium',timeZone:'UTC'}).format(new Date(s)):'Neprecizată';
 export default function EarlyRadar({items,sources,error,evaluatedAt}:{items:Discovery[];sources:Source[];error:string|null;evaluatedAt:string}){
  const [query,setQuery]=useState(''),[group,setGroup]=useState('all'),[language,setLanguage]=useState('all'),[limit,setLimit]=useState(24),[selected,setSelected]=useState<Discovery|null>(null);
- const rows=useMemo(()=>uniqueEarly(items.filter(i=>i.source_name.startsWith('Radar timpuriu ·'))),[items]);
+ const rows=useMemo(()=>uniqueEarly(items.filter(i=>i.source_name.startsWith('Radar timpuriu ·'))).sort((a:Discovery,b:Discovery)=>(Date.parse(b.published_at||'')||0)-(Date.parse(a.published_at||'')||0)||a.title.localeCompare(b.title,'ro')),[items]);
  const filtered=rows.filter((i:Discovery)=>(group==='all'||earlySignal(i.title)===group)&&(language==='all'||i.area===language)&&`${i.title} ${i.area}`.toLowerCase().includes(query.toLowerCase()));
  const channels=sources.filter(s=>s.id.startsWith('early-'));
  const ok=channels.filter(s=>s.checked_at&&!s.last_error).length;
