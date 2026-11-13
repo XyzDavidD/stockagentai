@@ -41,3 +41,7 @@ test('UK cannot match Ukrainian and expansion does not override explicit nationa
  const e=eventFromCandidate({...candidate,title:'German defence AI startup SE3 Labs raises $30M as it plots UK expansion'},{},now);
  assert.equal(e.company_name,'SE3 Labs');assert.equal(e.region,'Germania');
 });
+
+test('sector news without a business growth clue stays outside early radar',()=>{
+ assert.equal(eligibleFocused({source_name:'Radar focalizat · SUA · companii',title:'University receives perfect score on cybersecurity audit'}),false);
+});

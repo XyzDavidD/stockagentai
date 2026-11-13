@@ -21,7 +21,8 @@ export function focusEvidence(title){
  const t=norm(title);
  const excluded=/\b(china|chinese|chinez\w*|chinois\w*|chinesisch\w*|japan\w*|japon\w*|japonez\w*|korea\w*|coree\w*|taiwan\w*|india|indian\w*|brazil\w*|brasil\w*|saudi\w*|dubai|singapore|singapur|israel\w*)\b/.test(t);
  const matches=industries.flatMap(([industry,re])=>{const words=[...new Set(t.match(re)||[])];return words.length?[{industry,keywords:words}]:[];});
- return {excluded,industry:matches[0]?.industry||null,keywords:matches.flatMap(m=>m.keywords)};
+ const growth=/\b(raises|secures|funding|fundrais\w*|series [a-f]|finan\w*|invest\w*|unicorn\w*|einhorn|licorn\w*|jednoroz\w*|levee|leve|joint venture|parteneriat|partnership|ipo|pre-ipo|borsengang|borsnotering|beursgang|listare|valuation|evaluare|acquisition|acquire\w*)\b/.test(t);
+ return {excluded,growth,industry:matches[0]?.industry||null,keywords:matches.flatMap(m=>m.keywords)};
 }
 export const focusedSourceName=name=>String(name||'').startsWith('Radar focalizat ·');
-export function eligibleFocused(item){return focusedSourceName(item.source_name)&&!focusEvidence(item.title).excluded&&!!focusEvidence(item.title).industry;}
+export function eligibleFocused(item){return focusedSourceName(item.source_name)&&!focusEvidence(item.title).excluded&&!!focusEvidence(item.title).industry&&focusEvidence(item.title).growth;}

@@ -15,7 +15,7 @@ export function parseEarlyNews(xml){
   const snippet=load(String(item.description||'')).text();
   const url=safeUrl(String(item.link||''),'https://news.google.com');
   if(!title||!url||/filefish|desfile do unicornio|pijany kierowca|coffeeshop|オフィシャルHP|ツアー|financing scam|funding scam/i.test(title.normalize('NFD').replace(/[\u0300-\u036f]/g,'')))continue;
-  const focus=focusEvidence(title);if(focus.excluded||!focus.industry)continue;
+  const focus=focusEvidence(title);if(focus.excluded||!focus.industry||!focus.growth)continue;
   const ts=Date.parse(item.pubDate),kind=earlySignal(title+' '+snippet);
   result.set(url,{url,title,text:title+' '+snippet.slice(0,1000),publishedAt:Number.isFinite(ts)?new Date(ts).toISOString():null,reason:`Radar timpuriu · ${earlyGroups[kind]}. Indiciu automat, fără confirmare de listare sau evaluare financiară.`});
  }
