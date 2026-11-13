@@ -382,7 +382,7 @@ export default function Dashboard({ detected, activity, companies: allCompanies,
     </section>
   );
   return (
-    <div className={`app-shell ${collapsed ? "sidebar-collapsed" : ""}`}>
+    <div lang="ro" className={`app-shell ${collapsed ? "sidebar-collapsed" : ""}`}>
       <a className="skip-link" href="#main">
         Sari la conținut
       </a>
