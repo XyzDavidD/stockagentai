@@ -20,7 +20,6 @@ export default function LandingMobileMenu({locale}: {locale: 'ro' | 'en'}) {
     ['#representative', ro ? 'Reprezentant' : 'Representative'],
     ['#credentials', ro ? 'Studii și documente' : 'Credentials'],
     ['#contact', ro ? 'Contact' : 'Contact'],
-    ['/dashboard', ro ? 'Platforma de cercetare' : 'Research platform'],
   ];
   return <div className={s.mobileMenu}>
     <button ref={toggle} type="button" aria-label={open ? (ro ? 'Închide meniul' : 'Close menu') : (ro ? 'Deschide meniul' : 'Open menu')} aria-expanded={open} aria-controls="landing-mobile-navigation" onClick={() => setOpen(!open)}>{open ? <X size={21}/> : <Menu size={21}/>}</button>
