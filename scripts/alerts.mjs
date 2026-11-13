@@ -1,3 +1,4 @@
+import {identifyEarlyCompany} from '../src/lib/early-companies.mjs';
 import {createHash} from 'node:crypto';
 import {focusEvidence,markets} from '../src/lib/research-focus.mjs';
 import {analyzeSignal} from '../src/lib/signals.mjs';
@@ -5,22 +6,24 @@ const hash=s=>createHash('sha256').update(s).digest('hex');
 const normalize=s=>String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
 const known={Anthropic:['SUA','Dezvoltă modele de inteligență artificială și asistentul Claude.'],OpenAI:['SUA','Dezvoltă modele de inteligență artificială și produse bazate pe acestea.'],Anduril:['SUA','Dezvoltă sisteme autonome și software pentru apărare.'],Helsing:['Germania','Dezvoltă software AI și sisteme pentru apărare.'],Mistral:['Franța','Dezvoltă modele de inteligență artificială.'],Nscale:['Regatul Unit','Dezvoltă infrastructură de calcul pentru AI.'],KNDS:['Germania / Franța','Produce echipamente și sisteme pentru apărare.']};
 export function eventFromCandidate(c,source,now=new Date().toISOString()){
+ const entity=identifyEarlyCompany(c.title);
+ if((String(source.name||'').startsWith('Radar focalizat ·')||String(source.id||'').startsWith('early-'))&&!entity)return null;
  const focus=focusEvidence(c.title);if(focus.excluded||!focus.industry)return null;
  const published=Date.parse(c.publishedAt||'');if(!Number.isFinite(published)||published>Date.parse(now)+3600000||published<Date.parse(now)-3*86400000)return null;
  const title=c.title.replace(/\s+-\s+[^-]+$/,'').trim();
- const familiar=Object.keys(known).find(n=>new RegExp(`\\b${n}\\b`,'i').test(title));
+ const familiar=Object.keys(known).find(n=>entity?normalize(n)===normalize(entity.name)||normalize(n+' AI')===normalize(entity.name):new RegExp(`\\b${n}\\b`,'i').test(title));
  const match=title.match(/^([\p{L}\p{N}&. '-]{2,65}?)\s+(?:raises|secures|lands|announces|files|plans|strânge|atrage|anunță|pregătește|obtient|lève|sammelt|erhält|haalt|recauda)\b/iu);
- const company=familiar||(match?.[1]||'').replace(/^(?:(?:UK['’]s|US['’]s|startup(?:-ul)?|AI startup|defence|defense|AI|tech|British|German|French)\s+)+/i,'').trim();
+ const company=entity?.name||familiar||(match?.[1]||'').replace(/^(?:(?:UK['’]s|US['’]s|startup(?:-ul)?|AI startup|defence|defense|AI|tech|British|German|French)\s+)+/i,'').trim();
  if(!company||company.split(/\s+/).length>6||/^(the|a |an |un |o |this |how |why |government|minister|premier)/i.test(company))return null;
  const nationality=title.match(/^(British|German|French|American|Austrian|Swiss|Dutch|Polish|Swedish|Romanian)\b/i)?.[1]?.toLowerCase();
  const countries={british:'Regatul Unit',german:'Germania',french:'Franța',american:'SUA',austrian:'Austria',swiss:'Elveția',dutch:'Țările de Jos',polish:'Polonia',swedish:'Suedia',romanian:'România'};
  const geo=markets.find(m=>m[5].split(' OR ').some(term=>new RegExp('(?<![\\p{L}\\p{N}])'+term.replaceAll('"','')+'(?![\\p{L}\\p{N}])','iu').test(title)));
  // Search locale alone is not proof of a company's location. Alerts require a country clue or documented identity.
- const region=familiar?known[familiar][0]:(countries[nationality]||geo?.[1]);if(!region)return null;
+ const region=entity?.profile?.country||(familiar?known[familiar][0]:(countries[nationality]||geo?.[1]));if(!region)return null;
  const growth=/\b(raises|funding|fundrais\w*|secures|finan\w*|serie\w*|unicorn\w*|investment|investit\w*|ipo|s-1|f-1|list\w*|bors\w*|roadshow|levee|lève|sammelt)\b/i.test(title.normalize('NFD').replace(/[\u0300-\u036f]/g,''));if(!growth)return null;
  const signal=analyzeSignal(title),company_key=normalize(company),id=hash(company_key);
  return {id,company_key,company_name:company,title:c.title,industry:focus.industry,region,keywords:[...new Set([...focus.keywords,...(title.match(/\b(raises|funding|Series [A-F]|IPO|pre-IPO|finanțare|financement|Finanzierung|unicorn)\b/gi)||[])])],url:c.url,published_at:c.publishedAt,discovered_at:now,source_name:source.name||source.id,
- summary:familiar?known[familiar][1]:`Activitate sugerată de titlu: ${focus.industry}. Descrierea exactă a produselor și clienților necesită verificarea articolului; nu avem încă o sinteză editorială.`,
+ summary:entity?.profile?.summary||(familiar?known[familiar][1]:`Activitate sugerată de titlu: ${focus.industry}. Descrierea exactă a produselor și clienților necesită verificarea articolului; nu avem încă o sinteză editorială.`),
  listing_evidence:`${signal.id==='uncertain'?'Fără intenție de listare confirmată în această analiză automată.':signal.label+'. '+signal.explanation} Semnalul indică un subiect de cercetat, nu potențial financiar demonstrat. Relatarea de verificat: ${title}`};
 }
 export function makeEmail(events,{to,from}){

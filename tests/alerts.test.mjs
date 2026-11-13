@@ -37,7 +37,7 @@ test('disabled email still records events but never sends',async()=>{
 });
 
 test('UK cannot match Ukrainian and expansion does not override explicit nationality',()=>{
- assert.equal(eventFromCandidate({...candidate,title:'Ukrainian Defence Tech UFORCE Raises AI Series A funding'},{},now),null);
+ assert.equal(eventFromCandidate({...candidate,title:'Ukrainian Defence Tech Vertex Raises AI Series A funding'},{},now),null);
  const e=eventFromCandidate({...candidate,title:'German defence AI startup SE3 Labs raises $30M as it plots UK expansion'},{},now);
  assert.equal(e.company_name,'SE3 Labs');assert.equal(e.region,'Germania');
 });
