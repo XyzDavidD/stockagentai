@@ -2,10 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {summaryWindow,dailyEmail,runDailySummary} from '../scripts/daily-summary.mjs';
 test('21:00 Bucharest follows winter and summer offsets and DST day length',()=>{
- assert.deepEqual(summaryWindow('2026-11-13T19:05:00Z'),{date:'2026-11-13',start:'2026-11-12T22:00:00.000Z',end:'2026-11-13T19:00:00.000Z'});
+ assert.deepEqual(summaryWindow('2026-11-13T19:05:00Z'),{date:'2026-11-13',start:'2026-11-12T19:00:00.000Z',end:'2026-11-13T19:00:00.000Z'});
  assert.equal(summaryWindow('2026-07-13T18:01:00Z').end,'2026-07-13T18:00:00.000Z');
- const spring=summaryWindow('2026-03-29T18:01:00Z');assert.equal(spring.start,'2026-03-28T22:00:00.000Z');assert.equal(spring.end,'2026-03-29T18:00:00.000Z');
- const autumn=summaryWindow('2026-10-25T19:01:00Z');assert.equal(autumn.start,'2026-10-24T21:00:00.000Z');
+ const spring=summaryWindow('2026-03-29T18:01:00Z');assert.equal(spring.start,'2026-03-28T19:00:00.000Z');assert.equal(spring.end,'2026-03-29T18:00:00.000Z');
+ const autumn=summaryWindow('2026-10-25T19:01:00Z');assert.equal(autumn.start,'2026-10-24T18:00:00.000Z');
 });
 test('late retry after midnight retains the previous report day',()=>{
  assert.equal(summaryWindow('2026-11-13T22:10:00Z').date,'2026-11-13');
@@ -29,4 +29,11 @@ test('preview reads all three sources without writing or sending',async()=>{
 });
 test('partial data failure prevents incomplete report delivery',async()=>{
  await assert.rejects(runDailySummary({store:async path=>{if(path.startsWith('email_deliveries'))return [];throw new Error('ALERT_STORE_HTTP_500');},to:'a',from:'b',resendKey:'key',now:'2026-11-13T19:00:00Z',sender:()=>assert.fail('must not send')}),/ALERT_STORE_HTTP_500/);
+});
+
+test('successive reports meet exactly and include discoveries after 21:00 on the next day',()=>{
+ const today=summaryWindow('2026-11-13T19:05:00Z');const tomorrow=summaryWindow('2026-11-14T19:05:00Z');
+ assert.equal(today.end,tomorrow.start);
+ const at22='2026-11-13T20:00:00.000Z';assert.ok(at22>=tomorrow.start&&at22<tomorrow.end);assert.ok(at22>=today.end);
+ assert.equal(summaryWindow('2026-03-30T18:05:00Z').start,summaryWindow('2026-03-29T18:05:00Z').end);
 });

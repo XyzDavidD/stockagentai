@@ -11,7 +11,8 @@ export function summaryWindow(now,preview=false){
  const p=parts(now);let date=`${p.year}-${p.month}-${p.day}`;
  // A delayed run after midnight still belongs to the most recent 21:00 deadline.
  if(!preview&&Number(p.hour)<21)date=new Date(Date.parse(date+'T12:00:00Z')-86400000).toISOString().slice(0,10);
- return {date,start:localInstant(date,0),end:preview&&Number(p.hour)<21?now:localInstant(date,21)};
+ const previousDate=new Date(Date.parse(date+'T12:00:00Z')-86400000).toISOString().slice(0,10);
+ return {date,start:localInstant(previousDate,21),end:preview&&Number(p.hour)<21?now:localInstant(date,21)};
 }
 async function allRows(store,path){
  const rows=[];for(let offset=0;offset<50000;offset+=1000){const batch=await store(`${path}&limit=1000&offset=${offset}`);rows.push(...batch);if(batch.length<1000)return rows;}
@@ -32,14 +33,14 @@ export function dailyEmail(data,window,{to,from,preview=false}){
  const time=iso=>new Intl.DateTimeFormat('ro-RO',{timeZone:zone,dateStyle:'short',timeStyle:'short'}).format(new Date(iso));
  const text=[`Bună, Sergiu!\n\nRezumat stockagentai — ${window.date}`,
  `Interval: ${time(window.start)} – ${time(window.end)} (ora României).${preview?' Previzualizare înaintea orei programate.':''}`,
- `\nACTIVITATEA ZILEI\n${data.events.length} companii înregistrate pentru prima dată de modulul de alerte.\n${data.newDocuments} documente noi colectate (nu companii distincte).\n${new Set(data.runs.map(r=>r.run_key)).size} rulări · ${new Set(data.runs.map(r=>r.source_id)).size} surse verificate · ${errors.length} verificări de surse cu eroare.\nUltima colectare reușită din interval: ${latest?time(latest):'niciuna înregistrată'}.`,
+ `\nACTIVITATEA DIN INTERVAL\n${data.events.length} companii înregistrate pentru prima dată de modulul de alerte.\n${data.newDocuments} documente noi colectate (nu companii distincte).\n${new Set(data.runs.map(r=>r.run_key)).size} rulări · ${new Set(data.runs.map(r=>r.source_id)).size} surse verificate · ${errors.length} verificări de surse cu eroare.\nUltima colectare reușită din interval: ${latest?time(latest):'niciuna înregistrată'}.`,
  ...(data.runs.length?[]:['ATENȚIE: Nu există rulări înregistrate în acest interval. Absența rezultatelor nu confirmă absența oportunităților.']),
- `\nCOMPANII DESCOPERITE\n${data.events.length?'Semnale automate, nerevizuite editorial.':'Astăzi nu au fost înregistrate companii noi care să treacă regulile de identificare. Căutarea continuă.'}`,
+ `\nCOMPANII DESCOPERITE\n${data.events.length?'Semnale automate, nerevizuite editorial.':'În acest interval nu au fost înregistrate companii noi care să treacă regulile de identificare. Căutarea continuă.'}`,
  ...data.events.slice(0,50).map(e=>`\n${e.company_name} · ${e.region}\nIndustrie: ${e.industry}\nCe face: ${e.summary}\nSemnal și dovezi: ${e.listing_evidence}\nCuvinte detectate: ${e.keywords.join(', ')}\nDescoperită: ${time(e.discovered_at)}\nSursa: ${e.source_name}\n${e.url}\nFișa: https://www.stockagentai.ro/semnale/${e.id}`),
  ...(data.events.length>50?[`\nÎn e-mail sunt prezentate primele 50 din ${data.events.length} companii. Restul sunt disponibile în platformă.`]:[]),
  ...(errors.length?[`\nSURSE CU ERORI\n${[...new Set(errors.map(r=>r.source_id))].join(', ')}`]:[]),
  '\nJurnal și loguri: https://www.stockagentai.ro/cercetare\nCompanii: https://www.stockagentai.ro/companii\nRadar timpuriu: https://www.stockagentai.ro/radar-timpuriu',
- '\nRezumatul completează alertele pentru companii noi. O finanțare sau o evaluare mare nu confirmă intenția de IPO. Nu sunt recomandări de investiții. Raportul acoperă ziua până la 21:00, nu orele rămase până la miezul nopții.',
+ '\nRezumatul completează alertele pentru companii noi. O finanțare sau o evaluare mare nu confirmă intenția de IPO. Nu sunt recomandări de investiții. Raportul acoperă intervalul dintre ora 21:00 a zilei precedente și ora 21:00 a zilei indicate. Descoperirile de după ora 21:00 intră în raportul următor.',
  ].join('\n');
  return {from,to:[to],subject:`stockagentai · Rezumat zilnic · ${window.date}`,text};
 }
