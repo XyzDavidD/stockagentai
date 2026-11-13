@@ -63,3 +63,6 @@ export type Discovery = {source_kind?:string;article_supported?:boolean;document
 export type DocumentEvidence = {version:string;excerpt:string;excerpt_truncated:boolean;publication_date:string|null;indications:string[];paragraph_count:number};
 
 export type StartupProfile={id:string;name:string;url:string;batch:string;status:string;stage:string;industry:string;location:string;description:string};
+
+export type ResearchEvent={id:string;company_name:string;title:string;industry:string;region:string;keywords:string[];url:string;published_at:string|null;discovered_at:string;summary:string;listing_evidence:string;source_name:string};
+export type ResearchActivity={runs:{run_key:string;finished_at:string;sources:number;errors:number;observed:number}[];events:Pick<ResearchEvent,'id'|'company_name'|'industry'|'region'|'discovered_at'>[];email:{accepted:number;last_accepted:string|null;pending:number;issues:number}};

@@ -28,3 +28,11 @@ export async function getDiscoveries(): Promise<{items: import('./data').Discove
 export async function getStartupDirectory():Promise<{rows:{profile:import('./data').StartupProfile;checked_at:string}[];error:string|null}>{
  try{return {rows:await read('rpc/list_startup_directory'),error:null};}catch{return {rows:[],error:'Registrul YC nu este disponibil momentan.'};}
 }
+
+export async function getResearchActivity():Promise<import('./data').ResearchActivity|null>{
+ try{return await read('rpc/research_activity');}catch{return null;}
+}
+export async function getResearchEvent(id:string):Promise<import('./data').ResearchEvent|null>{
+ if(!/^[a-f0-9]{64}$/.test(id))return null;
+ try{return (await read(`research_events?id=eq.${id}&select=*`))[0]||null;}catch{return null;}
+}

@@ -1,4 +1,6 @@
 "use client";
+import ActivityLog from '@/components/research-activity';
+import type {ResearchActivity} from '@/lib/data';
 import EarlyRadar from '@/components/early-radar';
 import CompanyAccess from '@/components/company-access';
 import { useEffect, useMemo, useState } from "react";
@@ -91,11 +93,11 @@ function Badge({ stage }: { stage: string }) {
     </span>
   );
 }
-export default function Dashboard({ companies: allCompanies, sources, error, scheduler, discoveries, discoveryError, startups, startupError, initialView="overview", evaluatedAt }: {initialView?:View;evaluatedAt:string;discoveries:Discovery[];discoveryError:string|null;startups:{profile:StartupProfile;checked_at:string}[];startupError:string|null; companies: Company[]; sources: Source[]; error: string | null; scheduler: Scheduler | null }) {
+export default function Dashboard({ activity, companies: allCompanies, sources, error, scheduler, discoveries, discoveryError, startups, startupError, initialView="overview", evaluatedAt }: {activity:ResearchActivity|null;initialView?:View;evaluatedAt:string;discoveries:Discovery[];discoveryError:string|null;startups:{profile:StartupProfile;checked_at:string}[];startupError:string|null; companies: Company[]; sources: Source[]; error: string | null; scheduler: Scheduler | null }) {
   const coverage = [...new Set(sources.filter(s=>s.last_attempt_at&&s.checked_at&&!s.status.startsWith('Suspendat')).map(s=>s.area))].filter(a=>['SUA','România','Germania','Austria','Regatul Unit','Franța'].includes(a));
   const regionCodes:Record<string,string>={'SUA':'SUA','România':'RO','Germania':'DE','Austria':'AT','Regatul Unit':'UK','Franța':'FR'};
   const router=useRouter();
-  const associated=useMemo(()=>relatedSources(discoveries.filter(d=>!d.source_name.startsWith('Radar timpuriu ·')),allCompanies),[discoveries,allCompanies]);
+  const associated=useMemo(()=>relatedSources(discoveries.filter(d=>!d.source_name.startsWith('Radar timpuriu ·')&&!d.source_name.startsWith('Radar focalizat ·')),allCompanies),[discoveries,allCompanies]);
   const [archive, setArchive] = useState(false);
   const companies = allCompanies.filter(c => c.stage !== "Listată");
   const formatDate = (value: string) => !value||!Number.isFinite(Date.parse(value))?"Dată neprecizată":new Intl.DateTimeFormat("ro-RO", {dateStyle: "medium", timeZone: "Europe/Bucharest"}).format(new Date(value));
@@ -624,7 +626,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
               </div>
             </>
           )}
-          {['discoveries','universe','companies','watchlist','startups','dossiers'].includes(view) && table}
+          {['discoveries','universe','companies','watchlist','startups','dossiers'].includes(view) && <><p className="notice">Dosare revizuite manual. Colectorul caută în continuare; semnalele noi apar în <a href="/radar-timpuriu">radarul timpuriu</a>, iar rulările pot fi urmărite în <a href="/cercetare">centrul de cercetare</a>. Ordinea de aici nu indică ultima rulare a agentului.</p>{activity&&activity.events.length>0&&<div className="focus-banner"><strong>Detectate recent:</strong>{activity.events.slice(0,3).map(e=><a key={e.id} href={`/semnale/${e.id}`}>{e.company_name} ↗</a>)}<small>Semnale automate, încă nerevizuite editorial.</small></div>}{table}</>}
           {view === "early" && <EarlyRadar items={discoveries} sources={sources} error={discoveryError} evaluatedAt={evaluatedAt}/>}
           {view === "calendar" && (
             <section className="table-panel calendar-panel">
@@ -717,6 +719,7 @@ export default function Dashboard({ companies: allCompanies, sources, error, sch
           )}
           {view === "research" && (
             <>
+              <ActivityLog activity={activity}/>
               <div className="research-intro">
                 <Radio size={26} />
                 <div>

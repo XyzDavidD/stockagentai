@@ -36,4 +36,9 @@ jobs:
         env:
           SUPABASE_URL: https://kvssszorqmzmikmxcwll.supabase.co
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          RESEARCH_EVENTS_ENABLED: ${{ vars.RESEARCH_EVENTS_ENABLED }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
+          ALERT_EMAIL_FROM: ${{ vars.ALERT_EMAIL_FROM }}
+          ALERTS_ENABLED: ${{ vars.ALERTS_ENABLED }}
         run: node scripts/worker.mjs
