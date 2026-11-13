@@ -1,0 +1,45 @@
+name: Rezumat zilnic · 21:00 România
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Previzualizare fără trimitere de e-mail
+        type: boolean
+        default: true
+  schedule:
+    - cron: '0,15 21 * * *'
+      timezone: Europe/Bucharest
+permissions:
+  contents: read
+concurrency:
+  group: daily-research-summary
+  cancel-in-progress: false
+jobs:
+  collect:
+    if: github.event_name == 'workflow_dispatch' || vars.DAILY_SUMMARY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm test
+      - name: Rezumatul zilei
+        env:
+          SUPABASE_URL: https://kvssszorqmzmikmxcwll.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
+          ALERT_EMAIL_FROM: ${{ vars.ALERT_EMAIL_FROM }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then
+            node scripts/daily-summary-worker.mjs --dry-run
+          else
+            node scripts/daily-summary-worker.mjs
+          fi

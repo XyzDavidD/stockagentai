@@ -45,7 +45,7 @@ export async function runAlerts({results,sources,store,to,from,resendKey,enabled
  if(!enabled)return {created,email:'disabled'};
  if(!resendKey||!to||!from)throw new Error('ALERT_EMAIL_CONFIGURATION');
  const recipient_hash=hash(to.toLowerCase());
- const deliveries=await store(`email_deliveries?recipient_hash=eq.${recipient_hash}&select=*&order=created_at.desc&limit=1000`);
+ const deliveries=await store(`email_deliveries?recipient_hash=eq.${recipient_hash}&id=like.research-*&select=*&order=created_at.desc&limit=1000`);
  const pending=deliveries.find(d=>d.status==='pending');if(pending)return {created,email:await sendDelivery(pending,{store,resendKey,now})};
  // At most one new digest per UTC hour, at most 24/day. Retry uses the same immutable body/key.
  const id='research-'+hash(recipient_hash+now.slice(0,13));if(deliveries.some(d=>d.id===id))return {created,email:'hour-limit'};
