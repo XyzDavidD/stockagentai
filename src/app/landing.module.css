@@ -67,3 +67,33 @@
   .heroFoot{margin-top:18px;font-size:10px}
   .visualTop,.visualBottom{font-size:10px}
 }
+
+/* One shared content edge for every full-width section, in both languages. */
+.page{--gutter:clamp(24px,6vw,108px)}
+.header,.strip,.section,.contact,.footer,.representative,.registryFeature{padding-inline:var(--gutter)}
+.hero{padding-inline:var(--gutter)}
+.heroCopy{padding-left:0;padding-right:clamp(24px,4vw,64px)}
+.representative{column-gap:clamp(28px,5vw,80px)}
+.repIdentity{padding-left:0;padding-right:clamp(24px,3vw,48px)}
+.repBio{padding-left:0;padding-right:0}
+.registryFeature{padding-block:64px;display:grid;grid-template-columns:1.4fr 1fr;gap:28px 7%;background:#e9ecdf;border-bottom:1px solid var(--rule);scroll-margin-top:24px}
+.registryCopy h2{font-size:clamp(32px,3.4vw,50px);margin:22px 0}
+.registryCopy h2 em{color:#52633e}
+.registryCopy>p:not(.eyebrow){font-size:16px;line-height:1.8;max-width:650px;color:#354c3d}
+.registryCopy .textLink{font-size:15px;font-weight:600;margin-top:24px}
+.registryCapital{align-self:center;padding:30px;background:#f9faf3;border:1px solid #b9c6a9;border-radius:5px;min-width:0}
+.registryCapital>span{font-size:11px;letter-spacing:1.2px;color:#405239;display:block}
+.registryCapital>strong{font-family:Baskerville,'Palatino Linotype',serif;font-size:clamp(40px,4.4vw,64px);font-weight:400;letter-spacing:-2px;line-height:1.2;color:#173e30;display:block;margin:16px 0}
+.registryCapital>p{font-size:14px;line-height:1.7;color:#46594d;margin-bottom:18px}
+.registryCapital>a{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-top:1px solid #d6d9cd;font-size:13px;color:#284331}
+.registryCapital>a:hover{text-decoration:underline;text-underline-offset:4px}
+.registryContext{grid-column:1/-1;border-top:1px solid #bcc8af;padding-top:22px;color:#46594d;font-size:13px;line-height:1.85}
+@media(max-width:700px){
+ .page{--gutter:24px}
+ .heroCopy{padding-inline:0}
+ .repIdentity{padding-right:0}
+ .registryFeature{grid-template-columns:1fr;padding-block:40px;gap:28px}
+ .registryCapital{padding:24px}
+ .registryCopy h2{font-size:36px}
+}
+@media(max-width:360px){.page{--gutter:20px}.registryCopy h2{font-size:32px}}
