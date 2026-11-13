@@ -215,7 +215,7 @@ export default function Dashboard({ detected, activity, companies: allCompanies,
             {view === "watchlist" ? "Lista de urmărire" : archive ? "Arhiva listărilor" : "Companii · descoperiri și dosare"}{" "}
             <span className="count">{filtered.length}</span>
           </h2>
-          <p>O singură intrare per companie. Apasă pe nume pentru analiză, calendar și surse.</p>
+
         </div>
         {view === "overview" && (
           <button className="text-button" onClick={() => navigate("universe")}>
@@ -223,8 +223,7 @@ export default function Dashboard({ detected, activity, companies: allCompanies,
           </button>
         )}
       </div>
-      <div className="focus-banner"><strong>Prioritate: apărare, AI, software și infrastructură digitală</strong><label><input type="checkbox" checked={focusOnly} onChange={e=>setFocusOnly(e.target.checked)}/> Doar domeniile prioritare</label><small>România: afișăm numai procese documentate oficial. CEC Bank și Portul Constanța sunt excluse cât timp există doar intenții speculative.</small></div>
-      <div className="filters">
+      <div className="filters"><label className="focus-filter"><input type="checkbox" checked={focusOnly} onChange={e=>setFocusOnly(e.target.checked)}/> AI · apărare · software</label>
         <button hidden={view === "watchlist"} className="secondary" aria-pressed={archive} onClick={() => setArchive(v => !v)}>{archive ? "Arhivă · vezi radarul" : "Vezi listările încheiate"}</button>
         <label className="search-field">
           <Search size={16} />
@@ -549,28 +548,7 @@ export default function Dashboard({ detected, activity, companies: allCompanies,
           </div>
         </header>
         <main id="main">
-          <div className="page-heading">
-            <div>
-              <div className="eyebrow">
-                INTELIGENȚĂ PENTRU URMĂTOAREA OPORTUNITATE
-              </div>
-              <h1>
-                {titles[view]}
-                <span className="heading-dot">.</span>
-              </h1>
-              <p>
-                {view === "overview"
-                  ? "Companii cu intenții de listare. Analiză în română, surse și stadii explicate."
-                  : view === "research"
-                    ? "Transparență asupra surselor și a modului în care vor fi analizate."
-                    : "Informația potrivită, cu dovezile și contextul la îndemână."}
-              </p>
-            </div>
-            <div className="date-label">
-              <CalendarDays size={15} />
-              {formatDate(new Date().toISOString())}<span>Surse datate individual</span>
-            </div>
-          </div>
+          {!['overview','discoveries','universe','companies','watchlist','startups','dossiers'].includes(view) && <div className="page-heading"><h1>{titles[view]}</h1></div>}
 
           {error && <div role="alert" className="notice">{error}</div>}
           {notice && (
@@ -585,51 +563,7 @@ export default function Dashboard({ detected, activity, companies: allCompanies,
               </button>
             </div>
           )}
-          {view === "overview" && (
-            <>
-              <div className="metrics">
-                {[
-                  {label:"Companii urmărite",value:companies.length,sub:"Dosare unice cu dovezi privind listarea",icon:Building2},
-                  {label:"Documente / ofertă în pregătire",value:companies.filter(c=>['Documente depuse','Roadshow lansat','Ofertă programată'].includes(c.stage)).length,sub:"Proces documentat · debutul poate fi incert",icon:FileText},
-                  {label:"Intenții și semnale timpurii",value:companies.filter(c=>['Intenție anunțată','Semnal preliminar','Calendar estimativ'].includes(c.stage)).length,sub:"Planuri sau estimări, nu listări garantate",icon:Radio},
-                  {label:"Amânări de urmărit",value:companies.filter(c=>['Amânată','Posibilă amânare'].includes(c.stage)).length,sub:"Amânări confirmate sau relatate separat",icon:CalendarDays},
-                ].map((m, i) => (
-                  <button
-                    className="metric"
-                    key={m.label}
-                    onClick={() => {
-                      navigate("universe");
-                    }}
-                  >
-                    <div>
-                      {m.label}
-                      <m.icon size={17} />
-                    </div>
-                    <strong>{String(m.value).padStart(2, "0")}</strong>
-                    <span>
-                      <span className="metric-indicator" />
-                      {m.sub}
-                    </span>
-                  </button>
-                ))}
-              </div>
-              <section className="company-intro"><strong>Ce companii ar putea ajunge la bursă?</strong><p>În fiecare dosar găsești ce face compania, cine vorbește despre listare, când ar putea avea loc și ce rămâne de verificat. „Amânată” și „Posibilă amânare” sunt afișate explicit.</p></section>
-              <div className="overview-companies">
-                <div>{table}</div>
-
-              </div>
-              <div className="bottom-note">
-                <ShieldCheck size={16} />
-                <span>
-                  Context înainte de concluzii. Fiecare semnal are o sursă și o dată. Intențiile nu garantează listarea.
-                </span>
-                <button onClick={() => navigate("research")}>
-                  Cum funcționează <ArrowUpRight size={14} />
-                </button>
-              </div>
-            </>
-          )}
-          {['discoveries','universe','companies','watchlist','startups','dossiers'].includes(view) && <><p className="notice">Cele mai noi companii detectate apar primele. Semnalele automate sunt marcate separat de dosarele revizuite; o știre nouă despre o firmă deja prezentă nu o mută în vârf. Pentru dosarele vechi fără dată de descoperire folosim data verificării afișată în listă.</p>{table}</>}
+          {['overview','discoveries','universe','companies','watchlist','startups','dossiers'].includes(view) && table}
           {view === "early" && <EarlyRadar items={discoveries} sources={sources} error={discoveryError} evaluatedAt={evaluatedAt}/>}
           {view === "calendar" && (
             <section className="table-panel calendar-panel">

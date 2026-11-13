@@ -82,3 +82,28 @@
 @media(max-width:380px){.page{--gutter:20px;--header-height:72px}.brand{font-size:20px;letter-spacing:-1px}.brand>span:first-child{width:30px;height:30px;margin-right:7px}.brand>span:first-child svg{width:20px}.languageSwitch a{min-width:29px;min-height:36px;font-size:11px}.mobileMenu>button{width:40px;height:44px}.headerActions{gap:6px}.heroCopy{padding:22px 0}.hero h1{font-size:36px;margin:18px 0}.heroFoot{font-size:9px;letter-spacing:.3px;margin-top:20px}.heroIntro{font-size:15px}.primary{font-size:13px}.repIdentity{gap:12px}.monogram{width:85px;height:94px;font-size:43px}.repIdentity>a{font-size:11px}.credentials article{padding:14px;grid-template-columns:76px minmax(0,1fr);gap:8px 12px}.credentials h3{font-size:23px}.registryCapital>strong{font-size:46px}.contactDetails{padding:18px 16px}}
 @media(max-height:600px) and (min-width:761px){.heroCopy{padding-block:18px}.hero h1{font-size:36px;margin:16px 0}.heroIntro{font-size:14px;line-height:1.6}.hero .primary{margin-top:16px;padding-block:12px}.heroFoot{margin-top:18px;font-size:10px}.visualCaption h2{font-size:36px}}
 @media(prefers-reduced-motion:reduce){.page *{transition:none!important;animation:none!important}}
+
+/* Light architectural hero and an actual, readable certificate preview. */
+.hero{background:#edf2f4;color:#153746;gap:32px}
+.hero h1 em{color:#376d81}
+.heroIntro{color:#425e69}
+.hero .eyebrow{color:#375a69}
+.hero .eyebrow>span{background:#c87a32}
+.hero .primary{background:#183f50;color:#fff}
+.hero .primary:hover{background:#28647b}
+.heroFoot{color:#49616b}.heroFoot i{background:#8da7b0}
+.heroVisual{background:#dfe9ed;border:0;position:relative;align-self:stretch;min-height:0}
+.heroArtwork{position:absolute;width:100%;height:100%;inset:0;object-fit:cover;object-position:center}
+.artworkCaption{position:absolute;left:24px;right:24px;bottom:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:16px 18px;background:#ffffffdf;backdrop-filter:blur(8px);border:1px solid #fff;border-radius:6px;color:#284b5b;font-size:12px}
+.artworkCaption>span:first-child{font-size:10px;letter-spacing:1.4px;font-weight:700}
+.registryCapital{background:white;border-color:#cfdbcf;padding:20px}
+.registryCapital>strong{font-size:38px;margin:10px 0}
+.registryCapital>a.registryPreview{display:block;padding:0;border:1px solid #d0d9d5;background:#e7ede9;border-radius:7px;overflow:hidden;margin-bottom:22px;text-decoration:none}
+.registryPreview img{display:block;height:340px;width:100%;object-fit:contain;padding:14px;transition:transform .2s}
+.registryPreview:hover img{transform:scale(1.025)}
+.registryPreview>span{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px;background:#173e30;color:#fff;font-size:13px;font-weight:600}
+@media(max-width:760px){
+ .hero{gap:0;background:linear-gradient(110deg,#f3f6f8 45%,#f3f6f8c9),url('/images/research-architecture.svg') right center/auto 100% no-repeat}
+ .hero .primary{max-width:none}
+ .registryCapital{padding:18px}.registryPreview img{height:330px;padding:12px}
+}

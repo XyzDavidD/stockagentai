@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1000" viewBox="0 0 900 1000" fill="none">
+<defs>
+ <linearGradient id="sky" x2="900" y2="1000" gradientUnits="userSpaceOnUse"><stop stop-color="#edf4f7"/><stop offset="1" stop-color="#d9e5ea"/></linearGradient>
+ <linearGradient id="glass" x1="320" y1="150" x2="740" y2="940" gradientUnits="userSpaceOnUse"><stop stop-color="#fdfefe"/><stop offset=".4" stop-color="#b6ccd6"/><stop offset="1" stop-color="#f3f7f8"/></linearGradient>
+ <linearGradient id="side" x1="570" x2="900" gradientUnits="userSpaceOnUse"><stop stop-color="#7898aa"/><stop offset="1" stop-color="#d9e4e9"/></linearGradient>
+ <linearGradient id="front" x1="50" y1="480" x2="480" y2="1000" gradientUnits="userSpaceOnUse"><stop stop-color="#f9fcfd"/><stop offset="1" stop-color="#8aa7b7"/></linearGradient>
+ <pattern id="windows" width="36" height="46" patternUnits="userSpaceOnUse"><path d="M0 0H36V46" stroke="#718e9e" stroke-opacity=".35" stroke-width="1.3"/></pattern>
+ <clipPath id="tower"><path d="M348 279 583 131 583 1000H348Z"/></clipPath>
+ <clipPath id="near"><path d="M57 624 311 477V1000H57Z"/></clipPath>
+</defs>
+<path fill="url(#sky)" d="M0 0h900v1000H0z"/>
+<circle cx="676" cy="244" r="121" fill="#f8d4a5"/>
+<path d="M0 830 900 310M0 950 900 430M100 1000 900 540" stroke="#fff" stroke-opacity=".5"/>
+<path d="m697 443 127-71 76 44v584H697Z" fill="#c2d3dc"/>
+<path d="m697 443 127-71v628H697Z" fill="#e5edf0"/>
+<path d="m348 279 235-148 190 110v759H348Z" fill="url(#side)"/>
+<path d="m348 279 235-148v869H348Z" fill="url(#glass)"/>
+<g clip-path="url(#tower)"><path fill="url(#windows)" d="M330 130h270v900H330z"/><path d="m350 350 240-149m-240 262 240-149m-240 262 240-149m-240 262 240-149m-240 262 240-149m-240 262 240-149" stroke="#fff" stroke-opacity=".65" stroke-width="3"/></g>
+<path d="m583 131 190 110m-190-2 190 110m-190-2 190 110m-190-2 190 110m-190-2 190 110m-190-2 190 110m-190-2 190 110m-190-2 190 110" stroke="#5d7f91" stroke-opacity=".42" stroke-width="2"/>
+<path d="m628 158 0 842m48-814v814m48-786v786" stroke="#f4f9fb" stroke-opacity=".6"/>
+<path d="m57 624 254-147 191 111v412H57Z" fill="#8da8b7"/>
+<path d="m57 624 254-147v523H57Z" fill="url(#front)"/>
+<g clip-path="url(#near)"><path fill="url(#windows)" d="M40 470h290v550H40z"/><path d="m50 720 270-156m-270 255 270-156m-270 255 270-156m-270 255 270-156" stroke="#fdfefe" stroke-width="3"/></g>
+<path d="m311 477 191 111m-191-10 191 111m-191-10 191 111m-191-10 191 111m-191-10 191 111" stroke="#e4eef3" stroke-opacity=".8" stroke-width="2"/>
+<path d="M0 968 900 790v210H0Z" fill="#eff4f6" fill-opacity=".75"/>
+<circle cx="149" cy="267" r="5" fill="#e29c55"/><path d="M149 267h87l48 48h79" stroke="#50778b" stroke-opacity=".5"/><circle cx="363" cy="315" r="3" fill="#50778b"/>
+</svg>
