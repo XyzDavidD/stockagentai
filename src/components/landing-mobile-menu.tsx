@@ -16,7 +16,7 @@ export default function LandingMobileMenu({locale}: {locale: 'ro' | 'en'}) {
   }, [open]);
   const links = [
     ['#registry', ro ? 'Document ONRC' : 'ONRC record'],
-    ['#approach', ro ? 'Abordarea noastră' : 'Our approach'],
+    ['#approach', ro ? 'Ce facem' : 'Our research'],
     ['#representative', ro ? 'Reprezentant' : 'Representative'],
     ['#credentials', ro ? 'Studii și documente' : 'Credentials'],
     ['#contact', ro ? 'Contact' : 'Contact'],
