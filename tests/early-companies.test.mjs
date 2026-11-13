@@ -32,3 +32,8 @@ test('early alerts use company gate without disabling separate IPO alerts',()=>{
  const ipo=eventFromCandidate({...candidate,title:'American AI startup Nova files IPO registration statement'},{name:'IPO news'},now);
  assert.ok(ipo);
 });
+
+test('marketing descriptors are stripped from company names',()=>{
+ assert.equal(identifyEarlyCompany('Global Cybersecurity Leader eSentire raises $100 million')?.name,'eSentire');
+ assert.equal(identifyEarlyCompany('Unicorn Onebrief raises $200 million AI funding')?.name,'Onebrief');
+});
