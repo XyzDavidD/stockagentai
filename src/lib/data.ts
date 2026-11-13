@@ -23,6 +23,8 @@ export type CompanyContext = {
  nextCheckpoint:string; listingDate:string|null; estimatedListingDate:string|null;
 };
 export type Company = {
+ discoveredAt?:string;
+ signalId?:string;
  context?:CompanyContext;
  accessResearch?:CompanyAccessResearch;
   aliases?: string[];

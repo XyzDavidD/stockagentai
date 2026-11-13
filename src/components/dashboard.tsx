@@ -1,6 +1,7 @@
 "use client";
 import ActivityLog from '@/components/research-activity';
-import type {ResearchActivity} from '@/lib/data';
+import {companyList,newestCompanyFirst} from '@/lib/company-list.mjs';
+import type {ResearchActivity,ResearchEvent} from '@/lib/data';
 import EarlyRadar from '@/components/early-radar';
 import CompanyAccess from '@/components/company-access';
 import { useEffect, useMemo, useState } from "react";
@@ -59,9 +60,9 @@ const navigation = [
 const titles: Record<View, string> = {
   early: "Radar timpuriu",
   overview: "Privire de ansamblu",
-  discoveries: "Companii cu semnale de listare",
+  discoveries: "Companii · descoperiri și dosare",
   universe: "Companii cu planuri de listare",
-  companies: "Dosare verificate",
+  companies: "Companii",
   startups:"Companii cu planuri de listare",
   dossiers:"Dosare și semnale",
   calendar: "Calendarul listărilor",
@@ -93,12 +94,14 @@ function Badge({ stage }: { stage: string }) {
     </span>
   );
 }
-export default function Dashboard({ activity, companies: allCompanies, sources, error, scheduler, discoveries, discoveryError, startups, startupError, initialView="overview", evaluatedAt }: {activity:ResearchActivity|null;initialView?:View;evaluatedAt:string;discoveries:Discovery[];discoveryError:string|null;startups:{profile:StartupProfile;checked_at:string}[];startupError:string|null; companies: Company[]; sources: Source[]; error: string | null; scheduler: Scheduler | null }) {
+export default function Dashboard({ detected, activity, companies: allCompanies, sources, error, scheduler, discoveries, discoveryError, startups, startupError, initialView="overview", evaluatedAt }: {detected:ResearchEvent[];activity:ResearchActivity|null;initialView?:View;evaluatedAt:string;discoveries:Discovery[];discoveryError:string|null;startups:{profile:StartupProfile;checked_at:string}[];startupError:string|null; companies: Company[]; sources: Source[]; error: string | null; scheduler: Scheduler | null }) {
   const coverage = [...new Set(sources.filter(s=>s.last_attempt_at&&s.checked_at&&!s.status.startsWith('Suspendat')).map(s=>s.area))].filter(a=>['SUA','România','Germania','Austria','Regatul Unit','Franța'].includes(a));
   const regionCodes:Record<string,string>={'SUA':'SUA','România':'RO','Germania':'DE','Austria':'AT','Regatul Unit':'UK','Franța':'FR'};
   const router=useRouter();
   const associated=useMemo(()=>relatedSources(discoveries.filter(d=>!d.source_name.startsWith('Radar timpuriu ·')&&!d.source_name.startsWith('Radar focalizat ·')),allCompanies),[discoveries,allCompanies]);
   const [archive, setArchive] = useState(false);
+  const listedCompanies=useMemo(()=>companyList(allCompanies,detected),[allCompanies,detected]);
+  const openCompany=(c:Company)=>c.signalId?router.push(`/semnale/${c.signalId}`):setSelected(c);
   const companies = allCompanies.filter(c => c.stage !== "Listată");
   const formatDate = (value: string) => !value||!Number.isFinite(Date.parse(value))?"Dată neprecizată":new Intl.DateTimeFormat("ro-RO", {dateStyle: "medium", timeZone: "Europe/Bucharest"}).format(new Date(value));
   const stale = (c: Company) => Date.now() - new Date(c.publishedAt).getTime() > 90 * 86400000;
@@ -111,7 +114,7 @@ export default function Dashboard({ activity, companies: allCompanies, sources, 
   const [query, setQuery] = useState("");
   const [country, setCountry] = useState("Toate țările");
   const [stage, setStage] = useState("Toate stadiile");
-  const [sort, setSort] = useState("priority");
+  const [sort, setSort] = useState("newest");
   const [watch, setWatch] = useState<string[]>([]);
   const [ready, setReady] = useState(false);
   const [selected, setSelected] = useState<Company | null>(null);
@@ -183,10 +186,10 @@ export default function Dashboard({ activity, companies: allCompanies, sources, 
   }, [mobile]);
   const filtered = useMemo(
     () =>
-      (view === "watchlist" ? allCompanies : archive ? allCompanies.filter(c => c.stage === "Listată") : companies)
+      (archive ? listedCompanies.filter(c => c.stage === "Listată") : listedCompanies.filter(c => view === "watchlist" || c.stage !== "Listată"))
         .filter(
           (c) =>
-            (view !== "watchlist" || watch.includes(c.id)) && (!focusOnly||c.context?.focus===true) &&
+            (view !== "watchlist" || watch.includes(c.id)) && (!focusOnly||c.context?.focus===true||!!c.signalId) &&
             `${c.name} ${c.sector} ${c.country}`
               .toLocaleLowerCase("ro")
               .includes(query.toLocaleLowerCase("ro")) &&
@@ -196,9 +199,9 @@ export default function Dashboard({ activity, companies: allCompanies, sources, 
         .sort((a, b) =>
           sort === "name"
             ? a.name.localeCompare(b.name)
-            : Number(!!b.context?.focus)-Number(!!a.context?.focus)||b.publishedAt.localeCompare(a.publishedAt),
+            : newestCompanyFirst(a,b),
         ),
-    [view, watch, query, country, stage, sort, archive, allCompanies,focusOnly],
+    [view, watch, query, country, stage, sort, archive, listedCompanies,focusOnly],
   );
   const alerts = companies
     .filter((c) => !onlyOfficial || c.official);
@@ -209,7 +212,7 @@ export default function Dashboard({ activity, companies: allCompanies, sources, 
       <div className="section-heading">
         <div>
           <h2>
-            {view === "watchlist" ? "Lista de urmărire" : archive ? "Arhiva listărilor" : "Companii cu semnale de listare"}{" "}
+            {view === "watchlist" ? "Lista de urmărire" : archive ? "Arhiva listărilor" : "Companii · descoperiri și dosare"}{" "}
             <span className="count">{filtered.length}</span>
           </h2>
           <p>O singură intrare per companie. Apasă pe nume pentru analiză, calendar și surse.</p>
@@ -240,7 +243,7 @@ export default function Dashboard({ activity, companies: allCompanies, sources, 
             value={country}
             onChange={(e) => setCountry(e.target.value)}
           >
-            {["Toate țările", ...new Set(allCompanies.flatMap(c=>c.regions||[c.country]))].map(
+            {["Toate țările", ...new Set(listedCompanies.flatMap(c=>c.regions||[c.country]))].map(
               (v) => (
                 <option key={v}>{v}</option>
               ),
@@ -277,7 +280,7 @@ export default function Dashboard({ activity, companies: allCompanies, sources, 
             value={sort}
             onChange={(e) => setSort(e.target.value)}
           >
-            <option value="priority">Domenii prioritare, apoi surse recente</option>
+            <option value="newest">Cele mai noi descoperiri</option>
             <option value="name">Nume A–Z</option>
           </select>
         </label>
@@ -300,16 +303,16 @@ export default function Dashboard({ activity, companies: allCompanies, sources, 
           </thead>
           <tbody>
             {filtered.map((c) => (
-              <tr key={c.id} className="clickable-company" onClick={e=>{if(!(e.target as HTMLElement).closest("button,a,input"))setSelected(c);}}>
+              <tr key={c.id} className="clickable-company" onClick={e=>{if(!(e.target as HTMLElement).closest("button,a,input"))openCompany(c);}}>
                 <td>
                   <button
                     className="company-cell"
-                    onClick={() => setSelected(c)}
+                    onClick={() => openCompany(c)}
                   >
                     <Logo company={c} />
                     <span>
                       <strong>{c.name}</strong>
-                      <small>{c.sector}{c.context?.focus?" · Prioritar":""}</small>
+                      <small>{c.sector}{c.context?.focus?" · Prioritar":""}</small><small>{c.discoveredAt?`Descoperită: ${timestamp(c.discoveredAt)}`:`Dosar verificat: ${formatDate(c.checkedAt)}`}</small>
                     </span>
                   </button>
                 </td>
@@ -372,7 +375,7 @@ export default function Dashboard({ activity, companies: allCompanies, sources, 
       <div className="table-footer">
         <span>
           {filtered.length} {filtered.length === 1 ? "companie" : "companii"} ·
-          dosare de cercetare · rezumate în română
+          companii · dosare și semnale automate etichetate separat
         </span>
         <span>Stadiul documentelor nu indică randamentul investiției.</span>
       </div>
@@ -626,7 +629,7 @@ export default function Dashboard({ activity, companies: allCompanies, sources, 
               </div>
             </>
           )}
-          {['discoveries','universe','companies','watchlist','startups','dossiers'].includes(view) && <><p className="notice">Dosare revizuite manual. Colectorul caută în continuare; semnalele noi apar în <a href="/radar-timpuriu">radarul timpuriu</a>, iar rulările pot fi urmărite în <a href="/cercetare">centrul de cercetare</a>. Ordinea de aici nu indică ultima rulare a agentului.</p>{activity&&activity.events.length>0&&<div className="focus-banner"><strong>Detectate recent:</strong>{activity.events.slice(0,3).map(e=><a key={e.id} href={`/semnale/${e.id}`}>{e.company_name} ↗</a>)}<small>Semnale automate, încă nerevizuite editorial.</small></div>}{table}</>}
+          {['discoveries','universe','companies','watchlist','startups','dossiers'].includes(view) && <><p className="notice">Cele mai noi companii detectate apar primele. Semnalele automate sunt marcate separat de dosarele revizuite; o știre nouă despre o firmă deja prezentă nu o mută în vârf. Pentru dosarele vechi fără dată de descoperire folosim data verificării afișată în listă.</p>{table}</>}
           {view === "early" && <EarlyRadar items={discoveries} sources={sources} error={discoveryError} evaluatedAt={evaluatedAt}/>}
           {view === "calendar" && (
             <section className="table-panel calendar-panel">
@@ -707,7 +710,7 @@ export default function Dashboard({ activity, companies: allCompanies, sources, 
                 {companies
                   .filter((c) => !c.date&&!c.dateLabel.includes("estimare"))
                   .map((c) => (
-                    <button key={c.id} onClick={() => setSelected(c)}>
+                    <button key={c.id} onClick={() => openCompany(c)}>
                       <Logo company={c} small />
                       <strong>{c.name}</strong>
                       <span>{c.dateLabel}</span>

@@ -36,3 +36,7 @@ export async function getResearchEvent(id:string):Promise<import('./data').Resea
  if(!/^[a-f0-9]{64}$/.test(id))return null;
  try{return (await read(`research_events?id=eq.${id}&select=*`))[0]||null;}catch{return null;}
 }
+
+export async function getResearchEvents():Promise<import('./data').ResearchEvent[]>{
+ try{return await read('research_events?select=*&order=discovered_at.desc&limit=1000');}catch{return [];}
+}
