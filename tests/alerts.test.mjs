@@ -35,3 +35,9 @@ test('timeout stays pending with no leaked token and can retry with same payload
 test('disabled email still records events but never sends',async()=>{
  const result=await runAlerts({results:[{id:'test',candidates:[candidate]}],sources:[{id:'test',name:'Test'}],now,enabled:false,store:async(path)=>{assert.ok(path.startsWith('research_events'));return [{}];}});assert.deepEqual(result,{created:1,email:'disabled'});
 });
+
+test('UK cannot match Ukrainian and expansion does not override explicit nationality',()=>{
+ assert.equal(eventFromCandidate({...candidate,title:'Ukrainian Defence Tech UFORCE Raises AI Series A funding'},{},now),null);
+ const e=eventFromCandidate({...candidate,title:'German defence AI startup SE3 Labs raises $30M as it plots UK expansion'},{},now);
+ assert.equal(e.company_name,'SE3 Labs');assert.equal(e.region,'Germania');
+});
