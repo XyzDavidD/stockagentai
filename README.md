@@ -173,7 +173,7 @@ Filtrarea radarului cere și un indiciu de finanțare, investiție, evaluare, pa
 
 ### Public presentation · 13 November 2026
 
-The English presentation is served at `/`; the Romanian overview is now `/dashboard`. Existing company, research and alert detail URLs remain unchanged. The landing page introduces StockAgentAI, its representative Sergiu-Romeo Mureșan, academic credentials, public document copies and phone contact. `contact@stockagentai.ro` is displayed as a planned mailbox, not a working email channel.
+The Romanian presentation is served at `/`, the English version at `/en`, and the Romanian research overview at `/dashboard`. Both presentation pages share one server component, include a visible RO / EN language selector, and publish canonical and language-alternate URLs. Existing company, research and alert detail URLs remain unchanged. The landing page introduces StockAgentAI, its representative Sergiu-Romeo Mureșan, academic credentials, public document copies and phone contact. `contact@stockagentai.ro` is displayed as a planned mailbox, not a working email channel.
 
 Credentials reflect supplied scans; programme completion dates and issue dates are distinguished. Academic degrees are not described as regulatory licences. The supplied registry certificate is linked as a record for a separate entity associated with the representative; its capital is not attributed to StockAgentAI. Public PDFs are flattened, visibly marked redacted copies. Originals and unredacted personal records are not included in the repository. The page does not assert independent authentication of the supplied documents.
 
