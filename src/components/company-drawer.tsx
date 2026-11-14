@@ -42,7 +42,6 @@ export default function CompanyDrawer({selected,onClose,watch,toggle,associated=
           <Dialog.Overlay className="dialog-overlay" />
           <Dialog.Content
             className="detail-panel"
-            aria-describedby="company-description"
           >
             {selected && (
               <>
@@ -66,7 +65,6 @@ export default function CompanyDrawer({selected,onClose,watch,toggle,associated=
                   </div>
                 </div>
                 <Dialog.Description
-                  id="company-description"
                   className="detail-description"
                 >
                   {selected.summary}
