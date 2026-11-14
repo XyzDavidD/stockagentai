@@ -1,0 +1,131 @@
+{
+  "se3labs": {
+    "reviewedAt": "2026-11-14",
+    "status": "Contact public identificat · acces la acțiuni neconfirmat",
+    "conclusion": "Nu am identificat un distribuitor de acțiuni sau o ofertă deschisă confirmată pentru investitori individuali.",
+    "parties": [],
+    "privateAccess": "Solicită confirmarea unei runde deschise sau a unui transfer de acțiuni autorizat de companie.",
+    "romaniaAccess": "Eligibilitatea unui investitor din România nu este confirmată. Solicită în scris condițiile de participare și identitatea entității care gestionează tranzacția.",
+    "minimum": "Necomunicat public în sursele consultate.",
+    "nextSteps": [
+      "Cere redirecționarea către responsabilul pentru finanțare sau relații cu investitorii.",
+      "Întreabă dacă există o rundă deschisă sau un transfer autorizat și solicită documentele și condițiile."
+    ],
+    "contactSummary": "Contact corporate publicat în registrul Bundestag. Poți solicita o introducere către conducere; nu este un contact confirmat pentru vânzare de acțiuni.",
+    "contacts": [
+      {
+        "name": "SE3 Labs · contact corporate",
+        "role": "Contactul public al societății în registrul de reprezentare a intereselor",
+        "value": "isabel@se3.ai · +49 160 7960573",
+        "purpose": "Solicită persoana responsabilă de finanțare. Registrul publică acest contact pentru societate, fără a-i atribui un mandat de vânzare sau de alocare a acțiunilor.",
+        "evidence": "registry",
+        "kind": "routing",
+        "url": "https://www.lobbyregister.bundestag.de/suche/R007657/85770"
+      },
+      {
+        "name": "Lukas Koestler",
+        "role": "CEO, reprezentant al societății în registrul public",
+        "value": "Contact direct nepublicat în sursa consultată.",
+        "purpose": "Persoană de conducere identificată. Cere introducerea prin contactul corporate; nu presupunem că gestionează personal vânzarea acțiunilor.",
+        "evidence": "registry",
+        "kind": "profile",
+        "url": "https://www.lobbyregister.bundestag.de/suche/R007657/85770"
+      }
+    ],
+    "sources": [
+      {
+        "id": "registry",
+        "title": "Bundestag · SE3 Labs GmbH, R007657",
+        "url": "https://www.lobbyregister.bundestag.de/suche/R007657/85770",
+        "publishedAt": "2026-09-11",
+        "kind": "official"
+      }
+    ]
+  },
+  "se3": {
+    "reviewedAt": "2026-11-14",
+    "status": "Contact public identificat · acces la acțiuni neconfirmat",
+    "conclusion": "Nu am identificat un distribuitor de acțiuni sau o ofertă deschisă confirmată pentru investitori individuali.",
+    "parties": [],
+    "privateAccess": "Solicită confirmarea unei runde deschise sau a unui transfer de acțiuni autorizat de companie.",
+    "romaniaAccess": "Eligibilitatea unui investitor din România nu este confirmată. Solicită în scris condițiile de participare și identitatea entității care gestionează tranzacția.",
+    "minimum": "Necomunicat public în sursele consultate.",
+    "nextSteps": [
+      "Cere redirecționarea către responsabilul pentru finanțare sau relații cu investitorii.",
+      "Întreabă dacă există o rundă deschisă sau un transfer autorizat și solicită documentele și condițiile."
+    ],
+    "contactSummary": "Contact corporate publicat în registrul Bundestag. Poți solicita o introducere către conducere; nu este un contact confirmat pentru vânzare de acțiuni.",
+    "contacts": [
+      {
+        "name": "SE3 Labs · contact corporate",
+        "role": "Contactul public al societății în registrul de reprezentare a intereselor",
+        "value": "isabel@se3.ai · +49 160 7960573",
+        "purpose": "Solicită persoana responsabilă de finanțare. Registrul publică acest contact pentru societate, fără a-i atribui un mandat de vânzare sau de alocare a acțiunilor.",
+        "evidence": "registry",
+        "kind": "routing",
+        "url": "https://www.lobbyregister.bundestag.de/suche/R007657/85770"
+      },
+      {
+        "name": "Lukas Koestler",
+        "role": "CEO, reprezentant al societății în registrul public",
+        "value": "Contact direct nepublicat în sursa consultată.",
+        "purpose": "Persoană de conducere identificată. Cere introducerea prin contactul corporate; nu presupunem că gestionează personal vânzarea acțiunilor.",
+        "evidence": "registry",
+        "kind": "profile",
+        "url": "https://www.lobbyregister.bundestag.de/suche/R007657/85770"
+      }
+    ],
+    "sources": [
+      {
+        "id": "registry",
+        "title": "Bundestag · SE3 Labs GmbH, R007657",
+        "url": "https://www.lobbyregister.bundestag.de/suche/R007657/85770",
+        "publishedAt": "2026-09-11",
+        "kind": "official"
+      }
+    ]
+  },
+  "uforce": {
+    "reviewedAt": "2026-11-14",
+    "status": "Contact public identificat · acces la acțiuni neconfirmat",
+    "conclusion": "Nu am identificat un distribuitor de acțiuni sau o ofertă deschisă confirmată pentru investitori individuali.",
+    "parties": [],
+    "privateAccess": "Solicită confirmarea unei runde deschise sau a unui transfer de acțiuni autorizat de companie.",
+    "romaniaAccess": "Eligibilitatea unui investitor din România nu este confirmată. Solicită în scris condițiile de participare și identitatea entității care gestionează tranzacția.",
+    "minimum": "Necomunicat public în sursele consultate.",
+    "nextSteps": [
+      "Cere redirecționarea către responsabilul pentru finanțare sau relații cu investitorii.",
+      "Întreabă dacă există o rundă deschisă sau un transfer autorizat și solicită documentele și condițiile."
+    ],
+    "contactSummary": "Comunicatul de finanțare publică un contact de presă și îl identifică pe CEO. Nu este publicat un e-mail dedicat investitorilor sau vânzării de acțiuni.",
+    "contacts": [
+      {
+        "name": "UFORCE · echipa de comunicare",
+        "role": "Media Inquiries · contact publicat în anunțul de finanțare",
+        "value": "media-inquiries@uforce.com",
+        "purpose": "Canal de presă, nu intermediar financiar. Poți cere redirecționarea către responsabilul pentru relații cu investitorii; o astfel de introducere nu este garantată.",
+        "evidence": "funding",
+        "kind": "routing",
+        "url": "https://www.uforce.com/news/uforce-raises-700m-at-6-billion-valuation-from-leading-tech-and-sovereign-wealth-funds-to-scale-combat-proven-defence-systems-for-ukraine-and-allied-nations"
+      },
+      {
+        "name": "Oleg Rogynskyy",
+        "role": "Chief Executive Officer, identificat în comunicatul companiei",
+        "value": "Contact direct nepublicat în sursa consultată.",
+        "purpose": "Responsabil executiv identificat; cere o introducere către echipa sa de finanțare. Nu am identificat un mandat de vânzare de acțiuni pentru acest contact.",
+        "evidence": "funding",
+        "kind": "profile",
+        "url": "https://www.uforce.com/news/uforce-raises-700m-at-6-billion-valuation-from-leading-tech-and-sovereign-wealth-funds-to-scale-combat-proven-defence-systems-for-ukraine-and-allied-nations"
+      }
+    ],
+    "sources": [
+      {
+        "id": "funding",
+        "title": "UFORCE · comunicat Series A și contact media",
+        "url": "https://www.uforce.com/news/uforce-raises-700m-at-6-billion-valuation-from-leading-tech-and-sovereign-wealth-funds-to-scale-combat-proven-defence-systems-for-ukraine-and-allied-nations",
+        "publishedAt": "2026-11-12",
+        "kind": "official"
+      }
+    ]
+  }
+}

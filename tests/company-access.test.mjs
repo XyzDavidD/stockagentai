@@ -31,3 +31,13 @@ test('prospectus departments and issuer verification are distinguished from allo
  assert.match(access['sb-energy'].privateAccess,/NVIDIA/);
  assert.match(access['windward-bio'].conclusion,/Sanofi/);
 });
+test('new-company contacts have evidence and distinguish introductions from share sales',()=>{
+ const early=read('early-company-access');
+ for(const key of ['se3labs','uforce']){
+  const r=early[key];assert.ok(r.contacts.some(c=>c.value.includes('@')));
+  for(const c of r.contacts){assert.ok(r.sources.some(s=>s.id===c.evidence));assert.ok(['routing','profile'].includes(c.kind));assert.ok(!/support@|info@/i.test(c.value));}
+  assert.match(r.conclusion,/Nu am identificat un distribuitor/);
+ }
+ assert.deepEqual(early.se3,early.se3labs);
+ assert.match(early.uforce.contacts[0].purpose,/presă, nu intermediar/);
+});

@@ -3,9 +3,9 @@ import ActivityLog from '@/components/research-activity';
 import {companyList,newestCompanyFirst} from '@/lib/company-list.mjs';
 import type {ResearchActivity,ResearchEvent} from '@/lib/data';
 import EarlyRadar from '@/components/early-radar';
-import CompanyAccess from '@/components/company-access';
-import { useEffect, useMemo, useState } from "react";
-import * as Dialog from "@radix-ui/react-dialog";
+import CompanyDrawer from './company-drawer';
+import {enrichCompany} from '@/lib/company-detail';
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ArrowUpRight,
   ArrowRight,
@@ -44,8 +44,7 @@ import type {Discovery,StartupProfile} from "@/lib/data";
 import {useRouter} from 'next/navigation';
 import {platformRoutes,type View} from '@/lib/platform-routes';
 
-import {relatedSources,listingDates} from '@/lib/dossiers.mjs';
-import {sourceCategory} from '@/lib/provenance.mjs';
+import {relatedSources} from '@/lib/dossiers.mjs';
 import {safeEvidenceUrl} from '@/lib/signals.mjs';
 
 
@@ -100,8 +99,8 @@ export default function Dashboard({ detected, activity, companies: allCompanies,
   const router=useRouter();
   const associated=useMemo(()=>relatedSources(discoveries.filter(d=>!d.source_name.startsWith('Radar timpuriu ·')&&!d.source_name.startsWith('Radar focalizat ·')),allCompanies),[discoveries,allCompanies]);
   const [archive, setArchive] = useState(false);
-  const listedCompanies=useMemo(()=>companyList(allCompanies,detected),[allCompanies,detected]);
-  const openCompany=(c:Company)=>c.signalId?router.push(`/semnale/${c.signalId}`):setSelected(c);
+  const listedCompanies=useMemo(()=>companyList(allCompanies,detected).map(enrichCompany),[allCompanies,detected]);
+  const openCompany=useCallback((c:Company)=>setSelected(enrichCompany(c)),[]);
   const companies = allCompanies.filter(c => c.stage !== "Listată");
   const formatDate = (value: string) => !value||!Number.isFinite(Date.parse(value))?"Dată neprecizată":new Intl.DateTimeFormat("ro-RO", {dateStyle: "medium", timeZone: "Europe/Bucharest"}).format(new Date(value));
   const stale = (c: Company) => Date.now() - new Date(c.publishedAt).getTime() > 90 * 86400000;
@@ -118,6 +117,7 @@ export default function Dashboard({ detected, activity, companies: allCompanies,
   const [watch, setWatch] = useState<string[]>([]);
   const [ready, setReady] = useState(false);
   const [selected, setSelected] = useState<Company | null>(null);
+  useEffect(()=>{const key=new URL(window.location.href).searchParams.get('companie');const found=listedCompanies.find(c=>c.id===key||c.signalId===key);if(found)setSelected(found);},[listedCompanies]);
   const [mobile, setMobile] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [read, setRead] = useState<string[]>([]);
@@ -564,7 +564,7 @@ export default function Dashboard({ detected, activity, companies: allCompanies,
             </div>
           )}
           {['overview','discoveries','universe','companies','watchlist','startups','dossiers'].includes(view) && table}
-          {view === "early" && <EarlyRadar items={discoveries} sources={sources} error={discoveryError} evaluatedAt={evaluatedAt}/>}
+          {view === "early" && <EarlyRadar items={discoveries} sources={sources} error={discoveryError} evaluatedAt={evaluatedAt} onOpenCompany={openCompany}/>}
           {view === "calendar" && (
             <section className="table-panel calendar-panel">
               <div className="section-heading">
@@ -856,137 +856,7 @@ export default function Dashboard({ detected, activity, companies: allCompanies,
           </footer>
         </main>
       </div>
-      <Dialog.Root
-        open={!!selected}
-        onOpenChange={(open) => {
-          if (!open) setSelected(null);
-        }}
-      >
-        <Dialog.Portal>
-          <Dialog.Overlay className="dialog-overlay" />
-          <Dialog.Content
-            className="detail-panel"
-            aria-describedby="company-description"
-          >
-            {selected && (
-              <>
-                <div className="detail-top">
-                  <span className="eyebrow">DOSAR DE CERCETARE</span>
-                  <Dialog.Close
-                    className="icon-button"
-                    aria-label="Închide profilul"
-                  >
-                    <X size={20} />
-                  </Dialog.Close>
-                </div>
-                <div className="detail-title">
-                  <Logo company={selected} />
-                  <div>
-                    <Dialog.Title>{selected.name}</Dialog.Title>
-                    <span>
-                      {selected.flag} {selected.country} <span>·</span>{" "}
-                      {selected.sector}
-                    </span>
-                  </div>
-                </div>
-                <Dialog.Description
-                  id="company-description"
-                  className="detail-description"
-                >
-                  {selected.summary}
-                </Dialog.Description>
-                <div className="detail-actions">
-                  <Badge stage={selected.stage} />
-                  <button
-                    className={
-                      watch.includes(selected.id) ? "secondary" : "primary"
-                    }
-                    onClick={() => toggle(selected.id)}
-                  >
-                    {watch.includes(selected.id) ? (
-                      <Check size={15} />
-                    ) : (
-                      <Plus size={15} />
-                    )}
-                    {watch.includes(selected.id) ? "În lista mea" : "Urmărește"}
-                  </button>
-                </div>
-                <button className="access-jump" onClick={()=>document.getElementById("company-access")?.scrollIntoView({behavior:"smooth",block:"start"})}>Acces la acțiuni și contacte ↓</button>
-                <div className="demo-warning">
-                  <Info size={17} />
-                  <p>
-                    {stale(selected) ? "Sursă mai veche de 90 de zile: stadiul necesită reconfirmare. " : ""}Stadiul reflectă documentul citat, nu garantează că oferta se va realiza.
-                  </p>
-                </div>
-                {selected.context&&<section className="detail-section business-section"><h3>Ce face concret compania</h3><p>{selected.context.business.description}</p><dl className="business-facts"><dt>Produse și servicii</dt><dd>{selected.context.business.products}</dd><dt>Cui se adresează</dt><dd>{selected.context.business.customers}</dd><dt>Cum funcționează afacerea</dt><dd>{selected.context.business.model}</dd></dl><a href={selected.context.business.sourceUrl} target="_blank" rel="noopener noreferrer">Sursa descrierii afacerii ↗</a></section>}
-                <div className="detail-stats">
-                  <div>
-                    <small>VERIFICAREA DOSARULUI</small>
-                    <strong>
-                      {formatDate(selected.checkedAt)}
-                    </strong>
-                  </div>
-                  <div>
-                    <small>ÎNCREDERE ÎN DOVEZI</small>
-                    <strong className="confidence">
-                      {selected.confidence}
-                    </strong>
-                  </div>
-                </div>
-                <p className="score-explainer">
-                  Dosar verificat la {formatDate(selected.checkedAt)}. Tipul sursei: {selected.sourceLabel||(selected.official?"Oficială":"Presă")}. Stadiul se poate schimba după această verificare.
-                </p>
-                <section className="detail-section">
-                  <h3>Unde a fost anunțată listarea</h3>
-                  <p>{selected.signal}</p>
-                  {selected.context?.listingEvidence.map((e,i)=><article className="listing-evidence" key={e.url}><div><span className="badge gray">{e.kind==='official'?'Sursă oficială':e.kind==='aggregator'?'Agregator · neconfirmat':'Relatare de presă'}</span><small>{e.publishedDate?formatDate(e.publishedDate):'Fără zi exactă de publicare'}</small></div><h4>{e.sourceName}</h4><p>{e.statement}</p><p className="date-explanation">{e.dateExplanation}</p><a href={e.url} target="_blank" rel="noopener noreferrer">Deschide dovada {i+1} ↗</a></article>)}
-                  <div className="detail-fact">
-                    <span>Bursa vizată</span>
-                    <strong>{selected.exchange}</strong>
-                  </div>
-                  <div className="detail-fact">
-                    <span>
-                      {selected.date
-                        ? "Începutul subscrierii"
-                        : "Orizont de listare"}
-                    </span>
-                    <strong>{selected.dateLabel}</strong>
-                  </div>
-                  <div className="detail-fact">
-                    <span>Prima zi de tranzacționare</span>
-                    <strong>{listingDates(selected).confirmed?formatDate(listingDates(selected).confirmed!):"Nicio dată confirmată în dosar"}</strong>
-                  </div>
-                </section>
-                {selected.context&&<section className="detail-section access-section"><h3>Ce urmărești pentru o intrare timpurie</h3><p>{selected.context.nextCheckpoint}</p><div className="detail-fact"><span>Debut estimat de agregator</span><strong>{listingDates(selected).estimated?`${formatDate(listingDates(selected).estimated!)} · neconfirmat`:'Nicio zi estimată publicată în dosar'}</strong></div><p>Data unui articol, depunerea unui prospect și lansarea roadshow-ului nu sunt date de cumpărare. Accesul la subscriere și alocarea printr-un broker nu sunt confirmate de această platformă.</p></section>}
-                <section className="detail-section">
-                  <h3>Ce merită analizat</h3>
-                  <p>{selected.opportunity}</p>
-                </section>
-                <section className="detail-section risk-section">
-                  <h3>Riscuri & întrebări deschise</h3>
-                  <p>{selected.risk}</p>
-                  <p>
-                    Analiza financiară și scorul de potențial nu sunt încă implementate.
-                  </p>
-                </section>
-                <section className="detail-section">
-                  <h3>Documente originale</h3>
-                  <p>Rezumatul de mai sus este în română. Documentele originale se deschid separat, în limba sursei.</p>
-                  {(selected.documents || [{url:selected.sourceUrl,title:selected.sourceName,publishedAt:selected.publishedAt,checkedAt:selected.checkedAt}]).map(document => (
-                    <div className="evidence" key={document.url}><FileText size={18} /><div>
-                      <a href={document.url} target="_blank" rel="noreferrer">{document.title} <ExternalLink size={14} /></a>
-                      <p>Publicat: {formatDate(document.publishedAt)}</p>
-                      <p>Verificat pentru dosar: {formatDate(document.checkedAt)}</p>
-                    </div></div>
-                  ))}
-                </section>
-                {!!associated[selected.id]?.length&&<section className="detail-section"><details><summary>Alte surse colectate ({associated[selected.id].length})</summary><p>Asociere după numele companiei; aceste linkuri nu au fost folosite automat pentru a modifica analiza. Articolele care menționează mai multe companii sunt excluse.</p>{associated[selected.id].slice(0,20).map((d:Discovery,i:number)=><div className="evidence" key={d.url}><a href={d.url} target="_blank" rel="noopener noreferrer">Sursă externă {i+1} · {d.source_name} ↗</a><small>{sourceCategory(d.source_kind)} · {formatDate(d.published_at||'')}</small></div>)}{associated[selected.id].length>20&&<p>Afișăm primele 20 de linkuri. Dosarul rezumă separat sursele verificate.</p>}</details></section>}
-                <CompanyAccess research={selected.accessResearch} name={selected.name} evaluatedAt={evaluatedAt}/>
-              </>
-            )}
-          </Dialog.Content>
-        </Dialog.Portal>
-      </Dialog.Root>
+      <CompanyDrawer selected={selected} onClose={()=>setSelected(null)} watch={watch} toggle={toggle} associated={associated} evaluatedAt={evaluatedAt}/>
     </div>
   );
 }
