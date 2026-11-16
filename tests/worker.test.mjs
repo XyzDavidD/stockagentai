@@ -1,7 +1,34 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {parseBvbNews,parseAnthropicNews,parsePrNewswire,toPayload} from '../scripts/collectors.mjs';
 import {collectFeed,runCollection,fetchBounded,createPersistence} from '../scripts/runner.mjs';
+import {collectionHealth} from '../scripts/collection-health.mjs';
 const feed={id:'test',url:'https://example.com/feed',parse:()=>[]};const wait=async()=>{};
+test('Google queries and retries are spaced, independent hosts remain available',async()=>{
+ const waits=[],calls=[];
+ const selected=[{...feed,id:'us',url:'https://news.google.com/rss/us'},{...feed,id:'ro',url:'https://news.google.com/rss/ro'},{...feed,id:'bvb'}];
+ const results=await runCollection({selected,random:()=>0,wait:async ms=>waits.push(ms),fetcher:async url=>{
+  calls.push(url);return new Response('ok',{status:calls.length===1?503:200});
+ }});
+ assert.equal(results.filter(r=>!r.error).length,3);
+ assert.equal(calls.length,4);
+ assert.equal(waits.filter(ms=>ms===10000).length,2);
+});
+test('429 stops remaining requests to provider, persists deferrals and keeps other sources',async()=>{
+ const calls=[],saved=[];
+ const selected=[{...feed,id:'us',url:'https://news.google.com/rss/us'},{...feed,id:'ro',url:'https://news.google.com/rss/ro'},{...feed,id:'bvb'}];
+ const results=await runCollection({selected,wait,fetcher:async url=>{calls.push(url);return new Response('ok',{status:url.includes('google')?429:200});},persist:async p=>saved.push(p)});
+ assert.deepEqual(calls,[selected[0].url,selected[2].url]);
+ assert.deepEqual(results.map(r=>r.error),['HTTP_429','RATE_LIMIT_COOLDOWN',null]);
+ assert.equal(saved.length,3);
+ assert.equal(saved[1].error_code,'RATE_LIMIT_COOLDOWN');
+ assert.deepEqual({...collectionHealth(results),summary:undefined},{status:'partial',successful:1,failed:1,deferred:1,summary:undefined});
+});
+test('health distinguishes complete, partial, total failure and empty collection',()=>{
+ assert.equal(collectionHealth([{error:null,candidates:[]}]).status,'success');
+ assert.equal(collectionHealth([{error:'HTTP_429'}]).status,'failed');
+ assert.equal(collectionHealth([]).status,'failed');
+ assert.equal(collectionHealth([{error:null},{error:'SHAPE_CHANGED'}]).status,'partial');
+});
 test('news excludes bonds, keeps completed events as review candidates and deduplicates',()=>{
  const a=t=>`<a href='/AboutUs/MediaCenter/PressItem/${t}/1'>${t}</a>`;
  const result=parseBvbNews(a('IPO Test')+a('IPO Test')+a('Oferta obligatiuni')+a('Compania devine companie publica'));

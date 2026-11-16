@@ -24,10 +24,22 @@ export async function collectFeed(feed,{fetcher=fetch,wait=delay,now=()=>new Dat
   }
   return {id:feed.id,started,finished:now(),candidates:[],error};
 }
-export async function runCollection({persist,runKey,trigger='manual',selected=feeds,fetcher=fetch,wait=delay}) {
+export async function runCollection({persist,runKey,trigger='manual',selected=feeds,fetcher=fetch,wait=delay,random=Math.random}) {
   const results=[];
+  const visited=new Set(), limited=new Set();
+  // All Google News queries share one provider, regardless of country/channel.
+  // Pace retries too; after a 429, leave this host alone for the rest of the run.
+  const pacedFetch=async (url,options)=>{
+    const host=new URL(url).hostname;
+    if(limited.has(host))throw new Error('RATE_LIMIT_COOLDOWN');
+    if(visited.has(host))await wait((host==='news.google.com'?10000:2000)+Math.floor(random()*2000));
+    visited.add(host);
+    const response=await fetcher(url,options);
+    if(response.status===429)limited.add(host);
+    return response;
+  };
   for(const feed of selected.filter(f=>!f.paused)) {
-    const result=await collectFeed(feed,{fetcher,wait});
+    const result=await collectFeed(feed,{fetcher:pacedFetch,wait});
     // Persist each source atomically; a failure must fail the job, never report success.
     if(persist) await persist(toPayload(result,runKey,trigger));
     results.push(result);
